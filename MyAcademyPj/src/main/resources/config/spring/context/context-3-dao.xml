@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="member_daoBean" class="dao.MemberDAO">
+		<property name="sqlSession" ref="sqlSessionBean"/>
+	</bean>
+	<bean id="academy_daoBean" class="dao.AcademyDAO">
+		<property name="sqlSession" ref="sqlSessionBean"/>
+	</bean>
+	<bean id="address_daoBean" class="dao.AddressDAO">
+		<property name="sqlSession" ref="sqlSessionBean"/>
+	</bean>
+
+</beans>
