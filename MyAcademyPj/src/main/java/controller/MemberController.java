@@ -34,6 +34,7 @@ public class MemberController {
 	
 		public static final String VIEW_PATH_MEMBER = "/WEB-INF/views/member/";
 		public static final String VIEW_PATH_MAIN = "/WEB-INF/views/main/";
+		public static final String VIEW_PATH_BOOKMARK = "/WEB-INF/views/bookmark/";
 
 		
 		//메인
@@ -167,8 +168,14 @@ public class MemberController {
 			
 			return resultStr;
 		}
-	
 		
+		//내강의실 페이지로 전환
+		@RequestMapping("mylecture.com")
+		public String mylecture() {
+			return VIEW_PATH_MEMBER + "mylecture.jsp";
+		}
+		
+	
 		
 		
 		

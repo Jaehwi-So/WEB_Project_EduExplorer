@@ -10,11 +10,14 @@
 	
 	<typeAliases>
 		<typeAlias type="vo.MemberVO" alias="member"/>
+		<typeAlias type="vo.GoodVO" alias="good"/>
 	</typeAliases> 
+
 	
 	<mappers>
 		<mapper resource="config/mybatis/mapper/member.xml"/>
 		<mapper resource="config/mybatis/mapper/academy.xml"/>
-		<mapper resource="config/mybatis/mapper/address.xml"/>
+		<mapper resource="config/mybatis/mapper/bookmark.xml"/>
+		<mapper resource="config/mybatis/mapper/good.xml"/>
 	</mappers>
 </configuration>

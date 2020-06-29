@@ -8,8 +8,13 @@
 	<bean id="academy_daoBean" class="dao.AcademyDAO">
 		<property name="sqlSession" ref="sqlSessionBean"/>
 	</bean>
-	<bean id="address_daoBean" class="dao.AddressDAO">
+	<bean id="bookmark_daoBean" class="dao.BookMarkDAO">
 		<property name="sqlSession" ref="sqlSessionBean"/>
 	</bean>
+
+	<bean id="good_daoBean" class="dao.GoodDAO">
+		<property name="sqlSession" ref="sqlSessionBean"/>
+	</bean>
+
 
 </beans>

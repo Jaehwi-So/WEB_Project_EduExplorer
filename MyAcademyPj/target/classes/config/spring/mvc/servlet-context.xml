@@ -56,10 +56,17 @@
 		
 		<beans:bean class="controller.AcademyController">
 				<beans:property name="academy_dao" ref="academy_daoBean"/>
+				<beans:property name="good_dao" ref="good_daoBean"/>
 		</beans:bean>
-		<beans:bean class="controller.AddressController">
-				<beans:property name="address_dao" ref="address_daoBean"/>
+		<beans:bean class="controller.BookMarkController">
+				<beans:property name="bookmark_dao" ref="bookmark_daoBean"/>
 		</beans:bean>
+		
+		<beans:bean class="controller.GoodController">
+				<beans:property name="good_dao" ref="good_daoBean"/>
+		</beans:bean>
+		
+		
 
 
 	

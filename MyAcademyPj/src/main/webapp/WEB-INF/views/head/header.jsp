@@ -72,7 +72,7 @@
 								<a onclick="log_out()">로그아웃</a>						
 							</li>
 							<li>
-								<a href="#">내강의실</a>						
+								<a onclick="location.href='mylecture.com'">내강의실</a>						
 							</li>
 							<li>
 								<a onclick="location.href='main.com'";>메인</a>	

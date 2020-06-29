@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import vo.AcademyVO;
-import vo.FilterVO;
 
 public class AcademyDAO {
 
@@ -52,33 +51,10 @@ public class AcademyDAO {
 		List<AcademyVO> list = sqlSession.selectList("a_mapper.academy_list_paging", map);
 		return list;
 	}
-	
-	// 페이징과 필터 포함한 게시글 목록 출력
-	public List<AcademyVO> selectList(FilterVO vo) {
-		List<AcademyVO> list = sqlSession.selectList("a_mapper.academy_list_filter", vo);
-		return list;
-	}
 
 	// 전체 게시물 수 구하기
 	public int getRowTotal() {
 		int count = sqlSession.selectOne("a_mapper.academy_count");
-		return count;
-	}
-	
-	// 필터 포함한 전체 게시물 수 구하기
-	public int getRowTotal(FilterVO vo) {
-		int count = sqlSession.selectOne("a_mapper.academy_count_filter", vo);
-		return count;
-	}
-	// (분야별)페이징과 필터 포함한 게시글 목록 출력
-	public List<AcademyVO> selectList_area(FilterVO vo) {
-		List<AcademyVO> list = sqlSession.selectList("a_mapper.academy_list_filter_area", vo);
-		return list;
-	}
-
-	// (분야별) 필터 포함한 전체 게시물 수 구하기
-	public int getRowTotal_area(FilterVO vo) {
-		int count = sqlSession.selectOne("a_mapper.academy_count_filter_area", vo);
 		return count;
 	}
 

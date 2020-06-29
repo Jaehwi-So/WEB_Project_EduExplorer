@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="g">
+	<insert id="good_insert" parameterType="good">
+		insert into good values(seq_g_idx.nextVal,#{a_idx},#{m_id})
+	</insert>
+	
+	<select id="good_check" resultType="good" parameterType="java.lang.String">
+		select * from good where m_id = #{m_id}
+	</select>
+	
+	<delete id="good_delete" parameterType="java.lang.String">
+		delete from good where m_id = #{m_id}
+	</delete>
+	
+	<select id="good_join" resultType="int" parameterType="int">
+		select count(a_idx) from good where a_idx = #{a_idx}
+	</select>
+	
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
