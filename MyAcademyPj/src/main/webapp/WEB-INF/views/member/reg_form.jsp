@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,10 +20,15 @@
 		var m_age = f.m_age.value.trim();
 		var m_type = f.m_type.value;
 		var m_tel = f.m_tel.value.trim();
+		var m_nick = f.m_nick.value.trim();		
 		
 		
 		if( m_id == ''){
 			alert("아이디는 필수입력 항목입니다");
+			return;
+		}
+		if( m_age == ''){
+			alert("생년월일 필수입력 항목입니다");
 			return;
 		}
 		if( m_pwd == ''){
@@ -33,16 +39,16 @@
 			alert("이름은 필수입력 항목입니다");
 			return;
 		}
-		if( m_age == ''){
-			alert("나이는 필수입력 항목입니다");
-			return;
-		}
 		if( m_type == ''){
 			alert("유형는 필수입력 항목입니다");
 			return;
 		}
 		if( m_tel == ''){
 			alert("전화번호는 필수입력 항목입니다");
+			return;
+		}
+		if( m_nick == ''){
+			alert("닉네임는 필수입력 항목입니다");
 			return;
 		}
 		
@@ -52,7 +58,8 @@
 					"&m_name="+encodeURIComponent(m_name)+
 					"&m_age="+encodeURIComponent(m_age)+
 					"&m_type="+encodeURIComponent(m_type)+
-					"&m_tel="+encodeURIComponent(m_tel);
+					"&m_tel="+encodeURIComponent(m_tel)+
+					"&m_nick="+encodeURIComponent(m_nick);
 		
 		
 		sendRequest(url,param,resultFn,"POST");
@@ -141,8 +148,10 @@
 					회원이름<input name="m_name">
 				</li>
 				<li>
-					회원나이<input name="m_age">
+					생년월일
+					<input type="date" name="m_age">
 				</li>	
+			
 				<li>
 					회원타입
 					<select name="m_type">	
@@ -153,6 +162,10 @@
 				</li>
 				<li>	
 					회원전화번호<input name="m_tel">
+				</li>
+				
+				<li>
+					닉네임<input name="m_nick">
 				</li>
 				<li>
 					<input type="button" id="over_btn" value="회원가입" onclick="insert(this.form)"> 

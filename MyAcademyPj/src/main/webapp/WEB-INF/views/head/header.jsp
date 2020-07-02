@@ -61,6 +61,13 @@
 			alert("로그아웃되었습니다 메인페이지로 이동합니다.")
 			location.href="logout.com";
 		}
+		function send_notice(){
+			location.href = "n_list.com";
+		}
+		
+		function send_board(){
+			location.href = "f_list.com";
+		}
 	</script>
 	<body>
 		<div id="header">
@@ -73,6 +80,9 @@
 							</li>
 							<li>
 								<a onclick="location.href='mylecture.com'">내강의실</a>						
+							</li>
+							<li>
+								<a onclick="location.href='mylog.com'">로그확인</a>						
 							</li>
 							<li>
 								<a onclick="location.href='main.com'";>메인</a>	
@@ -113,9 +123,6 @@
 				</ul>
 			</div>
 	</div>	
-			
-		
-			
-				
+						
 	</body>
 </html>

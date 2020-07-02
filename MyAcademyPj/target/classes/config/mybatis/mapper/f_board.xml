@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="f">
+
+	<!-- 전체게시물 조회 -->
+	<select id="f_board_list" resultType="f_board">
+		select * from board order
+		by f_ref desc, f_step
+	</select>
+
+	<!-- 새글 쓰기 -->
+	<insert id="f_board_insert" parameterType="f_board">
+		insert into f_board
+		values(
+		seq_f_idx.nextVal,
+		#{f_name},
+		#{f_subject},
+		#{f_content},
+		#{f_pwd},
+		#{f_ip},
+		sysdate,
+		0, --조회수
+		seq_f_idx.currVal, 
+		0, --step
+		0, --depth
+		#{m_idx},
+		0 --del_info
+		)
+	</insert>
+	
+	<update id="f_board_modify" parameterType="f_board">
+		update f_board
+		set f_name = #{f_name},
+			f_subject = #{f_subject},
+			f_content = #{f_content}
+		where f_idx = #{f_idx}
+	</update>
+
+	<!-- 게시글 상세보기 -->
+	<select id="f_board_one" resultType="f_board"
+		parameterType="int">
+		select *
+		from f_board where f_idx=#{f_idx}
+	</select>
+
+	<!-- 조회수 증가 -->
+	<update id="f_board_update_readhit" parameterType="int">
+		<!-- idx위치에 해당하는 조회수 변수를 1씩 증가 -->
+		update f_board set f_readhit = f_readhit + 1 where f_idx=#{f_idx}
+	</update>
+
+	<!-- 기준글의 step보다 큰 step을 1씩 증가 -->
+	<update id="f_board_update_step" parameterType="f_board">
+		<!-- ref가 일치하는 같은 그룹의 step을 1씩 증가 -->
+		update f_board set f_step = f_step + 1
+		where f_ref= #{f_ref} and f_step > #{f_step}
+	</update>
+
+	<!-- 댓글쓰기 -->
+	<insert id="f_board_reply" parameterType="f_board">
+		insert into f_board
+		values(
+		seq_f_idx.nextVal,
+		#{f_name},
+		#{f_subject},
+		#{f_content},
+		#{f_pwd},
+		#{f_ip},
+		sysdate,
+		0, --조회수
+		#{f_ref}, --ref(현재 시퀀스의 값)
+		#{f_step},
+		--step
+		#{f_depth}, --depth
+		#{m_idx},
+		0 --del_info,	
+		)
+	</insert>
+
+	<!-- 삭제를 위한 게시글 정보 얻어오기 -->
+	<select id="f_board_idx_pwd" parameterType="java.util.HashMap"
+		resultType="f_board">
+		select * from f_board where f_idx=#{f_idx} and
+		f_pwd=#{f_pwd}
+	</select>
+
+	<!-- 게시글 삭제(된 것처럼 업데이트) -->
+	<update id="f_board_del_update" parameterType="f_board">
+		update f_board set
+		f_subject=#{f_subject},
+		f_name=#{f_name},
+		del_info = -1
+		where
+		f_idx=#{f_idx}
+	</update>
+
+	<!-- 페이지에 따른 게시물 조회 -->
+	<select id="f_board_list_paging" parameterType="java.util.Map"
+		resultType="f_board">
+		select * from
+		(select rank() over(order by f_ref desc, f_step
+		asc) no, f.*
+		from(select * from f_board) f )
+		where no between #{start} and #{end}
+	</select>
+	
+	<!-- 전체게시물 수 조회 -->
+	<select id="f_board_count" resultType="int">
+		select count(*) from f_board
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

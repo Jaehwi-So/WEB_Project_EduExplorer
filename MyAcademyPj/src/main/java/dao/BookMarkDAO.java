@@ -33,4 +33,9 @@ public class BookMarkDAO {
 		List<BookMarkVO> list = sqlSession.selectList("b.bookmark_list", m_idx);
 		return list;
 	}
+	
+	public int delete(BookMarkVO vo) {
+		int res = sqlSession.delete("b.bookmark_delete", vo);
+		return res;
+	}
 }

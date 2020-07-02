@@ -9,11 +9,25 @@ public class PageUtil {
       public static final String VIEW_PATH = "/WEB-INF/views/academy_list/";
       
       //한 페이지당 보여줄 게시물 수
-      public final static int BLOCKLIST = 2;
+      public final static int BLOCKLIST = 9;
       
       //한 화면에 보여지는 페이지 메뉴 수( prev 1 2 3 next )
-      public final static int BLOCKPAGE = 3;
+      public final static int BLOCKPAGE = 4;
    }
+	public static class Board{
+		public static final String N_VIEW_PATH = "/WEB-INF/views/n_board/";
+		public static final String F_VIEW_PATH = "/WEB-INF/views/f_board/";
+		
+		//한 페이지당 보여줄 게시물 수
+		public final static int BLOCKLIST = 5;
+		
+		//한 화면에 보여지는 페이지 메뉴 수( prev 1 2 3 next )
+		public final static int BLOCKPAGE = 3;
+	}
+	public static class Notice{
+		public final static int BLOCKLIST = 10;
+		public final static int BLOCKPAGE = 5;
+	}
    
 }
 

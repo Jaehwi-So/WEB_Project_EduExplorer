@@ -141,11 +141,18 @@ public class MemberController {
 		public String member_update(Model model,MemberVO vo) {
 			int res = member_dao.update(vo);
 			
-			String str = "yes";
+			String str = "no";
 			
-			if( res == 0 ) {
-				str = "no";
+			if( res != 0 ) {
+				str = "yes";
+				session.removeAttribute("user");
+				MemberVO user = member_dao.selectOne(vo.getM_id());
+				session = request.getSession();//HttpSession인터페이스를 사용
+				session.setAttribute("user", user);
+				//세션 유지시간은 기본이 30분 이지만 이것을 변경하고 싶다면..
+				session.setMaxInactiveInterval(60 * 60); //60초 * 60
 			}
+			//세션재등록
 			
 			String resultStr = String.format("[{'param': '%s'}]", str);
 			
@@ -175,9 +182,28 @@ public class MemberController {
 			return VIEW_PATH_MEMBER + "mylecture.jsp";
 		}
 		
+		@RequestMapping("member_del.com")
+		@ResponseBody
+		public String del_member(int m_idx) {
+			int res = member_dao.delete(m_idx);
+			
+			String str = "no";
+			
+			if( res != 0 ) {
+				str = "yes";
+				session.removeAttribute("user");
+				String resultStr = String.format("[{'param': '%s'} ]", str);
+				return resultStr;
+			}else {
+						
+				String resultStr = String.format("[{'param': '%s'} ]", str);	
+				return resultStr;
+			}
+			
+		}
+		
 	
 		
 		
 		
 }
-

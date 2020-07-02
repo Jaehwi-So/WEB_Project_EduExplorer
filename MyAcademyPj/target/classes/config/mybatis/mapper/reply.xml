@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="r">
+
+	<!-- 댓글 조회 -->
+	<select id="reply_list" resultType="reply" parameterType="int">
+		select * from reply
+		where r_board = #{r_board}
+		order by r_date asc
+	</select>
+	
+	<!-- 댓글 삽입 -->
+	<insert id="reply_insert" parameterType="reply">
+		insert into reply values(
+		seq_r_idx.nextVal,
+		#{r_board},
+		#{r_name},
+		#{r_pwd},
+		sysdate,
+		#{r_content},
+		#{m_idx}
+	)
+	</insert>
+	
+	<!-- 삭제를 위한 게시글 정보 -->
+	<delete id="reply_delete" parameterType="int">
+		delete from reply where r_idx=#{r_idx}
+	</delete>
+
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+

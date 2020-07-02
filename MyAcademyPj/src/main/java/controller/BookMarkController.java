@@ -31,42 +31,74 @@ public class BookMarkController {
 		this.bookmark_dao = bookmark_dao;
 	}
 	
-	@RequestMapping("bookmark_insert.com")
-	@ResponseBody
- 	public String bm_insert(BookMarkVO vo) {
+		@RequestMapping("bookmark_insert.com")
+		@ResponseBody
+	 	public String bm_insert(BookMarkVO vo) {
+					
+				System.out.println(vo.getM_idx());
+				System.out.println(vo.getA_idx());
 				
-			System.out.println(vo.getM_idx());
-			System.out.println(vo.getA_idx());
+					//이미 장바구니에 등록된 상품인지 확인
+					BookMarkVO res_vo = bookmark_dao.selectOne(vo);
+					
+					String result = "no";
+					
+					if( res_vo == null ) {//장바구니에 상품가가 가능한 상태
+						
+						result = "yes";
+						
+						//장바구니에 상품등록
+						bookmark_dao.insert(vo);
+					}
+					
+					String resultStr = String.format("[{'param' : '%s'}]" , result);
+					
+					return resultStr;
+	 	}
+		
+				//즐겨찾기목록으로 보내기
+	
+		@RequestMapping("bookmark.com")
+		public String bookmark(Model model , Integer m_idx) {
 			
-				//이미 장바구니에 등록된 상품인지 확인
-				BookMarkVO res_vo = bookmark_dao.selectOne(vo);
-				
-				String result = "no";
-				
-				if( res_vo == null ) {//장바구니에 상품가가 가능한 상태
-					
-					result = "yes";
-					
-					//장바구니에 상품등록
-					bookmark_dao.insert(vo);
-				}
-				
+			System.out.println("tt:"+m_idx);
+			
+			List<BookMarkVO> list = bookmark_dao.selectList(m_idx);
+			model.addAttribute("list", list);
+			return VIEW_PATH_BOOKMARK + "bookmark_list.jsp";
+			
+		}
+		
+		@RequestMapping("bm_delete.com")
+		@ResponseBody
+		public String bm_delete(BookMarkVO vo) {
+			System.out.println(vo.getA_idx());
+			System.out.println(vo.getM_idx());
+			int res = bookmark_dao.delete(vo);
+			System.out.println(res);
+			String result = "yes";
+			if(res == 0) {
+				result = "no";
 				String resultStr = String.format("[{'param' : '%s'}]" , result);
-				
 				return resultStr;
- 	}
-	
-			//즐겨찾기목록으로 보내기
-	
-			@RequestMapping("bookmark.com")
-			public String bookmark(Model model , Integer m_idx) {
-				
-				System.out.println("tt:"+m_idx);
-				
-				List<BookMarkVO> list = bookmark_dao.selectList(m_idx);
-				model.addAttribute("list", list);
-				return VIEW_PATH_BOOKMARK + "bookmark_list.jsp";
-				
 			}
+			
+			String resultStr = String.format("[{'param' : '%s'}]" , result);
+			return resultStr;
+			
+		}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

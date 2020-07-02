@@ -7,6 +7,12 @@
 	<title>Insert title here</title>
 	<script type="text/javascript" src="${pageContext.request.contextPath }/resources/js/httpRequest.js"></script>
 	<script type="text/javascript">
+	//평상시 비활성화
+	window.onload = function(){
+		document.getElementById("fix_age").readOnly = true;
+	}
+	
+	
 		function send( f ) {
 			var m_id = f.m_id.value.trim();
 			var m_pwd = f.m_pwd.value.trim();
@@ -15,9 +21,20 @@
 			var m_type = f.m_type.value;
 			var m_tel = f.m_tel.value.trim();
 			var m_idx = f.m_idx.value;
+			var m_nick = f.m_nick.value.trim();
+			var m_age_modify = f.m_age_modify.value;
 			
 			if( m_id == ''){
 				alert("아이디는 필수입력 항목입니다");
+				return;
+			}
+			if( m_age_modify == ''){
+				alert("변경할 생년월일 필수입력");
+				return;
+			}
+			
+			if( m_nick == ''){
+				alert("닉네임은 필수입력 항목입니다");
 				return;
 			}
 			if( m_pwd == ''){
@@ -29,7 +46,7 @@
 				return;
 			}
 			if( m_age == ''){
-				alert("나이는 필수입력 항목입니다");
+				alert("생년월일은 필수입력 항목입니다");
 				return;
 			}
 			if( m_type == ''){
@@ -40,6 +57,10 @@
 				alert("전화번호는 필수입력 항목입니다");
 				return;
 			}
+			if( m_age != m_age_modify){
+				m_age = m_age_modify;
+			}
+
 			
 			var url = "update.com";
 			var param = "m_id="+encodeURIComponent(m_id)+
@@ -48,6 +69,7 @@
 						"&m_age="+encodeURIComponent(m_age)+
 						"&m_type="+encodeURIComponent(m_type)+
 						"&m_tel="+encodeURIComponent(m_tel)+
+						"&m_nick="+encodeURIComponent(m_nick)+
 						"&m_idx="+m_idx;
 			
 			
@@ -70,6 +92,7 @@
 	
 			}
 		}
+		
 	</script>	
 	</head>
 	
@@ -89,8 +112,10 @@
 					회원이름<input name="m_name" value="${user.m_name}">
 				</li>
 				<li>
-					회원나이<input name="m_age" value="${user.m_age}">
-				</li>	
+					생년월일 <br>
+					변경전<input id="fix_age" name="m_age" value="${user.m_age}">
+					변경후<input name="m_age_modify" type="date">
+				</li>
 				<li>
 					회원타입
 					<select name="m_type" value="${user.m_type}">	
@@ -104,8 +129,13 @@
 				</li>
 				
 				<li>
+					닉네임
+					<input name="m_nick" value="${user.m_nick}">
+				</li>
+				<li>
 					<input type="button" value="변경" onclick="send(this.form)">
 				</li>
+				
 			</ul>
 		</form>
 			

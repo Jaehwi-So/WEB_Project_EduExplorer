@@ -11,12 +11,17 @@ public class AcademyVO{
    private String a_tel; //학원전화번호
    private String a_content; //내용
    private String a_site; //학원사이트
-   private String a_addr; //학원주소
+   private String a_post;	//우편번호
+   private String a_addr; //도로명주소
+   private String a_addr_detail;
    private String a_image_s; //썸네일사진
    private String a_image_l; //메인사진
    private String a_regdate; //등록일
    private MultipartFile s_photo;//사진
    private MultipartFile l_photo;//사진
+   private String a_area;// 분야
+   private String a_keyword; //검색키워드
+
    public int getA_idx() {
       return a_idx;
    }
@@ -65,6 +70,18 @@ public class AcademyVO{
    public void setA_addr(String a_addr) {
       this.a_addr = a_addr;
    }
+   public String getA_post() {
+	   return a_post;
+   }
+   public void setA_post(String a_post) {
+	   this.a_post = a_post;
+   }
+   public String getA_addr_detail() {
+	   return a_addr_detail;
+   }
+   public void setA_addr_detail(String a_addr_detail) {
+	   this.a_addr_detail = a_addr_detail;
+   }    
    public String getA_image_s() {
       return a_image_s;
    }
@@ -82,20 +99,31 @@ public class AcademyVO{
    }
    public void setA_regdate(String a_regdate) {
       this.a_regdate = a_regdate;
-   }
-public MultipartFile getS_photo() {
-	return s_photo;
-}
-public void setS_photo(MultipartFile s_photo) {
-	this.s_photo = s_photo;
-}
-public MultipartFile getL_photo() {
-	return l_photo;
-}
-public void setL_photo(MultipartFile l_photo) {
-	this.l_photo = l_photo;
-}
-   
+   } 
+	public MultipartFile getS_photo() {
+		return s_photo;
+	}
+	public void setS_photo(MultipartFile s_photo) {
+		this.s_photo = s_photo;
+	}
+	public MultipartFile getL_photo() {
+		return l_photo;
+	}
+	public void setL_photo(MultipartFile l_photo) {
+		this.l_photo = l_photo;
+	}
+	public String getA_area() {
+		return a_area;
+	}
+	public void setA_area(String a_area) {
+		this.a_area = a_area;
+	}
+	public String getA_keyword() {
+		return a_keyword;
+	}
+	public void setA_keyword(String a_keyword) {
+		this.a_keyword = a_keyword;
+	}
+	
 
-      
 }

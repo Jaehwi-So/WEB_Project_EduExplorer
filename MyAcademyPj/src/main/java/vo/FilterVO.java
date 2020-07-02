@@ -5,6 +5,7 @@ public class FilterVO {
 	private String f_region;	//행정구역 필터
 	private String f_addr;	//필터처리할 전체주소
 	private String f_area;	//분야별 필터
+	private String f_keyword; //키워드별 필터
 	private int start;	//페이징 처리 시작
 	private int end;	//페이징 처리 끝
 	
@@ -43,6 +44,12 @@ public class FilterVO {
 	}
 	public void setEnd(int end) {
 		this.end = end;
+	}
+	public String getF_keyword() {
+		return f_keyword;
+	}
+	public void setF_keyword(String f_keyword) {
+		this.f_keyword = f_keyword;
 	}
 	
 

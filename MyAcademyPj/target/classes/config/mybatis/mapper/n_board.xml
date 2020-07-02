@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="n">
+
+	<!-- 전체게시물 조회 -->
+	<select id="n_board_list" resultType="n_board">
+		select * from n_board order
+		by n_idx desc
+	</select>
+
+	<!-- 새글 쓰기 -->
+	<select id="n_board_insert" parameterType="n_board">
+		insert into n_board
+		values(
+		seq_n_idx.nextVal,
+		#{n_name},
+		#{n_subject},
+		#{n_content},
+		#{n_pwd},
+		#{n_ip},
+		sysdate,
+		0,
+		0,
+		#{m_idx}
+		)
+	</select>
+
+	<!-- 게시글 상세보기 -->
+	<select id="n_board_one" resultType="n_board"
+		parameterType="int">
+		select * from n_board where n_idx=#{n_idx}
+	</select>
+
+	<!-- 조회수 증가 -->
+	<update id="n_board_update_readhit" parameterType="int">
+		<!-- idx위치에 해당하는 조회수 변수를 1씩 증가 -->
+		update n_board set n_readhit = n_readhit + 1 where n_idx=#{n_idx}
+	</update>
+
+	<!-- 삭제를 위한 게시글 정보 얻어오기 -->
+	<select id="n_board_idx_pwd" parameterType="java.util.HashMap"
+		resultType="n_board">
+		select * from n_board where n_idx=#{n_idx} and
+		n_pwd=#{n_pwd}
+	</select>
+
+	<!-- 게시글 삭제 -->
+	<delete id="n_board_delete" parameterType="int">
+		delete from n_board where n_idx=#{n_idx}
+	</delete>
+
+	<!-- 페이지에 따른 게시물 조회 -->
+	<select id="n_board_list_paging" parameterType="java.util.Map"
+		resultType="n_board">
+		select * from
+		(select rank() over(order by n_idx desc) no, n.*
+		from(select * from n_board) n )
+		where no between #{start} and #{end}
+	</select>
+
+	<!-- 전체게시물 수 조회 -->
+	<select id="n_board_count" resultType="int">
+		select count(*) from n_board
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+

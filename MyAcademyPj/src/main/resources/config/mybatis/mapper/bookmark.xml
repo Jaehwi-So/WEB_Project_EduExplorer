@@ -21,6 +21,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="bookmark_list" parameterType="int" resultType="vo.BookMarkVO">
 		select * from bookmark_view where m_idx = #{m_idx}
 	</select>
+	
+	
+	<!--즐겨찾기 삭제  -->
+	<delete id="bookmark_delete"  parameterType="vo.BookMarkVO">
+		delete from bookmark where m1_idx=#{m_idx} and a1_idx=#{a_idx}
+	</delete>
 </mapper>
 
 

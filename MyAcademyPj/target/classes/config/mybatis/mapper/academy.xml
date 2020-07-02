@@ -20,15 +20,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into academy values(
 				seq_a_idx.nextVal,
 				#{a_name},
-				1,
+				#{m_idx},
 				#{a_owner},
 				#{a_tel},
 				#{a_content},
 				#{a_site},
+				#{a_post},
 				#{a_addr},
+				#{a_addr_detail},
 				#{a_image_s},
 				#{a_image_l},
-				sysdate
+				sysdate,
+				#{a_area}, <!-- 분야 추가하기 -->
+				#{a_keyword}
 		)
 	</insert>
 	
@@ -44,9 +48,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			a_tel = #{a_tel},
 			a_content = #{a_content},
 			a_site = #{a_site},
+			a_post = #{a_post},
 			a_addr = #{a_addr},
+			a_addr_detail = #{a_addr_detail},
 			a_image_s = #{a_image_s},
-			a_image_l = #{a_image_l}
+			a_image_l = #{a_image_l},
+			a_area = #{a_area}, <!-- 분야 추가하기 -->
+			a_keyword = #{a_keyword}
 		where a_idx = #{a_idx}
 	</update>
 	
@@ -56,14 +64,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          (select rank() over( order by a_regdate desc) no, a_mapper.*
          from( select * from academy ) a_mapper)
          where no between #{start} and #{end}
-   
    </select>
    
    <!-- 전체 게시물 수 조회 -->
    <select id="academy_count" resultType="int">
       select count(*) from academy
-   
    </select>
+   
+   	<!-- 페이지에 따른 게시물 조회(필터) -->
+   <select id="academy_list_filter" parameterType="vo.FilterVO" resultType="vo.AcademyVO">
+      select * from
+         (select rank() over( order by a_regdate desc) no, a_mapper.*
+         from( select * from academy where a_addr like #{f_addr} and a_area like #{f_area} and a_keyword like #{f_keyword}) a_mapper)
+         where no between #{start} and #{end}
+   </select>
+   
+      <!-- 전체 게시물 수 조회(필터) -->
+   <select id="academy_count_filter" parameterType="vo.FilterVO" resultType="int">
+      select count(*) from academy
+      where a_addr like #{f_addr} and a_area like #{f_area} and a_keyword like #{f_keyword}
+   </select>
+
 	
 </mapper>
 

@@ -1,25 +1,32 @@
 package vo;
 
 public class MemberVO {
- private int m_idx,m_age;
- private String m_id,m_pwd,m_name,m_type,m_tel;
+ private int m_idx;
+ private String m_id,m_pwd,m_name,m_type,m_tel,m_nick,m_age;
 public int getM_idx() {
 	return m_idx;
 }
 public void setM_idx(int m_idx) {
 	this.m_idx = m_idx;
 }
-public int getM_age() {
-	return m_age;
-}
-public void setM_age(int m_age) {
-	this.m_age = m_age;
-}
+
 public String getM_id() {
 	return m_id;
 }
 public void setM_id(String m_id) {
 	this.m_id = m_id;
+}
+public String getM_nick() {
+	return m_nick;
+}
+public void setM_nick(String m_nick) {
+	this.m_nick = m_nick;
+}
+public String getM_age() {
+	return m_age;
+}
+public void setM_age(String m_age) {
+	this.m_age = m_age;
 }
 public String getM_pwd() {
 	return m_pwd;

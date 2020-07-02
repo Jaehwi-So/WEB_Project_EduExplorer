@@ -1,9 +1,9 @@
 package vo;
 
 public class BookMarkVO {
-	private int b_idx;
-	private int a_idx;
-	private int m_idx;
+	private int b_idx;	//즐겨찾기 일련번호
+	private int a_idx;	//학원번호
+	private int m_idx;	//회원번호
 	private String a_name;
 	private String a_owner;
 	private String a_tel;

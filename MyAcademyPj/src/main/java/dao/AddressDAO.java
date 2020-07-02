@@ -12,11 +12,13 @@ public class AddressDAO {
 	public void setSqlSession(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;
 	}
+	//시/도 목록 가져오기
 	public List<AddressVO> selectList_city(){
 		List<AddressVO> list = null;
 		list = sqlSession.selectList("addr_mapper.city_list");
 		return list;
 	}
+	//시/도에 따른 군/구 목록 가져오기
 	public List<AddressVO> selectList_region(String city){
 		List<AddressVO> list = null;
 		list = sqlSession.selectList("addr_mapper.region_list", city);

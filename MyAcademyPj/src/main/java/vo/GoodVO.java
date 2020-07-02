@@ -1,8 +1,8 @@
 package vo;
 
 public class GoodVO {
-	private int g_idx;
-	private int a_idx;
+	private int g_idx;	//좋아요 일련번호
+	private int a_idx;	//학원 일련번호
 	private String m_id;
 	public int getG_idx() {
 		return g_idx;

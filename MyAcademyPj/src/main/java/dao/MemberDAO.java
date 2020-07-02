@@ -35,4 +35,9 @@ public class MemberDAO {
 		return res;
 	}
 	
+	public int delete(int m_idx) {
+		int res = sqlSession.delete("m.member_delete", m_idx);
+		return res;
+	}
+	
 }
