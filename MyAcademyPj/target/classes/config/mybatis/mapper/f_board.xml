@@ -110,7 +110,57 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="f_board_count" resultType="int">
 		select count(*) from f_board
 	</select>
+	
+	<!-- 페이지에 따른 나의 게시물 조회 -->
+	<select id="f_board_list_paging_my" parameterType="java.util.Map"
+		resultType="f_board">
+		select * from
+		(select rank() over(order by f_ref desc, f_step asc) no, f.*
+		from(select * from f_board where m_idx = #{m_idx} or
+		f_ref in (select f_ref from f_board where m_idx = #{m_idx})
+		) f )
+		where no between #{start} and #{end}
+	</select>
+	
+	<!-- 나의 전체게시물 수 조회 -->
+	<select id="f_board_count_my" parameterType="int" resultType="int">
+		select count(*) from f_board where m_idx = #{m_idx} or
+		f_ref in (select f_ref from f_board where m_idx = #{m_idx})
+	</select>
 
+
+	<!-- 페이지에 따른 내가 댓글단 게시물 조회 -->
+	<select id="f_board_list_paging_myreply" parameterType="java.util.Map"
+		resultType="f_board">
+		select * from
+		(select rank() over(order by f_ref desc, f_step asc) no, f.*
+		from(select * from f_board where 
+		f_idx in (select r_board from reply where m_idx = #{m_idx})	--댓글 중 m_idx가 일치하는 게시물 번호
+		) f )
+		where no between #{start} and #{end}
+	</select>
+	
+	<!-- 나의 전체게시물 수 조회 -->
+	<select id="f_board_count_myreply" parameterType="int" resultType="int">
+		select count(*) from f_board 
+		where f_idx in (select r_board from reply where m_idx = #{m_idx})
+	</select>
+	
+	<!-- 페이지에 따른 키워드 게시물 조회 -->
+	<select id="f_board_list_paging_keyword" parameterType="java.util.Map"
+		resultType="f_board">
+		select * from
+		(select rank() over(order by f_ref desc, f_step
+		asc) no, f.*
+		from(select * from f_board where f_subject like #{keyword} or f_content like #{keyword}) f )
+		where no between #{start} and #{end}
+	</select>
+	
+	<!-- 나의 전체게시물 수 조회 -->
+	<select id="f_board_count_keyword" parameterType="java.lang.String" resultType="int">
+		select count(*) from f_board 
+		where f_subject like #{keyword} or f_content like #{keyword}
+	</select>
 </mapper>
 
 

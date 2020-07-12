@@ -11,8 +11,8 @@ public class GoodDAO {
 		this.sqlSession = sqlSession;
 	}
 	
-	public GoodVO selectOne(String m_id) {
-		GoodVO resVO = sqlSession.selectOne("g.good_check", m_id );
+	public GoodVO selectOne(GoodVO vo) {
+		GoodVO resVO = sqlSession.selectOne("g.good_check", vo );
 		return resVO;
 	}
 	
@@ -22,8 +22,8 @@ public class GoodDAO {
 	}
 	
 	
-	public int delete(String m_id) {
-		int res = sqlSession.delete("g.good_delete", m_id);
+	public int delete(GoodVO vo) {
+		int res = sqlSession.delete("g.good_delete", vo);
 		return res;
 	}
 	

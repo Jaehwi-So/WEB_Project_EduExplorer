@@ -1,10 +1,50 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="../head/header.jsp" %>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<title>수정하기</title>
+		
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+		<style type="text/css">
+			.button{
+				background-color : #f5f2c4; 
+				width:90px;
+				font-size:15px;
+				height:30px;
+				font-weight:bold;
+			}
+			
+			#table{
+				margin-top:20px;
+				margin-left: 350px;
+			}
+			
+			table tr{
+				height:40px; 
+				width:70px;
+				font-weight:bold;
+			}
+			table td{
+				
+			}
+			#index {
+				background-color: #f5f2c4;
+			}
+			.button2{
+				background-color : #fff; 
+				width:70px;
+				border: 0;
+				font-weight:bold;
+				margin-top: 20px;
+				margin-left: 600px;
+			}
+		</style>
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage.css">
+		<link href='https://fonts.googleapis.com/css?family=Yellowtail' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Do+Hyeon' rel='stylesheet' type='text/css'>
 		<script>
 			function modify_send(f){
 				var a_name = f.a_name.value;
@@ -73,79 +113,205 @@
 		</script>
 	</head>
 	<body>
+	`	<main>
+		<!-- ============================상단부 배너================================ -->
+		<div id="my_banner">
+			<h3 align="center" style="color:'#A21CFF'">ACADEMY</h3>
+			<div class="vector">
+			<img src="${pageContext.request.contextPath}/resources/img/mypage_academy.png" width="70px" height="70px">
+			</div>
+			<div class="content">
+			<p>&bull; 지역,카테고리,키워드에 따라 본인에게 알맞는 학원을 찾는 공간입니다.<br>
+			&bull; 학원을 즐겨찾기에 등록할 수 있고 점주의 경우는 학원을 등록,수정,삭제할 수 있습니다.
+			</p>
+			</div>
+		</div>
+		<!-- ============================상단부 배너================================ -->
+		<hr>
+			
 		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="a_idx" value="${vo.a_idx}">
-			<table border="1">
-				<tr>
-					<td>학원명</td>
-					<td><input name="a_name" value="${vo.a_name}"></td>
-				</tr>
-				<tr>
-					<td>점주명</td>
-					<td><input name="a_owner" value="${vo.a_owner}"></td>
-				</tr>
-				<tr>
-					<td>학원 전화번호</td>
-					<td><input name="a_tel" value="${vo.a_tel}"></td>
-				</tr>
-				<tr>
-					<td>소개글</td>
-					<td><textarea name="a_content" rows="10" cols="84">${vo.a_content}</textarea></td>
-				</tr>
-				<tr>
-					<td>사이트주소</td>
-					<td><input name="a_site" value="${vo.a_site}"></td>
-				</tr>
-				<tr>
-					<td>분야별</td>
-					<td>
-					<ul>
-						<li>전에 체크한 분야 : ${vo.a_area }</li>
-						<li><input type="checkbox" name="a_area" value="초등부"
-							class="ab" onclick="">&nbsp; <label for="초등부">초등부</label>
-						</li>
-						<li><input type="checkbox" name="a_area" value="중등부"
-							class="ab" onclick="">&nbsp; <label for="중등부">중등부</label>
-						</li>
-						<li><input type="checkbox" name="a_area" value="고등부"
-							class="ab" onclick="">&nbsp; <label for="고등부">고등부</label>
-						</li>
-						<li><input type="checkbox" name="a_area" value="예체능"
-							class="ab" onclick="">&nbsp; <label for="예체능">예체능</label>
-						</li>
-					</ul>
-					</td>
-				</tr>
-				<tr>
-					<td><input type="button" value="주소 찾기" onclick="addr_found();"></td>
-				</tr>
-				<tr>
-					<td>우편번호</td>
-					<td><input id="a_post" name="a_post" value="${vo.a_post}" readonly></td>
-				</tr>
-				<tr>
-					<td>주소</td>
-					<td><input id="a_addr" name="a_addr" value="${vo.a_addr}" readonly></td>
-				</tr>
-				<tr>
-					<td>세부 주소</td>
-					<td><input id="a_detail" name="a_addr_detail" value="${vo.a_addr_detail}" readonly></td>
-				</tr>
-				<tr>
-					<td>썸네일사진</td>
-					<td><input type="file" name="s_photo"></td>
-				</tr>
-				<tr>
-					<td>메인사진</td>
-					<td><input type="file" name="l_photo"></td>
-				</tr>
-				<tr>
-					<td>검색 키워드</td>
-					<td><input name="a_keyword" value="${vo.a_keyword }"></td>
-				</tr>
-			</table>
-			<input type="button" value="수정하기" onclick="modify_send(this.form);">
+			<div id="table">
+				<table>
+					<tr>
+						<th id="index">학원명</th>
+						<td><input name="a_name" value="${vo.a_name}" style="width: 435px;"></td>
+					</tr>
+					<tr>
+						<th id="index">점주명</th>
+						<td><input name="a_owner" value="${vo.a_owner}" style="width: 435px;"></td>
+					</tr>
+					<tr>
+						<th id="index">학원 전화번호</th>
+						<td><input name="a_tel" value="${vo.a_tel}" style="width: 435px;"></td>
+					</tr>
+					<tr>
+						<th id="index">소개글</th>
+						<td><textarea name="a_content" rows="10" cols="60">${vo.a_content}</textarea></td>
+					</tr>
+					<tr>
+						<th id="index">사이트주소</th>
+						<td><input name="a_site" value="${vo.a_site}" style="width: 435px;"></td>
+					</tr>
+					<tr>
+						<th id="index">분야별</th>
+						<td>
+						<ul>						
+								<li>
+									<p>입시 전문</p>
+								</li>
+								&nbsp;
+								<li>	
+									<input type="checkbox"  name="a_area" value="단과" onclick="">&nbsp;
+									<label for="단과">단과</label>
+								</li>
+								<li>
+									<input type="checkbox"  name="a_area" value="종합" onclick="" >&nbsp;
+									<label for="종합">종합</label>
+								</li>						
+								<li>							
+									<input type="checkbox"  name="a_area" value="입시" onclick="" >&nbsp;
+									<label for="입시">입시</label>							
+								</li>						
+								<li>							
+									<input type="checkbox"  name="a_area" value="편입" onclick="" >&nbsp;
+									<label for="편입">편입</label>							
+								</li>				
+								
+								<br>
+								
+								<li>
+									<p>취업 전문</p>
+								</li>	
+								&nbsp;	
+								<li>	
+									<input type="checkbox"  name="a_area" value="공무원" onclick="">&nbsp;
+									<label for="공무원">공무원</label>
+								</li>	
+								<li>	
+									<input type="checkbox"  name="a_area" value="전문직" onclick="">&nbsp;
+									<label for="전문직">전문직</label>
+								</li>
+								
+								<br>
+								
+								<li>
+									<p>예체능</p>
+								</li>		
+								&nbsp;
+								<li>	
+									<input type="checkbox"  name="a_area" value="미술" onclick="">&nbsp;
+									<label for="미술">미술</label>
+								</li>	
+								<li>	
+									<input type="checkbox"  name="a_area" value="음악" onclick="">&nbsp;
+									<label for="음악">음악</label>
+								</li>		
+								<li>	
+									<input type="checkbox"  name="a_area" value="체육" onclick="">&nbsp;
+									<label for="체육">체육</label>
+								</li>	
+								
+								<br>
+								
+								<li>
+									<p>어학원</p>
+								</li>
+								&nbsp;
+								<li>	
+									<input type="checkbox"  name="a_area" value="영어" onclick="">&nbsp;
+									<label for="영어">영어</label>
+								</li>
+								<li>	
+									<input type="checkbox"  name="a_area" value="제2외국어" onclick="">&nbsp;
+									<label for="제2외국어">제2외국어</label>
+								</li>
+								
+								<br>
+								
+								<li>
+									<p>자격증</p>
+								</li>
+								&nbsp;
+								<li>	
+									<input type="checkbox"  name="a_area" value="운전" onclick="">&nbsp;
+									<label for="운전">운전</label>
+								</li>
+								<li>	
+									<input type="checkbox"  name="a_area" value="기타 자격증" onclick="">&nbsp;
+									<label for="기타 자격증">기타 자격증</label>
+								</li>
+								
+								<br>
+								<br>
+								
+								&nbsp;
+								<li>	
+									<input type="checkbox"  name="a_area" value="기타 입시" onclick="">&nbsp;
+									<label for="기타 입시">기타 입시</label>
+								</li>
+								<li>	
+									<input type="checkbox"  name="a_area" value="기타 취업" onclick="">&nbsp;
+									<label for="기타 취업">기타 취업</label>
+								</li>
+								<li>	
+									<input type="checkbox"  name="a_area" value="기타 예체능" onclick="">&nbsp;
+									<label for="기타 예체능">기타 예체능</label>
+								</li>
+								<li>	
+									<input type="checkbox"  name="a_area" value="기타 어학원" onclick="">&nbsp;
+									<label for="기타 어학원">기타 어학원</label>
+								</li>
+								<br>
+								&nbsp;
+								<li>	
+									<input type="checkbox"  name="a_area" value="기타" onclick="">&nbsp;
+									<label for="기타">기타</label>
+								</li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<th id="index">주소</th>
+						<td>
+							<input name="a_addr" id="a_addr" name="a_addr" value="${vo.a_site}" style="width: 340px;" readonly>
+							<input type="button" class="button" value="주소 찾기" onclick="addr_found();">
+						</td>
+					</tr>
+					<tr>
+						<th id="index">우편번호</th>
+						<td>
+							<input name="a_post" id="a_post" value="${vo.a_post}" style="width: 435px;" readonly>							
+						</td>
+					</tr>
+					<tr>
+						<th id="index">세부 주소</th>
+						<td><input name="a_addr_detail" id="a_addr_detail" value="${vo.a_addr_detail}" style="width: 435px;" readonly></td>
+					</tr>
+					<tr>
+						<th id="index">썸네일사진</th>
+						<td><input  type="file" name="s_photo"></td>
+					</tr>
+					<tr>
+						<th id="index">메인사진</th>
+						<td><input  type="file" name="l_photo"></td>
+					</tr>
+					<tr>
+						<th id="index">검색 키워드</th>
+						<td><input name="a_keyword" value="${vo.a_keyword }" style="width: 435px;" value="#(해시태그)를 사용해주세요"></td>
+					</tr>
+	
+				</table>
+			</div>
+			
+			<div id="regi_button">
+				<button type="button" class="button2" onclick="modify_send(this.form);">
+				<img src="${pageContext.request.contextPath}/resources/img/register.png" width="40px" height="40px"></button>
+			<!-- <input type="button" value="수정하기" onclick="modify_send(this.form);"> -->
+			</div>
 		</form>
+	</main>
+		<%@ include file="../head/footer.jsp" %>
 	</body>
 </html>
 

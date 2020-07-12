@@ -84,8 +84,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       select count(*) from academy
       where a_addr like #{f_addr} and a_area like #{f_area} and a_keyword like #{f_keyword}
    </select>
+   
+    <select id="academy_mylist" parameterType="int" resultType="vo.AcademyVO">
+      select * from academy where m_idx = #{m_idx}
+   </select>
 
+	<select id="academy_get_m" resultType="int" parameterType="int">
+		select m_idx from academy where a_idx= #{a_idx}
+	</select>
 	
+	<select id="a_idx_list" resultType="int">
+		select a_idx from academy 
+	</select>
+	
+	<select id="a_idx_list_one" resultType="vo.AcademyVO" parameterType="int">
+		select * from academy where a_idx = #{random_a_idx}
+	</select>
 </mapper>
 
 

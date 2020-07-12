@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="m_mapper">
+
+	<!-- 전체게시물 조회 -->
+	<select id="meeting_list" resultType="vo.MeetingVO" parameterType="int">
+		select * from meeting 
+		where a_idx = #{a_idx}
+		order by meeting_regdate desc
+	</select>
+
+	<!-- 게시글 추가하기 -->
+	<insert id="meeting_insert" parameterType="vo.MeetingVO">
+		insert into meeting
+		values(
+		seq_meeting_idx.nextVal,
+		#{m_idx},
+		#{meeting_subject},
+		#{meeting_content},
+		sysdate,
+		#{meeting_alam},
+		#{meeting_photo},
+		#{meeting_writer},
+		#{a_idx}
+		)
+	</insert>
+	
+	<!-- 학원내 게시판글 보기 -->
+	<select id="meeting_one" resultType="vo.MeetingVO"
+			parameterType="int">
+		select * from meeting where meeting_idx = #{meeting_idx}
+	</select>
+	
+	<!-- 게실글 수정하기 -->
+	<update id="meeting_modify" parameterType="vo.MeetingVO">
+		update meeting set meeting_subject=#{meeting_subject},
+							meeting_content=#{meeting_content},
+							meeting_alam=#{meeting_alam},
+							meeting_photo=#{meeting_photo}
+						where meeting_idx = #{meeting_idx}
+							
+	
+	</update>
+	
+	<select id="select_seq" resultType="int">
+		select seq_meeting_idx.currVal from dual
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

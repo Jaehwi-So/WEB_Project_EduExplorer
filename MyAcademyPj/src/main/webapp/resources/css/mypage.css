@@ -1,0 +1,54 @@
+@charset "UTF-8";
+			/* 상단 배너 css */
+			#my_banner{ 
+	            width : 950px; height : 105px; margin : 20px auto; padding : 10px;
+	            border : #403C00 2px solid;
+	            color : white; 
+				background: black;
+				position:relative;
+	        }
+	        #my_banner h3{
+	        font-size : 34px; font-family: 'Yellowtail', serif;
+			color: #E5D700;
+			text-shadow: 2px 2px black, 0px 0px 6px white, 0px 0px 7px #7F7700;
+			letter-spacing : 2px;
+	        }
+	       	#my_banner p{
+	        font-size : 14px;
+	        }
+	        #my_banner .vector{
+	        	width: 80px; height: 80px; margin:10px;
+	        	margin-left : 30px;
+	        	float : left; position : absolute;
+				top: 10px; left: 10px;
+	        }
+	       	 #my_banner .content{
+	        	width: 770px; height: 40px; margin: 5px; float : right;
+	        }
+	        
+	        /* 중단 네비게이션 css */
+	        #my_navi{
+				position:relative; width : 820px; height : 50px; margin : 0px auto; padding : 0px;
+				z-index : 2;
+	        }
+			#my_navi ul{ overflow:hidden;}
+			#my_navi ul li{ border-right: 2px solid #E5D700;
+					   	float : left; text-align : center; font : 20px bold;
+					   	}
+			#my_navi ul li:first-child{ border-left:2px solid black; }
+			#my_navi ul li:last-child{ border-right:2px solid black; }
+			#my_navi ul li a{
+				height:35px; background-color : black;
+				display:block; padding:10px 10px; color:#E5D700; margin:0px; 
+				font : 22px bold; font-family : 'Do Hyeon', serif;
+			}
+			#my_navi ul li a:nth-child(2){ /* width : 160px; */ }
+			#my_navi ul li a:hover{ background:#E5D700; color:black; cursor:pointer;}
+			
+			/* 중단 내용 css */
+			#my_content{
+				background: radial-gradient(farthest-corner at 10%, #BFB300, #ffee0080);
+				position:relative; 
+				width : 820px; margin : 0px auto; padding : 30px;
+				border : solid black 2px; z-index : 1;
+			}

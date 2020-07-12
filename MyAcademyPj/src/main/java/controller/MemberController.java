@@ -5,15 +5,19 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.codehaus.jackson.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.SessionScope;
 
+import dao.AcademyDAO;
 import dao.MemberDAO;
+import vo.AcademyVO;
 import vo.MemberVO;
 
 @Controller
@@ -25,40 +29,61 @@ public class MemberController {
 		@Autowired
 		HttpSession session;
 		
-		MemberDAO member_dao;	
+		MemberDAO member_dao;
+		AcademyDAO academy_dao;
 		
+	
+		public void setAcademy_dao(AcademyDAO academy_dao) {
+			this.academy_dao = academy_dao;
+		}
 		public void setMember_dao(MemberDAO member_dao) {
 			this.member_dao = member_dao;
-			System.out.println("컨트롤러");
 		}
 	
 		public static final String VIEW_PATH_MEMBER = "/WEB-INF/views/member/";
 		public static final String VIEW_PATH_MAIN = "/WEB-INF/views/main/";
 		public static final String VIEW_PATH_BOOKMARK = "/WEB-INF/views/bookmark/";
+		public static final String VIEW_PATH_MYPAGE = "/WEB-INF/views/mypage/";
 
 		
 		//메인
 		@RequestMapping(value = {"/", "main.com"})
-		public String start_main() {
+		public String start_main(Model model) {
+			int list_cnt = academy_dao.selectList_cnt();
+			if(list_cnt >= 5) {
+			List<AcademyVO> list = academy_dao.selectList_random();
+			model.addAttribute("rec_list",list);
+			}
 			return VIEW_PATH_MAIN + "main.jsp";
 		}
 		
 		//고객지원
 		@RequestMapping("member_service.com")
-		public String m_service() {
+		public String m_service(Model model) {
+			int list_cnt = academy_dao.selectList_cnt();
+			if(list_cnt >= 5) {
+			List<AcademyVO> list = academy_dao.selectList_random();
+			model.addAttribute("rec_list",list);
+			}
 			return VIEW_PATH_MEMBER + "member_service.jsp";
 		}
 		
 		//로그인 창으로 전환
 		@RequestMapping("login_form.com")
-		public String login_form() {
+		public String login_form(Model model) {
+			int list_cnt = academy_dao.selectList_cnt();
+			if(list_cnt >= 5) {
+			List<AcademyVO> list = academy_dao.selectList_random();
+			model.addAttribute("rec_list",list);
+			}
 			return VIEW_PATH_MEMBER + "login_form.jsp";
 		}
 		//로그인 체크 매핑
 		@RequestMapping("login_check.com")
 		@ResponseBody
-		public String login(MemberVO vo) {
+		public String login(MemberVO vo , Model model) {
 			
+			 
 	
 			MemberVO user = member_dao.selectOne(vo.getM_id());
 			String resultStr = "";
@@ -123,10 +148,16 @@ public class MemberController {
 		
 		//로그아웃 세션제거
 		@RequestMapping("logout.com")
-		public String logout() {
+		public String logout(Model model) {
 			session.removeAttribute("user");
+			int list_cnt = academy_dao.selectList_cnt();
+			if(list_cnt >= 5) {
+				List<AcademyVO> list = academy_dao.selectList_random();
+				model.addAttribute("rec_list",list);
+			}
 			return VIEW_PATH_MAIN + "main.jsp";
 		}
+		
 		
 		//회원정보 폼 전환
 		@RequestMapping("member_update.com")
@@ -179,9 +210,11 @@ public class MemberController {
 		//내강의실 페이지로 전환
 		@RequestMapping("mylecture.com")
 		public String mylecture() {
-			return VIEW_PATH_MEMBER + "mylecture.jsp";
+			return VIEW_PATH_MYPAGE + "mypage.jsp";
 		}
 		
+		
+		//회원탈퇴
 		@RequestMapping("member_del.com")
 		@ResponseBody
 		public String del_member(int m_idx) {
@@ -201,8 +234,6 @@ public class MemberController {
 			}
 			
 		}
-		
-	
 		
 		
 		

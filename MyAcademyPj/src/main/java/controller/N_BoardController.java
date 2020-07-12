@@ -13,9 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import dao.AcademyDAO;
 import dao.N_BoardDAO;
 import util.PageUtil;
 import util.Paging;
+import vo.AcademyVO;
 import vo.F_BoardVO;
 import vo.N_BoardVO;
 
@@ -26,6 +28,13 @@ public class N_BoardController {
 	HttpServletRequest request;
 
 	N_BoardDAO n_BoardDAO;
+	AcademyDAO academy_dao;
+	
+	
+	public void setAcademy_dao(AcademyDAO academy_dao) {
+		this.academy_dao = academy_dao;
+		System.out.println("컨트롤러");
+	}
 
 	public void setN_BoardDAO(N_BoardDAO n_BoardDAO) {
 		this.n_BoardDAO = n_BoardDAO;
@@ -33,6 +42,12 @@ public class N_BoardController {
 
 	@RequestMapping("n_list.com")
 	public String list(Model model, Integer page) {
+		
+		int list_cnt = academy_dao.selectList_cnt();
+		if(list_cnt >= 5) {
+		List<AcademyVO> list = academy_dao.selectList_random();
+		model.addAttribute("rec_list",list);
+		}
 
 		int nowPage = 1;// 기본페이지
 

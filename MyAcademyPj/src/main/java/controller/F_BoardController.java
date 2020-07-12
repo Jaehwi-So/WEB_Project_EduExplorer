@@ -15,12 +15,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import dao.AcademyDAO;
 import dao.F_BoardDAO;
+import dao.Member_LogDAO;
 import dao.ReplyDAO;
 import util.PageUtil;
 import util.Paging;
 import vo.AcademyVO;
 import vo.F_BoardVO;
+import vo.Member_LogVO;
 import vo.ReplyVO;
 
 @Controller
@@ -33,13 +36,31 @@ public class F_BoardController {
 	HttpSession session;
 
 	F_BoardDAO f_BoardDAO;
+	Member_LogDAO member_log_dao;
+	public static final String VIEW_PATH_MY = "/WEB-INF/views/mypage/";
 
+	AcademyDAO academy_dao;
+	
+	
+	public void setAcademy_dao(AcademyDAO academy_dao) {
+		this.academy_dao = academy_dao;
+	}
+	
 	public void setF_BoardDAO(F_BoardDAO f_BoardDAO) {
 		this.f_BoardDAO = f_BoardDAO;
 	}
+	public void setMember_log_dao(Member_LogDAO member_log_dao) {
+		this.member_log_dao = member_log_dao;
+	}
+
 
 	@RequestMapping("f_list.com")
 	public String list(Model model, Integer page) {
+		int list_cnt = academy_dao.selectList_cnt();
+		if(list_cnt >= 5) {
+		List<AcademyVO> list = academy_dao.selectList_random();
+		model.addAttribute("rec_list",list);
+		}
 
 		int nowPage = 1;// 기본페이지
 
@@ -187,17 +208,6 @@ public class F_BoardController {
 		this.reply_dao = reply_dao;
 	}
 	
-	/*
-	 * @RequestMapping("/reply_list.com") public String r_list(Model model){
-	 * List<ReplyVO> r_list = null; r_list = reply_dao.selectList();
-	 * 
-	 * 
-	 * model.addAttribute("r_list", r_list); System.out.println(r_list); return
-	 * PageUtil.Board.F_VIEW_PATH+"f_board_view.jsp";
-	 * 
-	 * }
-	 */
-	
 	@RequestMapping("/reply_insert.com")
 	@ResponseBody
 	public String insertRpy(ReplyVO vo, HttpSession session ) {
@@ -208,7 +218,18 @@ public class F_BoardController {
 		int res = reply_dao.insert(vo);
 		
 		if (res == 1) {
-			result = "yes";
+			String url = "f_view.com?f_idx=" + vo.getR_board();
+			
+			//알림 로그 생성
+			Member_LogVO logVO = new Member_LogVO();
+			F_BoardVO boardVO = f_BoardDAO.selectOne(vo.getR_board());
+			logVO.setM_idx(boardVO.getM_idx());
+			logVO.setLog_type(1);
+			logVO.setLog_url(url);
+			int logres = member_log_dao.insert(logVO);
+			if(logres == 1) {
+				result = "yes";
+			}
 		}
 
 		resultStr = String.format("[{'result':'%s'}]", result);
@@ -233,6 +254,8 @@ public class F_BoardController {
 	@RequestMapping("f_modify_form.com")
 	public String move_modify_form(int f_idx){
 		F_BoardVO vo = f_BoardDAO.selectOne(f_idx);
+		String content = vo.getF_content().replaceAll("<br>", "\n");
+		vo.setF_content(content);
 		request.setAttribute("vo", vo);
 		return PageUtil.Board.F_VIEW_PATH + "f_board_modify_form.jsp";
 	}
@@ -247,6 +270,121 @@ public class F_BoardController {
 		int res = f_BoardDAO.modify(vo);
 		return "redirect:f_list.com";
 	}
+		
 	
+	//내가 올린 게시물 조회
+	@RequestMapping("f_list_my.com")
+	public String list_my(Model model, Integer page, int m_idx) {
 
+		int nowPage = 1;// 기본페이지
+
+		if (page != null) {
+			nowPage = page;
+		}
+
+		// 한 페이지에 표시되는 게시물의 시작과 끝번호를 계산
+		int start = (nowPage - 1) * PageUtil.Board.BLOCKLIST + 1;
+		int end = start + PageUtil.Board.BLOCKLIST - 1;
+
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("m_idx", (Integer)m_idx);
+		System.out.println(map);
+		// 전체게시물 수 구하기
+		int row_total = f_BoardDAO.getRowTotal_my(m_idx);
+		
+		// 게시글 전체목록 가져오기
+		List<F_BoardVO> f_list = null;
+		f_list = f_BoardDAO.selectList_my(map);
+
+		// 하단 페이지메뉴 생성하기
+		String pageMenu = Paging.getPaging_myFboard("f_list_my.com", nowPage, row_total, PageUtil.Board.BLOCKLIST,
+				PageUtil.Board.BLOCKPAGE, m_idx);
+		model.addAttribute("f_list", f_list);
+		model.addAttribute("pagemenu_f", pageMenu);
+		model.addAttribute("info", "post");
+
+		// 세션에 기록되어 있던 show정보를 지운다
+		request.getSession().removeAttribute("show");
+
+		return VIEW_PATH_MY + "mypage_fboard.jsp";
+	}
+	
+		//내가 댓글단 게시물 조회
+		@RequestMapping("f_list_myreply.com")
+		public String list_myreply(Model model, Integer page, int m_idx) {
+
+			int nowPage = 1;// 기본페이지
+
+			if (page != null) {
+				nowPage = page;
+			}
+
+			// 한 페이지에 표시되는 게시물의 시작과 끝번호를 계산
+			int start = (nowPage - 1) * PageUtil.Board.BLOCKLIST + 1;
+			int end = start + PageUtil.Board.BLOCKLIST - 1;
+
+			Map<String, Integer> map = new HashMap<String, Integer>();
+			map.put("start", start);
+			map.put("end", end);
+			map.put("m_idx", (Integer)m_idx);
+			System.out.println(map);
+			// 전체게시물 수 구하기
+			int row_total = f_BoardDAO.getRowTotal_myreply(m_idx);
+			
+			// 게시글 전체목록 가져오기
+			List<F_BoardVO> f_list = null;
+			f_list = f_BoardDAO.selectList_myreply(map);
+
+			// 하단 페이지메뉴 생성하기
+			String pageMenu = Paging.getPaging_myFboard("f_list_myreply.com", nowPage, row_total, PageUtil.Board.BLOCKLIST,
+					PageUtil.Board.BLOCKPAGE, m_idx);
+			model.addAttribute("f_list", f_list);
+			model.addAttribute("pagemenu_f", pageMenu);
+			model.addAttribute("info", "comment");
+
+			// 세션에 기록되어 있던 show정보를 지운다
+			request.getSession().removeAttribute("show");
+
+			return VIEW_PATH_MY + "mypage_fboard.jsp";
+		}
+		
+		
+		//키워드를 통한 게시물 검색하기
+		@RequestMapping("f_list_keyword.com")
+		public String list_keyword(Model model, Integer page, String keyword) {
+
+			int nowPage = 1;// 기본페이지
+
+			if (page != null) {
+				nowPage = page;
+			}
+
+			// 한 페이지에 표시되는 게시물의 시작과 끝번호를 계산
+			int start = (nowPage - 1) * PageUtil.Board.BLOCKLIST + 1;
+			int end = start + PageUtil.Board.BLOCKLIST - 1;
+			String key = "%" + keyword + "%";
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("start", start);
+			map.put("end", end);
+			map.put("keyword", key);
+			// 전체게시물 수 구하기
+			int row_total = f_BoardDAO.getRowTotal_keyword(key);
+			
+			// 게시글 전체목록 가져오기
+			List<F_BoardVO> f_list = null;
+			f_list = f_BoardDAO.selectList_keyword(map);
+
+			// 하단 페이지메뉴 생성하기
+			String pageMenu = Paging.getPaging_fBoard_keyword("f_list_keyword.com", nowPage, row_total, PageUtil.Board.BLOCKLIST,
+					PageUtil.Board.BLOCKPAGE, keyword);
+			model.addAttribute("f_list", f_list);
+			model.addAttribute("pagemenu_f", pageMenu);
+			// 세션에 기록되어 있던 show정보를 지운다
+			request.getSession().removeAttribute("show");
+
+			return PageUtil.Board.F_VIEW_PATH + "f_board_list.jsp";
+		}
 }
+

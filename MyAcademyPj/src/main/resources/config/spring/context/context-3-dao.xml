@@ -26,4 +26,13 @@
 	<bean id="reply_daoBean" class="dao.ReplyDAO">
 		<property name="sqlsession" ref="sqlSessionBean"/>
 	</bean>
+	<bean id="member_log_daoBean" class="dao.Member_LogDAO">
+		<property name="sqlsession" ref="sqlSessionBean"/>
+	</bean>
+	<bean id="academynotice_daoBean" class="dao.AcademyNoticeDAO">
+		<property name="sqlSession" ref="sqlSessionBean"/>
+	</bean>
+	<bean id="meeting_daoBean" class="dao.MeetingDAO"> 
+		<property name="sqlSession" ref="sqlSessionBean"/>
+	</bean>
 </beans>

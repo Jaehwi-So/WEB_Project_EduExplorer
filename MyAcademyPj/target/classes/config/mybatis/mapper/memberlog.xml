@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="m_log">
+
+	<!-- 로그 생성 -->
+	<insert id="log_insert" parameterType="log">
+		insert into member_log values(
+		seq_log_idx.nextVal,
+		#{m_idx},
+		#{log_type},
+		#{log_url},
+		0,
+		sysdate
+		)
+	</insert>
+	
+	<!-- 로그 확인시 log_ck 변경 -->
+	<update id="log_check" parameterType="int">
+		update member_log
+		set log_ck = 1
+		where log_idx = #{log_idx}
+	</update>
+	
+	<!-- 게시물에 댓글이 달렸을 시 로그 가져옴 -->
+	<select id="log_select_reply" resultType="vo.Member_LogVO"
+		parameterType="int">
+		select * from member_log where m_idx= #{m_idx}
+		order by log_regdate desc
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

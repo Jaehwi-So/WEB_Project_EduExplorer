@@ -4,6 +4,37 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&display=swap" rel="stylesheet">	
+<style type="text/css">
+ul li{list-style: none; margin-bottom: 5px; text-align: center;}
+	.input_text{width:350px; height:50px; 
+		box-shadow: 1px 1px 3px 1px gray inset;
+		border-radius: 10px 10px;
+		font-size: 25px; font-family: 'Nanum Brush Script', cursive; }
+
+
+	#fix_id{ margin-left: 90px;}
+	#check_id{ height: 50px; background:black; 
+				border-radius: 5px 5px; 
+				font-size : 30px; font-family: 'Nanum Brush Script', cursive;
+				color: #E5D700;			
+				letter-spacing : 2px;}
+	#m_type{width: 355px; height: 54px;}
+	#over_btn{ background: black; 
+				 font-size : 60px; font-family: 'Nanum Brush Script', cursive;
+				color: #E5D700;
+				letter-spacing : 2px;
+				height: 80px;}
+
+	#login_banner{width: auto; height: 100px; background: black; color: #E5D700; border-top: 2px solid #403C00;
+				  border-bottom:2px solid #403C00; border-radius: 10px 10px;
+				 margin:0 auto; overflow: hidden; text-align: center; padding-bottom: 45px; margin-top: 30px;} 
+	#login_banner h1{display: inline-block; vertical-align: middle; line-height: 80px;
+					    font-size : 60px; font-family: 'Nanum Brush Script', cursive;
+						color: #E5D700;
+						text-shadow: 2px 2px black, 0px 0px 6px white, 0px 0px 7px #7F7700;
+						letter-spacing : 2px;}	
+</style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript" src="${pageContext.request.contextPath }/resources/js/httpRequest.js"></script>
@@ -73,11 +104,21 @@
 			var json = eval(data);
 			
 			if(json[0].param == "yes"){
-				alert("회원가입이 정상적으로 완료되었습니다");
-				location.href="login_form.com";
+				alert("회원가입이 정상적으로 완료되었습니다");	
+				    function closeWindow() {  
+				            setTimeout(function() {  
+				        window.close();  
+				            }, 1000);  
+				        }  
+				    window.onload = closeWindow();  							
 			}else{
 				alert("가입실패 중복확인은 필수")
-				location.href="reg_form.com"
+					  function closeWindow() {  
+		            setTimeout(function() {  
+		     	   window.close();  
+		          	  }, 1000);  
+		      	 	 }  
+		   			 window.onload = closeWindow();  
 			}
 			
 			}
@@ -111,15 +152,15 @@
 			var json = eval(data);
 			
 			if(json[0].param == "yes"){
-				alert("사용가능한 아이디입니다!");
-				var null_check_box = document.getElementById("check_id");
-				null_check_box.innerHTML = "사용가능한 아이디";
+				alert("사용가능(Available ID)한 아이디입니다!");
+				var null_check_box = document.getElementById("null_check_box");
+				null_check_box.innerHTML = "사용가능(Available ID)";
 				document.getElementById("over_btn").disabled = false;
 				document.getElementById("fix_id").readOnly = true;
 			}else{
-				alert("중복된 아이디입니다!");
-				var null_check_box = document.getElementById("check_id");
-				null_check_box.innerHTML = "중복된 아이디";
+				alert("중복된아이디(Duplicate ID)입니다!");
+				var null_check_box = document.getElementById("null_check_box");
+				null_check_box.innerHTML = "중복된아이디(Duplicate ID)";
 				document.getElementById("over_btn").disabled = true;
 				document.getElementById("fix_id").readOnly = false;
 				
@@ -132,43 +173,53 @@
 </script>
 </head>
 <body>
-		<h3>회원가입</h3>
+
+	<div id="login_banner">
+	
+	<img src="${pageContext.request.contextPath }/resources/img/login_login.png" width="50px" height="50px">
+	<%-- <img src="${pageContext.request.contextPath }/resources/img/login_user.png" width="100px"> --%>
+	<h1 style="color:'#A21CFF'">회원가입</h1>
+	<!-- <h1>회원가입</h1>		 -->
+	</div>
+	
 	<form>
-		<div>
+		<div id="text_box">
 			<ul>
 				<li>
-					회원아이디 <input name="m_id" id="fix_id">
-					<input type="button"  value="중복확인" onclick="send(this.form)">
-					<div id="check_id"></div>
+					<input placeholder="아이디(ID)" name="m_id" id="fix_id" class="input_text">
+					<img><input type="button"  value="중복체크" onclick="send(this.form)" id="check_id">
+				</li>
+				<li id="null_check_box">
+				
 				</li>
 				<li>	
-					회원비밀번호<input name="m_pwd" type="password">
+					<input name="m_pwd" placeholder="비밀번호(PWD)" type="password" class="input_text">
 				</li>	
 				<li>
-					회원이름<input name="m_name">
+					<input placeholder="이름(NAME)" name="m_name" class="input_text">
 				</li>
 				<li>
-					생년월일
-					<input type="date" name="m_age">
+					
+					<input type="date" name="m_age" value="yyyy-mm-dd" class="input_text">
 				</li>	
 			
 				<li>
-					회원타입
-					<select name="m_type">	
+					
+					<select name="m_type" class="input_text" id="m_type">	
 						<option>학생</option>
 						<option>점주</option>
 						<option>관리자</option>
 					</select>
 				</li>
 				<li>	
-					회원전화번호<input name="m_tel">
+					<input name="m_tel" placeholder="전화번호(TEL)" class="input_text">
 				</li>
 				
 				<li>
-					닉네임<input name="m_nick">
+					<input name="m_nick" placeholder="닉네임(NICK_NAME)" class="input_text">
 				</li>
 				<li>
-					<input type="button" id="over_btn" value="회원가입" onclick="insert(this.form)"> 
+					<input type="button" id="over_btn" value="가입완료" onclick="insert(this.form)" class="input_text"> 
 				</li>
 				
 			</ul>

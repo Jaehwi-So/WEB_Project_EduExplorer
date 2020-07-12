@@ -52,9 +52,11 @@
 		
 		<beans:bean class="controller.MemberController">
 				<beans:property name="member_dao" ref="member_daoBean"/>
+				<beans:property name="academy_dao" ref="academy_daoBean"/>
 		</beans:bean>
 		
 		<beans:bean class="controller.AcademyController">
+				<beans:property name="academynotice_dao" ref="academynotice_daoBean"/>
 				<beans:property name="academy_dao" ref="academy_daoBean"/>
 				<beans:property name="good_dao" ref="good_daoBean"/>
 		</beans:bean>
@@ -69,12 +71,31 @@
 				<beans:property name="good_dao" ref="good_daoBean"/>
 		</beans:bean>
 		<beans:bean class="controller.N_BoardController">
+			<beans:property name="academy_dao" ref="academy_daoBean"/>
 			<beans:property name="n_BoardDAO" ref="n_board_daoBean"/>
 		</beans:bean>
 	
 		<beans:bean class="controller.F_BoardController">
+			<beans:property name="academy_dao" ref="academy_daoBean"/>
 			<beans:property name="f_BoardDAO" ref="f_board_daoBean"/>
 			<beans:property name="reply_dao" ref="reply_daoBean"/>
+			<beans:property name="member_log_dao" ref="member_log_daoBean"/>
+		</beans:bean>
+		
+		<beans:bean class="controller.Member_LogController">
+			<beans:property name="member_log_dao" ref="member_log_daoBean"/>
+			<beans:property name="academy_dao" ref="academy_daoBean"/>
+			
+		</beans:bean>
+		<beans:bean class="controller.AcademyNoticeController">
+				<beans:property name="academynotice_dao" ref="academynotice_daoBean"/>
+				<beans:property name="academy_dao" ref="academy_daoBean"/>
+		</beans:bean>
+		
+		<beans:bean class="controller.MeetingController">
+				<beans:property name="meeting_dao" ref="meeting_daoBean"/>
+				<beans:property name="member_log_dao" ref="member_log_daoBean"/>
+				<beans:property name="academy_dao" ref="academy_daoBean"/>
 		</beans:bean>
 
 

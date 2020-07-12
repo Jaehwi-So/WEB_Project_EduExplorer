@@ -86,6 +86,41 @@ public class F_BoardDAO {
 		return count;
 	}
 	
+	// 페이징을 포함한 나의 게시글 목록 출력
+	public List<F_BoardVO> selectList_my(Map<String, Integer> map) {
+		List<F_BoardVO> f_list = sqlsession.selectList("f.f_board_list_paging_my", map);
+		return f_list;
+	}
+	
+	public int getRowTotal_my(int m_idx) {
+		int count = sqlsession.selectOne("f.f_board_count_my", m_idx);
+		return count;
+	}
+	
+	// 페이징을 포함한 내가 댓글단 게시글 목록 출력
+	public List<F_BoardVO> selectList_myreply(Map<String, Integer> map) {
+		List<F_BoardVO> f_list = sqlsession.selectList("f.f_board_list_paging_myreply", map);
+		return f_list;
+	}
+	
+	public int getRowTotal_myreply(int m_idx) {
+		int count = sqlsession.selectOne("f.f_board_count_myreply", m_idx);
+		return count;
+	}
+	
+	// 페이징을 포함한 키워드 검색 게시물 출력
+	public List<F_BoardVO> selectList_keyword(Map<String, Object> map) {
+		List<F_BoardVO> f_list = sqlsession.selectList("f.f_board_list_paging_keyword", map);
+		return f_list;
+	}
+	
+	public int getRowTotal_keyword(String keyword) {
+		int count = sqlsession.selectOne("f.f_board_count_keyword", keyword);
+		return count;
+	}
+	
+	
+	//수정
 	public int modify(F_BoardVO vo) {
 		int res = sqlsession.update("f.f_board_modify", vo);
 		return res;

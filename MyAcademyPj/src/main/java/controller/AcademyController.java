@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import dao.AcademyDAO;
+import dao.AcademyNoticeDAO;
 import dao.GoodDAO;
 import util.PageUtil;
 import util.Paging;
+import vo.AcademyNoticeVO;
 import vo.AcademyVO;
 import vo.FilterVO;
 import vo.MemberVO;
@@ -35,12 +37,16 @@ public class AcademyController {
 	HttpSession session;
 	
 	GoodDAO good_dao;
+	AcademyNoticeDAO academynotice_dao;
 	AcademyDAO academy_dao;
 	public void setAcademy_dao(AcademyDAO academy_dao) {
 		this.academy_dao = academy_dao;
 	}
 	public void setGood_dao(GoodDAO good_dao) {
 		this.good_dao = good_dao;
+	}
+	public void setAcademynotice_dao(AcademyNoticeDAO academynotice_dao) {
+		this.academynotice_dao = academynotice_dao;
 	}
 	
 	//절대경로 얻어오기
@@ -88,13 +94,15 @@ public class AcademyController {
 
 	//학원 클릭 시 세부사항 조회
 	@RequestMapping("/a_list_detail.com")
-	public String show_detail() {
+	public String show_detail(Model model) {
 		int a_idx = Integer.parseInt(request.getParameter("a_idx"));
 		int good_num = good_dao.selectJoin(a_idx);
 		System.out.println("확인");
 		request.setAttribute("good_num", good_num);
 		AcademyVO vo = academy_dao.selectOne(a_idx);
 		request.setAttribute("vo", vo);
+		List<AcademyNoticeVO> list = academynotice_dao.selectList(a_idx);
+		model.addAttribute("list", list);
 		return VIEW_PATH_ACADEMY + "academy_detail.jsp";
 	}
 	
@@ -125,7 +133,6 @@ public class AcademyController {
 	@RequestMapping("/a_del.com")
 	@ResponseBody
 	public String delete(int a_idx) {
-		System.out.println("delete호출");
 		//삭제하고자 하는 vo정보를 얻어온다
 		AcademyVO baseVO = academy_dao.selectOne(a_idx);
 
@@ -150,6 +157,10 @@ public class AcademyController {
 	@RequestMapping("a_modify_form.com")
 	public String move_modify_form(int a_idx){
 		AcademyVO vo = academy_dao.selectOne(a_idx);
+		
+		String content = vo.getA_content().replaceAll("<br>", "\n");
+		vo.setA_content(content);
+		
 		request.setAttribute("vo", vo);
 		return VIEW_PATH_ACADEMY + "academy_modify_form.jsp";
 	}
@@ -211,6 +222,7 @@ public class AcademyController {
 	      
 	    return PageUtil.Academy.VIEW_PATH + "academy_list.jsp"; 
 	 }
+	
 	//필터를 통한 학원 리스트 조회
 	@RequestMapping("/a_listfilter.com")
 	public String list_filter(Model model, Integer page, FilterVO vo) {
@@ -243,6 +255,7 @@ public class AcademyController {
 			vo.setF_keyword("%" + vo.getF_keyword() + "%");
 		}
 		System.out.println("키워드:" + vo.getF_keyword());
+		
 		//페이징 처리
 		if( page != null ) {
 		   nowPage = page;
@@ -281,6 +294,15 @@ public class AcademyController {
 	@RequestMapping("/a_addr_form.com")
 	public String move_addr_form(){
 		return PageUtil.Academy.VIEW_PATH + "academy_addr_form.jsp";
+	}
+	
+	//나의 학원목록 가져오기
+	@RequestMapping("get_myacademy.com")
+	public String get_myacademy(int m_idx){
+	    List<AcademyVO> list = null;       
+	    list = academy_dao.selectList(m_idx);
+	    request.setAttribute("myacademy_list", list);
+		return "/WEB-INF/views/mypage/mypage_academy.jsp";
 	}
 	
 }
