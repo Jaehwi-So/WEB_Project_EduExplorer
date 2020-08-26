@@ -12,7 +12,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>학원 목록</title>
+		<title>세상의 모든 학원 : SpringSchool</title>
 		
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 		<style>
@@ -43,13 +43,9 @@
 				margin-top: 20px;
 				margin-left: 100px;
 				top: 0px;
-				width:500px; height:180px; border-style:solid;
-				border-color:black;  padding:20px;
+				width:500px; height:220px; border-style:solid;
+				border-color:black;
 				background: radial-gradient(farthest-corner at 10%, #ffee0056, white);
-			}
-			.filter_box p{
-				font-size: 25px;
-				font-family: 'Do Hyeon', sans-serif;
 			}
 			.reg_box{
 				float:right;
@@ -60,6 +56,15 @@
 				width: 500px; height: 220px;
 				border: 3px solid black;
 				background: radial-gradient(farthest-corner at 10%, #ffee0056, white);
+			}
+			.title_box{
+				width:auto;
+				background: radial-gradient(circle, #403c00, #bfb300); 
+				margin:auto; padding:20px;
+				border-bottom : 1.5px solid black;
+				color : white; 				
+				font-size: 25px;
+				font-family: 'Do Hyeon', sans-serif;
 			}
 			.list_box{
 				position: relative;
@@ -76,12 +81,13 @@
 				position: relative;
 				border: 0;
 				
+				
 			}
 			.button_search{ 
-				background-color : #fffdab; 
-				position: relative;
-				margin : auto;
-				border: 0;
+				background-color : #bfb300; 
+				margin : 10px auto;
+				border : 1.5px solid black;
+				width: 70px; height: 30px;
 				cursor : pointer;
 				
 			}
@@ -90,13 +96,6 @@
 				padding: 0px 180px;
 				width: 140px; height: 140px;
 				border: 0;
-			}
-			.reg_box p{
-				padding: 20px;
-				margin : auto;
-				text-align : center;
-				font-family: 'Do Hyeon', sans-serif;
-				font-size: 25px;
 			}
 			.image_box{
 				float: left;
@@ -257,7 +256,7 @@
 			<div class="top_box">
 			
 			<div class="filter_box">
-				<p align="center">검색하기</p>
+				<div class="title_box"><p align="center">검색하기</p></div>
 				<div class="image_box">
 				<label type="label" class="label">
 				<img src="${pageContext.request.contextPath}/resources/img/magnifying_glass.png" width="100px" height="100px"></label>
@@ -274,44 +273,38 @@
 				</select><br>
 				<label>카테고리별 선택</label>
 				<select name="f_area" id="area_filter" >
-				<option value = "a_every">전체</option><!-- 초기상태 -->
-				<!-- 나중에 값 바꿔야함 -->
-				<option value="단과">단과 </option>
-				<option value="종합">종합</option>
-				<option value="입시">입시 </option>
-				<option value="편입">편입 </option>	
-				<option value="공무원">공무원 </option>	
-				<option value="전문직">전문직 </option>	
-				<option value="미술">미술 </option>	
-				<option value="음악">음악</option>	
-				<option value="체육">체육 </option>	
-				<option value="영어">영어 </option>	
-				<option value="제2외국어">제2외국어</option>	
-				<option value="운전">운전</option>	
-				<option value="기타 자격증">기타 자격증</option>	
-				<option value="기타 입시">기타 입시</option>	
-				<option value="기타 취업">기타 취업</option>	
-				<option value="기타 예체능">기타 예체능</option>	
-				<option value="기타 어학원">기타 어학원</option>	
-				<option value="기타">기타</option>	
+					<option value = "a_every">전체</option>
+					<option value="단과">단과 </option>
+					<option value="종합">종합</option>
+					<option value="입시">입시 </option>
+					<option value="편입">편입 </option>	
+					<option value="공무원">공무원 </option>	
+					<option value="전문직">전문직 </option>	
+					<option value="미술">미술 </option>	
+					<option value="음악">음악</option>	
+					<option value="체육">체육 </option>	
+					<option value="영어">영어 </option>	
+					<option value="제2외국어">제2외국어</option>	
+					<option value="운전">운전</option>	
+					<option value="기타 자격증">기타 자격증</option>	
+					<option value="기타 입시">기타 입시</option>	
+					<option value="기타 취업">기타 취업</option>	
+					<option value="기타 예체능">기타 예체능</option>	
+					<option value="기타 어학원">기타 어학원</option>	
+					<option value="기타">기타</option>	
 				</select><br>
 				<label>키워드 검색</label>					
-				<input value="" name="f_keyword" id="keyword_filter"><hr>	
-				<%-- <img src="${pageContext.request.contextPath}/resources/img/search.png" width="30px" height="30px" onclick="filter_search(this.form);"/>	 --%>	
-				<!-- input type="button" class="button" value="검색하기" onclick="filter_search(this.form);"> -->
-				<button type="button" class="button_search" onclick="filter_search(this.form);">
-				<img src="${pageContext.request.contextPath}/resources/img/search.png" width="40px" height="40px"></button>
+				<input value="" name="f_keyword" id="keyword_filter"><hr>			
+				<button type="button" class="button_search" onclick="filter_search(this.form);" value=>
+					확인
+				</button> 
 				</div>
 			</div>	
 			
 		
-				
-		
 			<div class="reg_box">
-				
-				<p>등록하기</p>
+				<div class="title_box"><p align="center">등록하기</p></div>
 				<img class="reg_img" src="${pageContext.request.contextPath}/resources/img/register_academy.png" width="200px" height="150px" onclick="reg_academy();" align="center">
-					
 			</div>
 		</div>
 		

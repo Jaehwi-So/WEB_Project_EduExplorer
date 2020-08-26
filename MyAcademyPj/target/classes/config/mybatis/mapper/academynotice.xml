@@ -6,10 +6,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 게시글 조회하기 -->
 	<select id="a_notice_list" resultType="vo.AcademyNoticeVO"
-			parameterType="int">
-		select * from a_notice where a_idx = #{a_idx}	
+			parameterType="java.util.Map">
+		select * from
+        (select rank() over( order by a_notice_regdate desc) no, an_mapper.*
+        from( select * from a_notice where a_idx = #{a_idx} ) an_mapper)
+        where no between #{start} and #{end}
 	</select>
-
+   <select id="notice_count" resultType="int" parameterType="int">
+      select count(*) from a_notice where a_idx = #{a_idx}
+   </select>
+   
 	<!-- 게시글 추가하기 -->
 	<insert id="a_notice_insert" parameterType="vo.AcademyNoticeVO">
 		insert into a_notice values(

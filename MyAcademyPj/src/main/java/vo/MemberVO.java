@@ -2,7 +2,7 @@ package vo;
 
 public class MemberVO {
  private int m_idx;
- private String m_id,m_pwd,m_name,m_type,m_tel,m_nick,m_age;
+ private String m_id, m_pwd, m_name, m_type, m_tel, m_nick, m_age;
 public int getM_idx() {
 	return m_idx;
 }

@@ -21,10 +21,16 @@ public class AcademyNoticeDAO {
 	}
 	
 	//학원내 게시판 전체 보여주기
-	public List<AcademyNoticeVO> selectList( int a_idx ) {
+	public List<AcademyNoticeVO> selectList( Map<String, Integer> map ) {
 		List<AcademyNoticeVO> list = null;
-		list = sqlSession.selectList("an_mapper.a_notice_list", a_idx);
+		list = sqlSession.selectList("an_mapper.a_notice_list", map);
 		return list;	
+	}
+	
+	// 학원 내 게시물 수 구하기
+	public int getRowTotal(int a_idx) {
+		int count = sqlSession.selectOne("an_mapper.notice_count", a_idx);
+		return count;
 	}
 	
 	//학원내 게시판 게시글 보기

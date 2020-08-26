@@ -1,7 +1,4 @@
 package controller;
-
-
-
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -33,7 +30,7 @@ public class AddressController {
 		this.address_dao = address_dao;
 	}
 
-	//주소를 받음
+	//시/도 목록를 받음
 	@RequestMapping("a_city_search.com")
 	@ResponseBody
 	public List<AddressVO> city_search(){
@@ -41,7 +38,7 @@ public class AddressController {
 		return list;
 	}
 	
-	//주소를 받음
+	//군/구 목록를 받음
 	@RequestMapping("a_region_search.com")
 	@ResponseBody
 	public List<AddressVO> region_search(@RequestParam String addr_city){

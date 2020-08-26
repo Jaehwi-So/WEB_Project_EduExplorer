@@ -297,7 +297,6 @@ location.href="main.com";
 			</div>
 			<!-- ============================중단부 내용 컨텐츠================================ -->
 		</main>
-			<%@ include file="../recommend/recommend.jsp" %>
 		<%@ include file="../head/footer.jsp" %>
 	</body>
 	<style>

@@ -46,10 +46,10 @@ header{
 /* 제목영역안에 있는 메인 로고 이미지 위치 지정 */
 #header_logo{
     position: absolute;
-    width: 1320px;
+    width: 400px;
     top: 5px;
-   left: 5px;
-   cursor: pointer;
+    left: 100px;
+    cursor: pointer;
 }
  
 /* 제목영역안에 오른쪽 상단에 top_menu 배치 */
@@ -76,12 +76,14 @@ header{
 #title {
    position: absolute;
    left: 300px;
-   top: 20px;
+   top: 1px;
     width: 700px;
    height: 500px; 
    font-size: 100px;
    color: white;
-   font-family: 'BBTreeCB', serif;
+   /* font-family: 'BBTreeCB', serif; */
+   font-family: 'TmoneyRoundWindExtraBold', serif; 
+   font-weight:bold;
 }
 /* #top_menu a:hover { border-left: 5px solid gray; } */
  
@@ -194,28 +196,33 @@ header{
       <header>
          <div id="header_logo">
          <ul>
-            <li><a onclick="location.href='main.com'";><img src="${pageContext.request.contextPath}/resources/img/main_logologo.png" width="150px" height="150px"  alt="logo"> </a></li>
-         </ul>   <%-- src="${pageContext.request.contextPath}/resources/img/test_logo.jpg" --%>
+            <li><a onclick="location.href='main.com'">    
+            	<figure>
+	        		<img src="${pageContext.request.contextPath}/resources/img/logo3.png" width="130px" height="120px"  alt="logo">
+	        		<figurecaption>이 그림은 커피잔이다</figurecaption>
+        	 	</figure>
+    		 </a></li>
+         </ul>   
          </div>
          
          <div id="header_top_menu">
-            <a id="header_top_left"><c:if test="${!empty sessionScope.user}">
-               ${user.m_name}님 환영합니다</a>
-            <a href="#" onclick="window.open('reg_form.com', '_blank', 'width=1200 height=1200')">회원가입</a>
-               <a onclick="location.href='log_view.com?m_idx=${sessionScope.user.m_idx}'">MyPage</a>
-               <a onclick="log_out()">로그아웃</a>
-            </c:if>
-            
-            <c:if test="${empty sessionScope.user }">
-               <a href="#" onclick="window.open('reg_form.com', '_blank', 'width=1200 height=1200')">회원가입</a>
-               <a onclick="log_in()">로그인</a>
-            </c:if>
+         	<c:choose>
+				<c:when test="${!empty sessionScope.user}">
+					<a id="header_top_left">${user.m_name}님 환영합니다</a>
+		            <a onclick="location.href='log_view.com?m_idx=${sessionScope.user.m_idx}'">MyPage</a>
+		            <a onclick="log_out()">로그아웃</a>
+				</c:when>
+				<c:otherwise>
+					<a href="#" onclick="window.open('reg_form.com', '_blank', 'width=800 height=800')">회원가입</a>
+	                <a onclick="log_in()">로그인</a>
+				</c:otherwise>
+			</c:choose>
          </div>
          
          <div id="title">
             <ul>
                <li>
-                  <a onclick="location.href='main.com'";>SpringSchool</a>
+                  <a onclick="location.href='main.com'">SpringSchool</a>
                </li>
             </ul>
          </div>

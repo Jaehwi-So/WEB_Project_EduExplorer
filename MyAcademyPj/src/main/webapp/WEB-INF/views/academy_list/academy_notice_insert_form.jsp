@@ -5,7 +5,7 @@
 <html>
 	<head>
 	<meta charset="UTF-8">
-	<title>Insert title here</title>
+	<title>세상의 모든 학원 : SpringSchool</title>
 	
 	<link href='https://fonts.googleapis.com/css?family=BlackHanSans'
 	rel='stylesheet' type='text/css'>

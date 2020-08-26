@@ -47,34 +47,25 @@ public class AcademyNoticeController {
 		String webPath = "/resources/upload/";
 		String savePath = application.getRealPath(webPath);
 
-		// 업로드 한 파일이 실제로 존재한다면
 		if (!photo.isEmpty()) {
-			// 업로드 된 파일명
 			filename = photo.getOriginalFilename();
-
-			// 저장할 파일경로 지정
 			File saveFile = new File(savePath, filename);
 			if (!saveFile.exists()) {
-				saveFile.mkdirs();// 없는 폴더 생성
+				saveFile.mkdirs();
 			} else {
-				// 동일파일명 업로드 방지를 위해 현재 업로드 시간을 붙여서 중복을 방지
 				long time = System.currentTimeMillis();
 				filename = String.format("%d_%s", time, filename);
 				saveFile = new File(savePath, filename);
 			}
 
 			try {
-				// 업로드된 파일은 MultipartResolver라는 클래스가 지정해둔
-				// 임시저장소에 있는데, 임시저장소의 파일은 일정시간이 지나면 사라지기 때문에
-				// 내가 지정해준 savePath경로로 복사해준다.
 				photo.transferTo(saveFile);
 
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
-		} // if
+		} 
 		return filename;
 	}
 

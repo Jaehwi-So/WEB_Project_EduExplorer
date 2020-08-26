@@ -18,9 +18,10 @@
 	.h_title{font-size:30px; color:white;}
 	#div_title{ background : black; text-align:center;
 				width:600px; margin: 0 auto;
+				height:70px;
 				border-radius:30px 30px 30px 30px;
 				margin-top : 60px;
-				margin-bottom : 60px;}	
+				margin-bottom : 20px;}	
 	ul{margin-bottom: 30px;}						  
 </style>
 </head>
@@ -31,8 +32,7 @@
 		<hr>
 				
 		<div id="div_title">
-		<h2 class="h_title">학원 인기강좌 TOP 5</h2>
-		<h2 class="h_title">추천 학원</h2>
+		<h2 class="h_title">이런 학원은 어떠세요?</h2>
 		</div>
 			<c:if test="${ empty rec_list }">
 				추천 목록없음

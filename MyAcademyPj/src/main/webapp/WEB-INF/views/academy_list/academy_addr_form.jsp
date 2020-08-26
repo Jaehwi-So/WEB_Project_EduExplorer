@@ -4,7 +4,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>우편번호 검색</title>
+		<title>세상의 모든 학원 : SpringSchool</title>
 		<style>
 			.search_box{
 			height:200px; overflow:auto;	

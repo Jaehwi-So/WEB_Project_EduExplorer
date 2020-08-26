@@ -1,9 +1,9 @@
 package vo;
 
 public class AddressVO {
-	private int addr_id;
-	private String addr_city;
-	private String addr_region;
+	private int addr_id;	//우편번호
+	private String addr_city;	//시/도	
+	private String addr_region;	//군/구
 	public int getAddr_id() {
 		return addr_id;
 	}

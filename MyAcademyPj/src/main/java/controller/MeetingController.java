@@ -34,19 +34,17 @@ public class MeetingController {
 	HttpSession session;
 
 	MeetingDAO meeting_dao;
-	
 	Member_LogDAO member_log_dao;
-	
 	AcademyDAO academy_dao;
 
 	public void setMeeting_dao(MeetingDAO meeting_dao) {
 		this.meeting_dao = meeting_dao;
 	}
-	
+
 	public void setMember_log_dao(Member_LogDAO member_log_dao) {
 		this.member_log_dao = member_log_dao;
 	}
-	
+
 	public void setAcademy_dao(AcademyDAO academy_dao) {
 		this.academy_dao = academy_dao;
 	}
@@ -57,38 +55,29 @@ public class MeetingController {
 		String webPath = "/resources/upload/";
 		String savePath = application.getRealPath(webPath);
 
-		// 업로드 한 파일이 실제로 존재한다면
 		if (!photo.isEmpty()) {
-			// 업로드 된 파일명
 			filename = photo.getOriginalFilename();
 
-			// 저장할 파일경로 지정
 			File saveFile = new File(savePath, filename);
 			if (!saveFile.exists()) {
-				saveFile.mkdirs();// 없는 폴더 생성
+				saveFile.mkdirs();
 			} else {
-				// 동일파일명 업로드 방지를 위해 현재 업로드 시간을 붙여서 중복을 방지
 				long time = System.currentTimeMillis();
 				filename = String.format("%d_%s", time, filename);
 				saveFile = new File(savePath, filename);
 			}
 
 			try {
-				// 업로드된 파일은 MultipartResolver라는 클래스가 지정해둔
-				// 임시저장소에 있는데, 임시저장소의 파일은 일정시간이 지나면 사라지기 때문에
-				// 내가 지정해준 savePath경로로 복사해준다.
 				photo.transferTo(saveFile);
 
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-		} // if
+		}
 		return filename;
 	}
 
-	// 조회
+	//문의 게시판 조회
 	@RequestMapping("/meeting.com")
 	public String meet_list(Model model, int a_idx) {
 		List<MeetingVO> list = null;
@@ -116,13 +105,13 @@ public class MeetingController {
 		vo.setMeeting_photo(meeting_photo);
 
 		meeting_dao.insert(vo);
-		
+
 		//알림 로그 생성
 		Member_LogVO logVO = new Member_LogVO();
 		int a_idx = vo.getA_idx();
 		int m_idx = academy_dao.selectM_idx(a_idx);
 		int meeting_idx = meeting_dao.selectSeq();
-		logVO.setM_idx(m_idx);	//선생한테 알림가기
+		logVO.setM_idx(m_idx);	//학원주에게 알림로그 생성
 		logVO.setLog_type(2);
 		String url = "meeting_view.com?meeting_idx=" + meeting_idx;
 		logVO.setLog_url(url);
@@ -130,7 +119,7 @@ public class MeetingController {
 		return "redirect:meeting.com?m_idx=" + vo.getM_idx() +"&a_idx=" + vo.getA_idx();
 	}
 
-	// 게시글 하나 보여주기
+	// 문의게시글 하나 보여주기
 	@RequestMapping("/meeting_view.com")
 	public String view(Model model, int meeting_idx) {
 		MeetingVO vo = meeting_dao.selectOne(meeting_idx);
@@ -138,7 +127,7 @@ public class MeetingController {
 		return VIEW_PATH + "meeting_view.jsp";
 	}
 
-	// 게시글 수정 폼으로 이동
+	// 문의게시글 답변 폼으로 이동
 	@RequestMapping("/meeting_modify_form.com")
 	public String modify_form(int meeting_idx) {
 		MeetingVO vo = meeting_dao.selectOne(meeting_idx);
@@ -157,11 +146,11 @@ public class MeetingController {
 		content = content.replaceAll("<br>", "\n");
 		vo.setMeeting_content(content); 
 		request.setAttribute("vo", vo);
-		
+
 		return VIEW_PATH + "meeting_modify_form.jsp";
 	}
 
-	// 게시글 수정하기
+	// 문의게시글 답변하기
 	@RequestMapping("/meeting_modify.com")
 	public String meeting_modify(MeetingVO vo, Model model) {
 		MultipartFile m_photo = vo.getM_photo();
@@ -169,15 +158,14 @@ public class MeetingController {
 
 		vo.setMeeting_photo(meeting_photo);
 		meeting_dao.modify(vo);
-		
-		//알림 로그 생성
+
 		Member_LogVO logVO = new Member_LogVO();
-		logVO.setM_idx(vo.getM_idx());	//학생한테 알림가기
+		logVO.setM_idx(vo.getM_idx());	//학생에게 알림로그 생성
 		logVO.setLog_type(3);
 		String url = "meeting_view.com?meeting_idx=" + vo.getMeeting_idx();
 		logVO.setLog_url(url);
 		int logres = member_log_dao.insert(logVO);
-		
+
 
 		return "redirect:meeting.com?m_idx=" + vo.getM_idx() +"&a_idx=" + vo.getA_idx();
 

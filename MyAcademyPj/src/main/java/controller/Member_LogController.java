@@ -1,9 +1,7 @@
 package controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -39,6 +37,7 @@ public class Member_LogController {
 	}	
 	
 	
+	//해당 회원(m_idx)에 해당하는 알림로그 목록 조회
 	@RequestMapping("log_view.com")
 	public String f_log_list(Model model, int m_idx) {
 		
@@ -58,11 +57,12 @@ public class Member_LogController {
 		return VIEW_PATH_MY + "mypage.jsp";
 	}
 	
+	//알림로그 조회 시 읽음표시 설정
 	@ResponseBody
 	@RequestMapping("log_update.com")
 	public String f_log_update(int log_idx, String url) {
 
-		// 댓글달린 게시글관련 로그 가져오기
+		//댓글달린 게시글관련 로그 가져오기
 		int res = member_log_dao.check_log(log_idx);
 		String resultStr = "";
 		String result = "no";

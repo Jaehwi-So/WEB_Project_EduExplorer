@@ -9,90 +9,86 @@
 </c:if>
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>게시물 작성</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/main.css">
-<script type="text/javascript">
-	function send_check() {
-		var f = document.f; //폼태그를 이름을 통해 직접 검색
-		alert(f.f_content.value);
-		if (f.f_subject.value.trim() == '') {
-			alert("제목을 입력하세요")
-			return;
+	<head>
+		<meta charset="UTF-8">
+		<title>게시물 작성</title>
+		<link rel="stylesheet"
+			href="${pageContext.request.contextPath}/resources/css/main.css">
+		<script type="text/javascript">
+			function send_check() {
+				var f = document.f; //폼태그를 이름을 통해 직접 검색
+				if (f.f_subject.value.trim() == '') {
+					alert("제목을 입력하세요")
+					return;
+				}
+				if (f.f_name.value.trim() == '') {
+					alert("이름을 입력하세요")
+					return;
+				}
+				if (f.f_content.value.trim() == '') {
+					alert("내용을 입력하세요")
+					return;
+				}
+				f.submit();
+			}
+		</script>
+		
+		<style>
+		table {
+			margin-left: auto;
+			margin-right: auto;
+			border-color: white;
 		}
-		if (f.f_name.value.trim() == '') {
-			alert("이름을 입력하세요")
-			return;
+		
+		table th {
+			padding: 15px;
 		}
-		if (f.f_content.value.trim() == '') {
-			alert("내용을 입력하세요")
-			return;
+		
+		#f_modify {
+			margin-left: 200px;
 		}
-		f.submit();
-	}
-</script>
-
-<style>
-table {
-	margin-left: auto;
-	margin-right: auto;
-	border-color: white;
-}
-
-table th {
-	padding: 15px;
-}
-
-#f_modify {
-	margin-left: 200px;
-}
-</style>
-
-</head>
-<body>
-	<main>
-		<div id="f_modify">
-			<h1>게시글 수정</h1>
-		</div>
-		<br>
-		<hr>
-		<br>
-		<form method="post" action="f_modify.com" name="f">
-			<input name="m_idx" type="hidden" value="${sessionScope.user.m_idx}">
-			<input name="f_name" value="${sessionScope.user.m_nick}"
-				type="hidden"> <input name="f_pwd"
-				value="${sessionScope.user.m_pwd}" type="hidden"> <input
-				name="f_idx" value="${vo.f_idx}" type="hidden">
-			<table frame="void" width="1000px" border="1"
-				style="border-collapse: collapse;">
-				<tr>
-					<th width="120" height="25">제목
-					</td>
-					<td colspan="3"><input name="f_subject" style="width: 715px;"
-						value="${vo.f_subject}"></td>
-				</tr>
-				<tr>
-					<th width="120" height="25">내용
-					</td>
-					<td colspan="3"><textarea name="f_content" rows="20" cols="100">${vo.f_content}</textarea></td>
-				</tr>
-			</table>
-			<table width="750">
-				<tr>
-					<td height="10"></td>
-				</tr>
-				<tr>
-					<td align="center" height="10"><img
-						src="${pageContext.request.contextPath}/resources/img/btn_reg.gif"
-						onclick="send_check();"> <img
-						src="${pageContext.request.contextPath}/resources/img/btn_back.gif"
-						onclick="location.href='f_list.com'"></td>
-				</tr>
-			</table>
-		</form>
-	</main>
-		<%@ include file="../head/footer.jsp" %>
-</body>
+		</style>
+	</head>
+	<body>
+		<main>
+			<div id="f_modify">
+				<h1>게시글 수정</h1>
+			</div>
+			<br><hr><br>
+			<form method="post" action="f_modify.com" name="f">
+				<input name="page" type="hidden" value="${ empty param.page ? 1 : param.page}">
+				<input name="m_idx" type="hidden" value="${sessionScope.user.m_idx}">
+				<input name="f_name" value="${sessionScope.user.m_nick}"
+					type="hidden"> <input name="f_pwd"
+					value="${sessionScope.user.m_pwd}" type="hidden"> <input
+					name="f_idx" value="${vo.f_idx}" type="hidden">
+				<table frame="void" width="1000px" border="1"
+					style="border-collapse: collapse;">
+					<tr>
+						<th width="120" height="25">제목</th>
+						<td colspan="3"><input name="f_subject" style="width: 715px;"
+							value="${vo.f_subject}"></td>
+					</tr>
+					<tr>
+						<th width="120" height="25">내용</th>
+						<td colspan="3"><textarea name="f_content" rows="20"
+								cols="100">${vo.f_content}</textarea></td>
+					</tr>
+				</table>
+				<table width="750">
+					<tr>
+						<td height="10"></td>
+					</tr>
+					<tr>
+						<td align="center" height="10"><img
+							src="${pageContext.request.contextPath}/resources/img/btn_reg.gif"
+							onclick="send_check();"> <img
+							src="${pageContext.request.contextPath}/resources/img/btn_back.gif"
+							onclick="location.href='f_list.com'"></td>
+					</tr>
+				</table>
+			</form>
+		</main>
+		<%@ include file="../head/footer.jsp"%>
+	</body>
 </html>

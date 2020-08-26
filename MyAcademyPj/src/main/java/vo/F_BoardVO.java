@@ -2,18 +2,18 @@ package vo;
 
 public class F_BoardVO {
 	
-	private int f_idx;
-	private int m_idx;
-	private String f_name;
-	private String f_subject;
-	private String f_content;
-	private String f_pwd;
-	private String f_ip;
-	private String f_regdate;
-	private int f_readhit;
-	private int f_ref;
-	private int f_step;
-	private int f_depth;
+	private int f_idx;	//게시글 인덱스
+	private int m_idx;	//작성자 인덱스
+	private String f_name;	//작성자 이름(별명)
+	private String f_subject;	//게시글 제목
+	private String f_content;	//게시글 내용
+	private String f_pwd;	//게시글 비밀번호(불필요)
+	private String f_ip;	//게시글 ip
+	private String f_regdate;	//게시글 작성일
+	private int f_readhit;	//조회수
+	private int f_ref;	//루트 게시글
+	private int f_step;	//순서
+	private int f_depth;	//깊이
 	private int del_info; //댓글 삭제 여부
 	
 	

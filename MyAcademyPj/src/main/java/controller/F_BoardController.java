@@ -29,28 +29,29 @@ import vo.ReplyVO;
 @Controller
 public class F_BoardController {
 
+	public static final String VIEW_PATH_MY = "/WEB-INF/views/mypage/";
 	@Autowired
 	HttpServletRequest request;
-
 	@Autowired
 	HttpSession session;
 
 	F_BoardDAO f_BoardDAO;
 	Member_LogDAO member_log_dao;
-	public static final String VIEW_PATH_MY = "/WEB-INF/views/mypage/";
-
 	AcademyDAO academy_dao;
-	
-	
+	ReplyDAO reply_dao;
+
+
 	public void setAcademy_dao(AcademyDAO academy_dao) {
 		this.academy_dao = academy_dao;
 	}
-	
 	public void setF_BoardDAO(F_BoardDAO f_BoardDAO) {
 		this.f_BoardDAO = f_BoardDAO;
 	}
 	public void setMember_log_dao(Member_LogDAO member_log_dao) {
 		this.member_log_dao = member_log_dao;
+	}
+	public void setReply_dao(ReplyDAO reply_dao) {
+		this.reply_dao = reply_dao;
 	}
 
 
@@ -58,17 +59,16 @@ public class F_BoardController {
 	public String list(Model model, Integer page) {
 		int list_cnt = academy_dao.selectList_cnt();
 		if(list_cnt >= 5) {
-		List<AcademyVO> list = academy_dao.selectList_random();
-		model.addAttribute("rec_list",list);
+			List<AcademyVO> list = academy_dao.selectList_random();
+			model.addAttribute("rec_list", list);
 		}
 
-		int nowPage = 1;// 기본페이지
+		int nowPage = 1;
 
 		if (page != null) {
 			nowPage = page;
 		}
 
-		// 한 페이지에 표시되는 게시물의 시작과 끝번호를 계산
 		int start = (nowPage - 1) * PageUtil.Board.BLOCKLIST + 1;
 		int end = start + PageUtil.Board.BLOCKLIST - 1;
 
@@ -76,7 +76,6 @@ public class F_BoardController {
 		map.put("start", start);
 		map.put("end", end);
 
-		// 게시글 전체목록 가져오기
 		List<F_BoardVO> f_list = null;
 		f_list = f_BoardDAO.selectList(map);
 
@@ -108,16 +107,15 @@ public class F_BoardController {
 			f_BoardDAO.update_readhit(f_idx);
 			session.setAttribute("show", "yes");
 		}
-
 		model.addAttribute("vo", vo);
-		
+
 		// 댓글 가져오기
 		List<ReplyVO> r_list = null;
 		r_list = reply_dao.selectList(f_idx);
-				
+
 		model.addAttribute("r_list", r_list);	
 		System.out.println(r_list);
-		
+
 		return PageUtil.Board.F_VIEW_PATH + "f_board_view.jsp";
 	}
 
@@ -138,7 +136,6 @@ public class F_BoardController {
 		f_BoardDAO.insert(vo);
 
 		return "redirect:f_list.com";
-		// response.sendRedirect("list.do");
 	}
 
 	// 게시글 삭제
@@ -153,7 +150,6 @@ public class F_BoardController {
 		String result = "no";
 
 		if (baseVO == null) {
-			// idx나 pwd가 일치하지 않을 경우 null이기 때문에 no를 콜백메서드로 전송한다
 			resultStr = String.format("[{'result':'%s'}]", result);
 			return resultStr;
 		}
@@ -162,17 +158,15 @@ public class F_BoardController {
 		baseVO.setF_name("Unknown");
 
 		int res = f_BoardDAO.del_update(baseVO);
-
 		if (res == 1) {
 			result = "yes";
 		}
-
 		resultStr = String.format("[{'result':'%s'}]", result);
 		return resultStr;
 
 	}
 
-	// 댓글작성 화면으로 전환
+	// 답글작성 화면으로 전환
 	@RequestMapping("/f_reply_form.com")
 	public String reply_form() {
 		return PageUtil.Board.F_VIEW_PATH + "f_board_reply.jsp";
@@ -183,43 +177,34 @@ public class F_BoardController {
 	public String reply(F_BoardVO vo, int page) {
 		String ip = request.getRemoteAddr();
 
-		// 댓글을 달고자 하는 기준글 번호(idx)를 사용하여 게시물 정보를 얻기
 		F_BoardVO baseVO = f_BoardDAO.selectOne(vo.getF_idx());
 		System.out.println("depth" + baseVO.getF_depth());
 		// 기준글의 step보다 큰 값은 step + 1처리
 		f_BoardDAO.update_step(baseVO);
 		vo.setF_ip(ip);
 
-		// 댓글이 들어갈 위치 선정
+		// 답글이 들어갈 위치 초기화
 		vo.setF_ref(baseVO.getF_ref());
 		vo.setF_step(baseVO.getF_step() + 1);
 		vo.setF_depth(baseVO.getF_depth() + 1);
 
-		// 댓글 등록
 		f_BoardDAO.reply(vo);
 
 		return "redirect:f_list.com?page=" + page;
-		// response.sendRedirect("list.do?page=" + page);
 	}
 
-	ReplyDAO reply_dao;
-
-	public void setReply_dao(ReplyDAO reply_dao) {
-		this.reply_dao = reply_dao;
-	}
-	
+	//댓글 등록
 	@RequestMapping("/reply_insert.com")
 	@ResponseBody
 	public String insertRpy(ReplyVO vo, HttpSession session ) {
-		
+
 		String resultStr = "";
 		String result = "no";
-		
+
 		int res = reply_dao.insert(vo);
-		
+
 		if (res == 1) {
 			String url = "f_view.com?f_idx=" + vo.getR_board();
-			
 			//알림 로그 생성
 			Member_LogVO logVO = new Member_LogVO();
 			F_BoardVO boardVO = f_BoardDAO.selectOne(vo.getR_board());
@@ -231,11 +216,11 @@ public class F_BoardController {
 				result = "yes";
 			}
 		}
-
 		resultStr = String.format("[{'result':'%s'}]", result);
 		return resultStr;
 	}
-	
+
+	//댓글 삭제
 	@RequestMapping("/reply_del.com")
 	@ResponseBody
 	public String resultRpy(int r_idx) {
@@ -245,11 +230,9 @@ public class F_BoardController {
 		if(res!=0) {
 			result = String.format("[{'result':'%s'}]", "yes");
 		}
-		//@ResponseBody 어노테이션을 통해
-		//result값이 스트링 타입 그대로 콜백메서드로 반환된다.
 		return result;
 	}
-	
+
 	//게시글 수정 폼으로 이동
 	@RequestMapping("f_modify_form.com")
 	public String move_modify_form(int f_idx){
@@ -259,19 +242,18 @@ public class F_BoardController {
 		request.setAttribute("vo", vo);
 		return PageUtil.Board.F_VIEW_PATH + "f_board_modify_form.jsp";
 	}
-	
-	//학원 게시글 수정하기
+
+	//게시글 수정하기
 	@RequestMapping("/f_modify.com")
-	public String academy_modify(F_BoardVO vo, Model model) {
-		System.out.println("====================" + vo.getF_content());	
+	public String academy_modify(F_BoardVO vo, Model model, int page) {
 		String content = vo.getF_content().replaceAll("\n", "<br>");
 		vo.setF_content(content);
-			
+		int f_idx = vo.getF_idx();
 		int res = f_BoardDAO.modify(vo);
-		return "redirect:f_list.com";
+		return "redirect:f_view.com?f_idx=" + f_idx + "&page=" + page;
 	}
-		
-	
+
+
 	//내가 올린 게시물 조회
 	@RequestMapping("f_list_my.com")
 	public String list_my(Model model, Integer page, int m_idx) {
@@ -293,7 +275,7 @@ public class F_BoardController {
 		System.out.println(map);
 		// 전체게시물 수 구하기
 		int row_total = f_BoardDAO.getRowTotal_my(m_idx);
-		
+
 		// 게시글 전체목록 가져오기
 		List<F_BoardVO> f_list = null;
 		f_list = f_BoardDAO.selectList_my(map);
@@ -310,81 +292,73 @@ public class F_BoardController {
 
 		return VIEW_PATH_MY + "mypage_fboard.jsp";
 	}
-	
-		//내가 댓글단 게시물 조회
-		@RequestMapping("f_list_myreply.com")
-		public String list_myreply(Model model, Integer page, int m_idx) {
 
-			int nowPage = 1;// 기본페이지
+	//내가 댓글단 게시물 조회
+	@RequestMapping("f_list_myreply.com")
+	public String list_myreply(Model model, Integer page, int m_idx) {
 
-			if (page != null) {
-				nowPage = page;
-			}
+		int nowPage = 1;// 기본페이지
 
-			// 한 페이지에 표시되는 게시물의 시작과 끝번호를 계산
-			int start = (nowPage - 1) * PageUtil.Board.BLOCKLIST + 1;
-			int end = start + PageUtil.Board.BLOCKLIST - 1;
-
-			Map<String, Integer> map = new HashMap<String, Integer>();
-			map.put("start", start);
-			map.put("end", end);
-			map.put("m_idx", (Integer)m_idx);
-			System.out.println(map);
-			// 전체게시물 수 구하기
-			int row_total = f_BoardDAO.getRowTotal_myreply(m_idx);
-			
-			// 게시글 전체목록 가져오기
-			List<F_BoardVO> f_list = null;
-			f_list = f_BoardDAO.selectList_myreply(map);
-
-			// 하단 페이지메뉴 생성하기
-			String pageMenu = Paging.getPaging_myFboard("f_list_myreply.com", nowPage, row_total, PageUtil.Board.BLOCKLIST,
-					PageUtil.Board.BLOCKPAGE, m_idx);
-			model.addAttribute("f_list", f_list);
-			model.addAttribute("pagemenu_f", pageMenu);
-			model.addAttribute("info", "comment");
-
-			// 세션에 기록되어 있던 show정보를 지운다
-			request.getSession().removeAttribute("show");
-
-			return VIEW_PATH_MY + "mypage_fboard.jsp";
+		if (page != null) {
+			nowPage = page;
 		}
-		
-		
-		//키워드를 통한 게시물 검색하기
-		@RequestMapping("f_list_keyword.com")
-		public String list_keyword(Model model, Integer page, String keyword) {
 
-			int nowPage = 1;// 기본페이지
+		int start = (nowPage - 1) * PageUtil.Board.BLOCKLIST + 1;
+		int end = start + PageUtil.Board.BLOCKLIST - 1;
 
-			if (page != null) {
-				nowPage = page;
-			}
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("m_idx", (Integer)m_idx);
+		System.out.println(map);
+		int row_total = f_BoardDAO.getRowTotal_myreply(m_idx);
 
-			// 한 페이지에 표시되는 게시물의 시작과 끝번호를 계산
-			int start = (nowPage - 1) * PageUtil.Board.BLOCKLIST + 1;
-			int end = start + PageUtil.Board.BLOCKLIST - 1;
-			String key = "%" + keyword + "%";
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("start", start);
-			map.put("end", end);
-			map.put("keyword", key);
-			// 전체게시물 수 구하기
-			int row_total = f_BoardDAO.getRowTotal_keyword(key);
-			
-			// 게시글 전체목록 가져오기
-			List<F_BoardVO> f_list = null;
-			f_list = f_BoardDAO.selectList_keyword(map);
+		List<F_BoardVO> f_list = null;
+		f_list = f_BoardDAO.selectList_myreply(map);
 
-			// 하단 페이지메뉴 생성하기
-			String pageMenu = Paging.getPaging_fBoard_keyword("f_list_keyword.com", nowPage, row_total, PageUtil.Board.BLOCKLIST,
-					PageUtil.Board.BLOCKPAGE, keyword);
-			model.addAttribute("f_list", f_list);
-			model.addAttribute("pagemenu_f", pageMenu);
-			// 세션에 기록되어 있던 show정보를 지운다
-			request.getSession().removeAttribute("show");
+		// 하단 페이지메뉴 생성하기
+		String pageMenu = Paging.getPaging_myFboard("f_list_myreply.com", nowPage, row_total, PageUtil.Board.BLOCKLIST,
+				PageUtil.Board.BLOCKPAGE, m_idx);
+		model.addAttribute("f_list", f_list);
+		model.addAttribute("pagemenu_f", pageMenu);
+		model.addAttribute("info", "comment");
 
-			return PageUtil.Board.F_VIEW_PATH + "f_board_list.jsp";
+		// 세션에 기록되어 있던 show정보를 지운다
+		request.getSession().removeAttribute("show");
+
+		return VIEW_PATH_MY + "mypage_fboard.jsp";
+	}
+
+
+	//키워드를 통한 게시물 검색하기
+	@RequestMapping("f_list_keyword.com")
+	public String list_keyword(Model model, Integer page, String keyword) {
+
+		int nowPage = 1;// 기본페이지
+
+		if (page != null) {
+			nowPage = page;
 		}
+		int start = (nowPage - 1) * PageUtil.Board.BLOCKLIST + 1;
+		int end = start + PageUtil.Board.BLOCKLIST - 1;
+		String key = "%" + keyword + "%";
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("keyword", key);
+
+		int row_total = f_BoardDAO.getRowTotal_keyword(key);
+
+		List<F_BoardVO> f_list = null;
+		f_list = f_BoardDAO.selectList_keyword(map);
+
+		String pageMenu = Paging.getPaging_fBoard_keyword("f_list_keyword.com", nowPage, row_total, PageUtil.Board.BLOCKLIST,
+				PageUtil.Board.BLOCKPAGE, keyword);
+		model.addAttribute("f_list", f_list);
+		model.addAttribute("pagemenu_f", pageMenu);
+		request.getSession().removeAttribute("show");
+
+		return PageUtil.Board.F_VIEW_PATH + "f_board_list.jsp";
+	}
 }
 

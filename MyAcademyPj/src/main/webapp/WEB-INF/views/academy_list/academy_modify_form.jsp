@@ -5,7 +5,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>수정하기</title>
+		<title>세상의 모든 학원 : SpringSchool</title>
 		
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 		<style type="text/css">
@@ -27,9 +27,6 @@
 				width:70px;
 				font-weight:bold;
 			}
-			table td{
-				
-			}
 			#index {
 				background-color: #f5f2c4;
 			}
@@ -40,6 +37,14 @@
 				font-weight:bold;
 				margin-top: 20px;
 				margin-left: 600px;
+			}
+			#category_form{
+				width : 435px;
+				padding : 20px;
+			}
+			#category_form ul li{
+				list-style-type: none;
+				display: inline;
 			}
 		</style>
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage.css">
@@ -154,121 +159,63 @@
 						<td><input name="a_site" value="${vo.a_site}" style="width: 435px;"></td>
 					</tr>
 					<tr>
-						<th id="index">분야별</th>
+						<th id="index">카테고리</th>
 						<td>
-						<ul>						
+						<div id="category_form">
+							<ul>
 								<li>
-									<p>입시 전문</p>
+									<p>입시</p>
 								</li>
-								&nbsp;
-								<li>	
-									<input type="checkbox"  name="a_area" value="단과" onclick="">&nbsp;
-									<label for="단과">단과</label>
-								</li>
+								<li><input type="checkbox" name="a_area" value="단과"
+									onclick="">&nbsp; <label for="단과">단과</label></li>
+								<li><input type="checkbox" name="a_area" value="종합"
+									onclick="">&nbsp; <label for="종합">종합</label></li>
+								<li><input type="checkbox" name="a_area" value="입시"
+									onclick="">&nbsp; <label for="입시">입시</label></li>
+								<li><input type="checkbox" name="a_area" value="편입"
+									onclick="">&nbsp; <label for="편입">편입</label></li>
 								<li>
-									<input type="checkbox"  name="a_area" value="종합" onclick="" >&nbsp;
-									<label for="종합">종합</label>
-								</li>						
-								<li>							
-									<input type="checkbox"  name="a_area" value="입시" onclick="" >&nbsp;
-									<label for="입시">입시</label>							
-								</li>						
-								<li>							
-									<input type="checkbox"  name="a_area" value="편입" onclick="" >&nbsp;
-									<label for="편입">편입</label>							
-								</li>				
-								
-								<br>
-								
-								<li>
-									<p>취업 전문</p>
-								</li>	
-								&nbsp;	
-								<li>	
-									<input type="checkbox"  name="a_area" value="공무원" onclick="">&nbsp;
-									<label for="공무원">공무원</label>
-								</li>	
-								<li>	
-									<input type="checkbox"  name="a_area" value="전문직" onclick="">&nbsp;
-									<label for="전문직">전문직</label>
+									<p>취업</p>
 								</li>
-								
-								<br>
-								
+								<li><input type="checkbox" name="a_area" value="공무원"
+									onclick="">&nbsp; <label for="공무원">공무원</label></li>
+								<li><input type="checkbox" name="a_area" value="전문직"
+									onclick="">&nbsp; <label for="전문직">전문직</label></li>
 								<li>
 									<p>예체능</p>
-								</li>		
-								&nbsp;
-								<li>	
-									<input type="checkbox"  name="a_area" value="미술" onclick="">&nbsp;
-									<label for="미술">미술</label>
-								</li>	
-								<li>	
-									<input type="checkbox"  name="a_area" value="음악" onclick="">&nbsp;
-									<label for="음악">음악</label>
-								</li>		
-								<li>	
-									<input type="checkbox"  name="a_area" value="체육" onclick="">&nbsp;
-									<label for="체육">체육</label>
-								</li>	
-								
-								<br>
-								
+								</li>
+								<li><input type="checkbox" name="a_area" value="미술"
+									onclick="">&nbsp; <label for="미술">미술</label></li>
+								<li><input type="checkbox" name="a_area" value="음악"
+									onclick="">&nbsp; <label for="음악">음악</label></li>
+								<li><input type="checkbox" name="a_area" value="체육"
+									onclick="">&nbsp; <label for="체육">체육</label></li>
 								<li>
 									<p>어학원</p>
 								</li>
-								&nbsp;
-								<li>	
-									<input type="checkbox"  name="a_area" value="영어" onclick="">&nbsp;
-									<label for="영어">영어</label>
-								</li>
-								<li>	
-									<input type="checkbox"  name="a_area" value="제2외국어" onclick="">&nbsp;
-									<label for="제2외국어">제2외국어</label>
-								</li>
-								
-								<br>
-								
+								<li><input type="checkbox" name="a_area" value="영어"
+									onclick="">&nbsp; <label for="영어">영어</label></li>
+								<li><input type="checkbox" name="a_area" value="제2외국어"
+									onclick="">&nbsp; <label for="제2외국어">제2외국어</label></li>
 								<li>
 									<p>자격증</p>
 								</li>
-								&nbsp;
-								<li>	
-									<input type="checkbox"  name="a_area" value="운전" onclick="">&nbsp;
-									<label for="운전">운전</label>
-								</li>
-								<li>	
-									<input type="checkbox"  name="a_area" value="기타 자격증" onclick="">&nbsp;
-									<label for="기타 자격증">기타 자격증</label>
-								</li>
-								
-								<br>
-								<br>
-								
-								&nbsp;
-								<li>	
-									<input type="checkbox"  name="a_area" value="기타 입시" onclick="">&nbsp;
-									<label for="기타 입시">기타 입시</label>
-								</li>
-								<li>	
-									<input type="checkbox"  name="a_area" value="기타 취업" onclick="">&nbsp;
-									<label for="기타 취업">기타 취업</label>
-								</li>
-								<li>	
-									<input type="checkbox"  name="a_area" value="기타 예체능" onclick="">&nbsp;
-									<label for="기타 예체능">기타 예체능</label>
-								</li>
-								<li>	
-									<input type="checkbox"  name="a_area" value="기타 어학원" onclick="">&nbsp;
-									<label for="기타 어학원">기타 어학원</label>
-								</li>
-								<br>
-								&nbsp;
-								<li>	
-									<input type="checkbox"  name="a_area" value="기타" onclick="">&nbsp;
-									<label for="기타">기타</label>
-								</li>
+								<li><input type="checkbox" name="a_area" value="운전"
+									onclick="">&nbsp; <label for="운전">운전</label></li>
+								<li><input type="checkbox" name="a_area" value="기타 자격증"
+									onclick="">&nbsp; <label for="기타 자격증">기타 자격증</label></li>
+								<li><input type="checkbox" name="a_area" value="기타 입시"
+									onclick="">&nbsp; <label for="기타 입시">기타 입시</label></li>
+								<li><input type="checkbox" name="a_area" value="기타 취업"
+									onclick="">&nbsp; <label for="기타 취업">기타 취업</label></li>
+								<li><input type="checkbox" name="a_area" value="기타 예체능"
+									onclick="">&nbsp; <label for="기타 예체능">기타 예체능</label></li>
+								<li><input type="checkbox" name="a_area" value="기타 어학원"
+									onclick="">&nbsp; <label for="기타 어학원">기타 어학원</label></li>
+								<li><input type="checkbox" name="a_area" value="기타"
+									onclick="">&nbsp; <label for="기타">기타</label></li>
 							</ul>
+							</div>
 						</td>
 					</tr>
 					<tr>
@@ -290,11 +237,11 @@
 					</tr>
 					<tr>
 						<th id="index">썸네일사진</th>
-						<td><input  type="file" name="s_photo"></td>
+						<td><input type="file" name="s_photo"></td>
 					</tr>
 					<tr>
 						<th id="index">메인사진</th>
-						<td><input  type="file" name="l_photo"></td>
+						<td><input type="file" name="l_photo"></td>
 					</tr>
 					<tr>
 						<th id="index">검색 키워드</th>
@@ -307,7 +254,6 @@
 			<div id="regi_button">
 				<button type="button" class="button2" onclick="modify_send(this.form);">
 				<img src="${pageContext.request.contextPath}/resources/img/register.png" width="40px" height="40px"></button>
-			<!-- <input type="button" value="수정하기" onclick="modify_send(this.form);"> -->
 			</div>
 		</form>
 	</main>
