@@ -268,7 +268,7 @@
 								<li>
 									<p>자격증</p>
 								</li>
-								<li><input type="checkbox" name="a_area" value="운전"
+								<li><input type="checkbox" name="a_area" value="IT,컴퓨터"
 									onclick="">&nbsp; <label for="IT,컴퓨터">IT,컴퓨터</label></li>
 								<li><input type="checkbox" name="a_area" value="운전"
 									onclick="">&nbsp; <label for="운전">운전</label></li>

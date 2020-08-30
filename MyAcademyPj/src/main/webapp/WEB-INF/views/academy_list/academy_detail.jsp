@@ -536,8 +536,9 @@
 			<hr>	
 
 		<!-- ===================카카오맵 API관련========================= -->
+		<!-- YOUR_KEY에 키값 입력하여 사용!! -->
 		<script type="text/javascript"
-			src="//dapi.kakao.com/v2/maps/sdk.js?appkey=57bd357082d358d251a6461a6aace40b&libraries=services"></script>
+			src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KEY&libraries=services"></script>	
 		<script>
 			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 			mapOption = {

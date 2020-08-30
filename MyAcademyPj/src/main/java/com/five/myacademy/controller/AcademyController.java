@@ -249,6 +249,10 @@ public class AcademyController {
 			List<AcademyVO> list = academy_dao.selectList_random();
 			model.addAttribute("rec_list", list);
 		}
+		String f_city_tmp = vo.getF_city();
+		String f_region_tmp = vo.getF_region();
+		String f_area_tmp = vo.getF_area();
+		String f_keyword_tmp = vo.getF_keyword();
 		//파라미터로 받은 값을 DB에서 like를 통해 검색할 문자열 형태로 변경
 		//지역별
 		if(vo.getF_city().equals("c_every")) {
@@ -293,6 +297,11 @@ public class AcademyController {
 		int row_total = academy_dao.getRowTotal(vo);
 		System.out.println(row_total);      
 
+		vo.setF_area(f_area_tmp);
+		vo.setF_city(f_city_tmp);
+		vo.setF_keyword(f_keyword_tmp);
+		vo.setF_region(f_region_tmp);
+		
 		String url = "a_listfilter.do";
 		String pageMenu = Paging.getPaging_filter(
 				url, nowPage, row_total, 
