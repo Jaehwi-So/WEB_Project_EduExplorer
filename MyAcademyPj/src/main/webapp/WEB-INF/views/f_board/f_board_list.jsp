@@ -5,27 +5,27 @@
 <c:if test="${ empty sessionScope.user }">
 	<script>
 		alert("로그인 후 이용하세요");
-		location.href = "main.com";
+		location.href = "main.do";
 	</script>
 </c:if>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>게시판</title>
+		<title>세상의 모든 학원 : SpringSchool</title>
 		<link href='https://fonts.googleapis.com/css?family=Yellowtail'
 			rel='stylesheet' type='text/css'>
 		<link rel="stylesheet"
 			href="${pageContext.request.contextPath}/resources/css/main.css">
 		<script>
 			function keyword_search(f) {
-				f.action = "f_list_keyword.com"
+				f.action = "f_list.do"
 				f.submit();
 			}
 					
 			function go_detail(del_info, f_idx){
 				if(del_info != -1){
-					location.href="f_view.com?f_idx="+f_idx+"&page=${ empty param.page ? 1 : param.page}";
+					location.href="f_view.do?f_idx="+f_idx+"&page=${ empty param.page ? 1 : param.page}&keyword=${ empty param.keyword ? '' : param.keyword}";
 				}
 			}
 		</script>
@@ -99,11 +99,13 @@
 		}
 		
 		#f_search {
-			margin-left: 140px;
+			margin-left: 230px;
+			display:inline;
 		}
 		
 		.f_button {
 			background-color: #f5f2c4;
+			font-size : 20px;
 		}
 		
 		.f_tr_list:hover {
@@ -112,6 +114,15 @@
 		
 		.f_tr_list {
 			cursor: pointer;
+		}
+		.pointer {
+			cursor: pointer;
+		}
+		.util_btn{
+			margin-left : 30px; width : 70px; height : 35px;
+		}
+		.pager{
+			font-size : 20px;
 		}
 		</style>
 	</head>
@@ -154,13 +165,14 @@
 								<td align="center" class="td_a_1">${vo.f_idx}</td>
 								<td align="center" class="td_b_1"></td>
 								<td align="center" class="td_b_1 left">
-									<!-- 댓글 들여쓰기 --> <c:forEach begin="1" end="${vo.f_depth}">
-												&nbsp;
-												</c:forEach> <c:if test="${vo.f_depth ne 0}">
-												└
-												</c:if> <c:if test="${vo.del_info ne -1}">
-													${vo.f_subject} 
-												</c:if> <c:if test="${vo.del_info eq -1}">
+									<!-- 답글 들여쓰기 --> 
+									<c:forEach begin="1" end="${vo.f_depth}">
+									<img width="15px" height="15px" src="${pageContext.request.contextPath}/resources/img/reply.png">
+									</c:forEach> 
+									<c:if test="${vo.del_info ne -1}">
+										${vo.f_subject} 
+									</c:if> 
+									<c:if test="${vo.del_info eq -1}">
 										<span style="color: #a014a0;">${vo.f_subject }</span>
 									</c:if>
 								</td>
@@ -183,27 +195,24 @@
 					</table>
 				</td>
 			</tr>
+			<tr><td><br></td></tr>
 			<tr>
-				<td class="f11" align="center">${pagemenu_f}</td>
+				<td class="pager" align="center">${pagemenu_f}</td>
 			</tr>
-
-			<!-- tr4 -->
+			<tr><td><br></td></tr>
 			<tr>
-				<td><img
+				<td>
+					<img class="util_btn"
 					src="${pageContext.request.contextPath}/resources/img/btn_reg.gif"
-					onclick="location.href='f_insert_form.com'"
-					style="cursor: pointer;"></td>
+					onclick="location.href='f_insert_form.do'"
+					style="cursor: pointer;">
+					<form id="f_search">
+						<input value="${param.keyword}" name="keyword" width="800" style="font-size:25px;"> 
+						<input class="f_button pointer" type="button" value="검색하기" onclick="keyword_search(this.form);">
+					</form>
+				</td>
 			</tr>
 		</table>
-
-
-		<br><hr><br>
-			<form>
-				<div id="f_search">
-					<input value="${param.keyword}" name="keyword"> 
-					<input class="f_button" type="button" value="검색하기" onclick="keyword_search(this.form);">
-				</div>
-			</form>
 		</main>
 		<%@ include file="../recommend/recommend.jsp"%>
 		<%@ include file="../head/footer.jsp"%>

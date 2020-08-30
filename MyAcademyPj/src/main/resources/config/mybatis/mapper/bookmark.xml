@@ -4,13 +4,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="b">
 	<!--즐겨찾기에 이미등록된 학원인지 검색  -->
-	<select id="bookmark_one" resultType="vo.BookMarkVO" parameterType="vo.BookMarkVO">
+	<select id="bookmark_one" resultType="bookmarkVO" parameterType="bookmarkVO">
 		select * from bookmark_view where m_idx = #{m_idx} and a_idx = #{a_idx}
 	</select>
-	
+
+	<select id="bookmark_ck" resultType="bookmarkVO" parameterType="java.util.Map">
+		select * from bookmark_view where m_idx = #{m_idx} and a_idx = #{a_idx}
+	</select>
 	<!--즐겨찾기에 목록추가-->
 	
-	<insert id="bookmark_insert" parameterType="vo.BookMarkVO">
+	<insert id="bookmark_insert" parameterType="bookmarkVO">
 		
 		insert into bookmark values(seq_bm_idx.nextVal,#{a_idx},#{m_idx})
 		
@@ -18,13 +21,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	
 		<!--회원 idx별 즐겨찾기 목록 조회  -->
-	<select id="bookmark_list" parameterType="int" resultType="vo.BookMarkVO">
+	<select id="bookmark_list" parameterType="int" resultType="bookmarkVO">
 		select * from bookmark_view where m_idx = #{m_idx}
 	</select>
 	
 	
 	<!--즐겨찾기 삭제  -->
-	<delete id="bookmark_delete"  parameterType="vo.BookMarkVO">
+	<delete id="bookmark_delete"  parameterType="bookmarkVO">
 		delete from bookmark where m1_idx=#{m_idx} and a1_idx=#{a_idx}
 	</delete>
 </mapper>

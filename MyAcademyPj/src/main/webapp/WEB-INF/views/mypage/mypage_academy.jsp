@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>세상의 모든 학원 : SpringSchool</title>
 
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 	<link href='https://fonts.googleapis.com/css?family=Yellowtail' rel='stylesheet' type='text/css'>
@@ -182,31 +182,31 @@
 		<div id="my_navi">
 			<ul>
 				<li><a
-					onclick="location.href='log_view.com?m_idx=${sessionScope.user.m_idx}'">
+					onclick="location.href='log_view.do?m_idx=${sessionScope.user.m_idx}'">
 						<img
 						src="${pageContext.request.contextPath}/resources/img/mypage_notice.png"
 						style="display: inline;" width="25px" height="25px"> 새 알림
 				</a></li>
 				<li><a
-					onclick="location.href='f_list_my.com?m_idx=${sessionScope.user.m_idx}'">
+					onclick="location.href='f_list_my.do?m_idx=${sessionScope.user.m_idx}'">
 						<img
 						src="${pageContext.request.contextPath}/resources/img/mypage_log.png"
 						style="display: inline;" width="25px" height="25px"> 나의 게시물
 				</a></li>
 				<li><a
-					onclick="location.href='f_list_myreply.com?m_idx=${sessionScope.user.m_idx}'">
+					onclick="location.href='f_list_myreply.do?m_idx=${sessionScope.user.m_idx}'">
 						<img
 						src="${pageContext.request.contextPath}/resources/img/mypage_comment.png"
 						style="display: inline;" width="25px" height="25px"> 내가 댓글단
 						게시물
 				</a></li>
 				<li><a
-					onclick="location.href='bookmark.com?m_idx=${user.m_idx}'"> <img
+					onclick="location.href='bookmark.do?m_idx=${user.m_idx}'"> <img
 						src="${pageContext.request.contextPath}/resources/img/mypage_bookmark.png"
 						style="display: inline;" width="25px" height="25px"> 학원 즐겨찾기
 				</a></li>
 				<li><a
-					onclick="location.href='get_myacademy.com?m_idx=${user.m_idx}'">
+					onclick="location.href='get_myacademy.do?m_idx=${user.m_idx}'">
 						<img
 						src="${pageContext.request.contextPath}/resources/img/mypage_academy.png"
 						style="display: inline;" width="25px" height="25px"> 내가 등록한
@@ -245,7 +245,7 @@
 								<td >${vo.a_tel }</td>
 								<td >${vo.a_addr }</td>
 								<td><a class="a_tag"
-									href="a_list_detail.com?a_idx=${vo.a_idx}">상세보기</a></td>
+									href="a_list_detail.do?a_idx=${vo.a_idx}">상세보기</a></td>
 							</tr>
 						</c:forEach>
 					</c:if>

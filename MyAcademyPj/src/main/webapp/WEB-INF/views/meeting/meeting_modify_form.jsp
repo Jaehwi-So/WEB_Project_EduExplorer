@@ -4,7 +4,7 @@
 <c:if test="${res ne 'yes'}">
 	<script>
 	alert("권한이 없는 접근입니다");
-	location.href="main.com";
+	location.href='meeting.do?m_idx=${user.m_idx}&a_idx=${vo.a_idx }';
 	</script>
 </c:if>    
 <!DOCTYPE html>
@@ -15,7 +15,7 @@
 	<title>Insert title here</title>
 	<script type="text/javascript">
 		function send_modify(f) {
-			f.action = "meeting_modify.com";
+			f.action = "meeting_modify.do";
 			f.submit();
 		}
 	</script>
@@ -49,6 +49,7 @@
 			font : 20px bold;
 			font-family : Do Hyeon, "돋움체";
 			background-color: #f5f2c4; 
+			cursor:pointer;
 		}
 
 	</style>
@@ -58,36 +59,33 @@
 	<body>
 		<main>
 		<div id="m_write"> <h1>답변하기</h1> </div>
-		<form name="f" method="post" action="meeting_insert.com"
+		<form name="f" method="post" action="meeting_insert.do"
 			enctype="multipart/form-data">
 			<input type="hidden" value="${vo.meeting_idx}" name="meeting_idx">
 			<input type="hidden" value="${vo.m_idx }" name="m_idx">
 			<input type="hidden" value="${vo.a_idx }" name="a_idx">
-			<table width="750" border="1" style="border-collapse: collapse;">
-	
+			<input type="hidden" name="meeting_alam" value="답변완료">
+			<table frame="void" style="border-collapse: collapse; font-size:25px;">
 				<tr>
-					<td width="120" height="25">제목</td>
-					<td colspan=""><input name="meeting_subject"
-						value="${vo.meeting_subject }" style="width: 620px;"></td>
+					<th width="150px">제목</th>
+					<td width="650px"><input name="meeting_subject" value="${vo.meeting_subject }" style="width:1080px; height: 30px; font-size:20px;" readonly></td>
 				</tr>
-	
+		
 				<tr>
-					<td width="120" height="25">내용</td>
-					<td colspan=""><textarea name="meeting_content" rows="10"
-							cols="84">${vo.meeting_content }</textarea></td>
-				</tr>
-				<tr>
-					<td>이미지</td>
-					<td><input type="file" name="m_photo"></td>
-				</tr>
-				<tr>
-					<td width="120" height="25">상태</td>
-					<td colspan="">
-						<input type="hidden" name="meeting_alam" value="답변완료">
+					<th>문의 내용</th>
+					<td>
+					<textarea name="meeting_content" rows="20" cols="100" style="font-size:20px;" readonly>${vo.meeting_content }</textarea>
 					</td>
 				</tr>
-	
+				<tr>
+					<th>답변</th>
+					<td>
+					<textarea name="meeting_answer" rows="20" cols="100" style="font-size:20px;"></textarea>
+					</td>
+				</tr>
+
 			</table>
+
 	
 			<table width="750">
 				<tr>
@@ -97,8 +95,8 @@
 				<tr>
 					<td align="center">
 						<div class="m_button_div">
-						<input class="m_button" type="button" value="수정하기" onclick="send_modify(this.form);"> 
-						<input class="m_button" type="button" value="취소하기" onclick="location.href='meeting.com?m_idx=${vo.m_idx}'">
+						<input class="m_button" type="button" value="답변 완료" onclick="send_modify(this.form);"> 
+						<input class="m_button" type="button" value="취소하기" onclick="location.href='meeting_view.do?meeting_idx=${vo.meeting_idx}'">
 						</div>
 					</td>
 				</tr>

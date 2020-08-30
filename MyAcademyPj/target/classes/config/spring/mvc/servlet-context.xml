@@ -18,96 +18,62 @@
 		up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
 
-	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
-		in the /WEB-INF/views directory -->
-	<!-- <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
-		<beans:property name="prefix" value="/WEB-INF/views/" /> <beans:property 
-		name="suffix" value=".jsp" /> </beans:bean> <context:component-scan base-package="com.korea.db" 
-		/> -->
-
-	<!--컨트롤러 수동생성 -->
-	<!-- <beans:bean id="dept_daoBean" class="controller.DeptController"> DeptController의 
-		생성자를 통해 dao를 전달 <beans:constructor-arg ref="dept_dao"/> </beans:bean> -->
-
-	<!-- <beans:bean class="com.korea.vs.VisitController"> -->
-
-	<!-- <beans:property name="visit_dao" ref="visit_daoBean"/> </beans:bean> -->
-
-
-	<!-- <beans:bean class="com.korea.vs.JsonMakerController"> </beans:bean> -->
-
-	<!-- <beans:bean class="com.korea.vs.VisitOpenApIController"> <beans:property 
-		name="visit_dao" ref="visit_daoBean"/> </beans:bean> -->
-
-
-	<!-- 수동생성되는 컨트롤러에서 autowired를 사용하고 싶다면.. -->
 	<context:annotation-config />
-	<beans:bean class="controller.MainController">
-		<beans:property name="academy_dao"
-			ref="academy_daoBean" />
+	<beans:bean class="com.five.myacademy.controller.MainController">
+		<beans:property name="academy_dao" ref="academy_daoBean" />	
 	</beans:bean>
 
-	<beans:bean class="controller.MemberController">
+	<beans:bean class="com.five.myacademy.controller.MemberController">
 		<beans:property name="member_dao" ref="member_daoBean" />
-		<beans:property name="academy_dao"
-			ref="academy_daoBean" />
+		<beans:property name="academy_dao" ref="academy_daoBean" />
 	</beans:bean>
 
-	<beans:bean class="controller.AcademyController">
-		<beans:property name="academynotice_dao"
-			ref="academynotice_daoBean" />
-		<beans:property name="academy_dao"
-			ref="academy_daoBean" />
+	<beans:bean class="com.five.myacademy.controller.AcademyController">
+		<beans:property name="academynotice_dao" ref="academynotice_daoBean" />
+		<beans:property name="academy_dao" ref="academy_daoBean" />
 		<beans:property name="good_dao" ref="good_daoBean" />
+		<beans:property name="bookmark_dao" ref="bookmark_daoBean" />
+		<beans:property name="fileUtil" ref="fileUtilBean" />
 	</beans:bean>
-	<beans:bean class="controller.AddressController">
-		<beans:property name="address_dao"
-			ref="address_daoBean" />
+	<beans:bean class="com.five.myacademy.controller.AddressController">
+		<beans:property name="address_dao" ref="address_daoBean" />
 	</beans:bean>
-	<beans:bean class="controller.BookMarkController">
-		<beans:property name="bookmark_dao"
-			ref="bookmark_daoBean" />
+	<beans:bean class="com.five.myacademy.controller.BookMarkController">
+		<beans:property name="bookmark_dao" ref="bookmark_daoBean" />
 	</beans:bean>
 
-	<beans:bean class="controller.GoodController">
+	<beans:bean class="com.five.myacademy.controller.GoodController">
 		<beans:property name="good_dao" ref="good_daoBean" />
 	</beans:bean>
-	<beans:bean class="controller.N_BoardController">
-		<beans:property name="academy_dao"
-			ref="academy_daoBean" />
+	
+	<beans:bean class="com.five.myacademy.controller.N_BoardController">
+		<beans:property name="academy_dao" ref="academy_daoBean" />
 		<beans:property name="n_BoardDAO" ref="n_board_daoBean" />
 	</beans:bean>
 
-	<beans:bean class="controller.F_BoardController">
-		<beans:property name="academy_dao"
-			ref="academy_daoBean" />
+	<beans:bean class="com.five.myacademy.controller.F_BoardController">
+		<beans:property name="academy_dao" ref="academy_daoBean" />
 		<beans:property name="f_BoardDAO" ref="f_board_daoBean" />
 		<beans:property name="reply_dao" ref="reply_daoBean" />
-		<beans:property name="member_log_dao"
-			ref="member_log_daoBean" />
+		<beans:property name="member_log_dao" ref="member_log_daoBean" />
 	</beans:bean>
 
-	<beans:bean class="controller.Member_LogController">
-		<beans:property name="member_log_dao"
-			ref="member_log_daoBean" />
-		<beans:property name="academy_dao"
-			ref="academy_daoBean" />
-
+	<beans:bean class="com.five.myacademy.controller.Member_LogController">
+		<beans:property name="member_log_dao" ref="member_log_daoBean" />
+		<beans:property name="academy_dao" ref="academy_daoBean" />
 	</beans:bean>
-	<beans:bean class="controller.AcademyNoticeController">
-		<beans:property name="academynotice_dao"
-			ref="academynotice_daoBean" />
-		<beans:property name="academy_dao"
-			ref="academy_daoBean" />
+	
+	<beans:bean class="com.five.myacademy.controller.AcademyNoticeController">
+		<beans:property name="academynotice_dao" ref="academynotice_daoBean" />
+		<beans:property name="academy_dao" ref="academy_daoBean" />
+		<beans:property name="fileUtil" ref="fileUtilBean" />	
 	</beans:bean>
 
-	<beans:bean class="controller.MeetingController">
-		<beans:property name="meeting_dao"
-			ref="meeting_daoBean" />
-		<beans:property name="member_log_dao"
-			ref="member_log_daoBean" />
-		<beans:property name="academy_dao"
-			ref="academy_daoBean" />
+	<beans:bean class="com.five.myacademy.controller.MeetingController">
+		<beans:property name="meeting_dao" ref="meeting_daoBean" />
+		<beans:property name="member_log_dao" ref="member_log_daoBean" />
+		<beans:property name="academy_dao" ref="academy_daoBean" />
+		<beans:property name="fileUtil" ref="fileUtilBean" />	
 	</beans:bean>
 
 

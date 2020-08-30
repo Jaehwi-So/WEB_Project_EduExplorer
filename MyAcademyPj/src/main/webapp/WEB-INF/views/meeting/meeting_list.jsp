@@ -6,10 +6,10 @@
 <html>
 	<head>
 	<meta charset="UTF-8">
-	<title>Insert title here</title>
+	<title>세상의 모든 학원 : SpringSchool</title>
 		<script type="text/javascript">
 			function meeting_form(f) {
-				f.action = "meeting_insert_form.com";
+				f.action = "meeting_insert_form.do";
 				f.submit();
 				
 			}
@@ -68,7 +68,7 @@
 				padding : 15px;
 				background-color:black;
 				color:white;
-				font-family : Do Hyeon;
+				font-family : 'Do Hyeon';
 				font-size : 20px;
 				width : 100px;
 				height : 40px;
@@ -111,7 +111,7 @@
 					<c:forEach var="vo" items="${list }">
 						<input type="hidden" value="${vo.meeting_idx }">
 						<tr>
-							<td style="font-weight:bold;"><a href="meeting_view.com?meeting_idx=${vo.meeting_idx}">${vo.meeting_subject }</a></td>
+							<td style="font-weight:bold;"><a href="meeting_view.do?meeting_idx=${vo.meeting_idx}">${vo.meeting_subject }</a></td>
 							<td>${vo.meeting_regdate }</td>
 							<td>${vo.meeting_writer }</td>
 							<td>${vo.meeting_alam }</td>
@@ -126,7 +126,9 @@
 						</td>										
 					</tr>
 					</c:if>
-							
+					<tr>
+					 	<td colspan="4" align="center">${pagemenu}</td>	
+					</tr>
 			</table>
 		
 			<form>

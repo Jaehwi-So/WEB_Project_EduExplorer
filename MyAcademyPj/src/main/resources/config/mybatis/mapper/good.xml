@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into good values(seq_g_idx.nextVal,#{a_idx},#{m_id})
 	</insert>
 	
-	<select id="good_check" resultType="good" parameterType="good">
+	<select id="good_check" resultType="good" parameterType="java.util.Map">
 		select * from good where m_id = #{m_id} and a_idx = #{a_idx}
 	</select>
 	

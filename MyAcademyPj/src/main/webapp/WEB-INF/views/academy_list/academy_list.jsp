@@ -5,7 +5,7 @@
 <c:if test="${ empty sessionScope.user }">
 	<script>
 	alert("로그인 후 이용하세요");
-	location.href="main.com";
+	location.href="main.do";
 	</script>
 </c:if>    
 <!DOCTYPE html>
@@ -21,9 +21,9 @@
 			}
 			.box{
 				position: relative;
-				left: 80px;
+				left: 50px;
 				display : inline-block;
-				width:220px;
+				width:260px;
 				height:240px;
 				border-style:solid;
 				border-color:black;
@@ -43,9 +43,9 @@
 				margin-top: 20px;
 				margin-left: 100px;
 				top: 0px;
-				width:500px; height:220px; border-style:solid;
+				width:500px; height:260px; border-style:solid;
 				border-color:black;
-				background: radial-gradient(farthest-corner at 10%, #ffee0056, white);
+				background: white;
 			}
 			.reg_box{
 				float:right;
@@ -53,43 +53,66 @@
 				margin : 20px auto;
 				margin-right:100px;
 				margin-top:20px;
-				width: 500px; height: 220px;
+				width: 500px; height: 260px;
 				border: 3px solid black;
-				background: radial-gradient(farthest-corner at 10%, #ffee0056, white);
+				background: white;
 			}
 			.title_box{
 				width:auto;
-				background: radial-gradient(circle, #403c00, #bfb300); 
-				margin:auto; padding:20px;
-				border-bottom : 1.5px solid black;
-				color : white; 				
-				font-size: 25px;
-				font-family: 'Do Hyeon', sans-serif;
+				background: white;
+				margin:auto; padding:20px; 
+				color : black; 				
+				font-size:35px; font-weight:bold; text-align:center
 			}
 			.list_box{
 				position: relative;
-				left:10px;
+				left:50px;
 				top: 30px;
-				width:1000px; height:900px; border-style:solid;
-				border-color:#000; margin:20px auto; padding: 40px 70px;
-				background: radial-gradient(farthest-corner at 10%, #ffee0023, white);
-				float:left;
+				width:1035px; border-style:solid;
+				border-color:#000; margin:0px auto; padding: 40px 20px;
+				background : url(${pageContext.request.contextPath}/resources/img/rainbow.png) no-repeat,
+				radial-gradient(farthest-corner at 10%, skyblue, white);
+
+				float:left; 
 				margin-left:50px;
 			}
 			.button{
 				background-color : #fffdab; 
 				position: relative;
 				border: 0;
-				
-				
 			}
 			.button_search{ 
-				background-color : #bfb300; 
+				align : center;
+				background-color : #160a31;
 				margin : 10px auto;
 				border : 1.5px solid black;
-				width: 70px; height: 30px;
+				width: 100px; height: 40px;
+				color:white;
+				font-size : 18px;
+				font-weight : bold;
 				cursor : pointer;
-				
+			}
+			.button_detail{ 
+				position: relative;
+				text-align : center;
+				background-color : white;
+				padding: 5px;
+				border : 2px inset black;
+				width: 80px; height: 35px;
+				color:black;
+				font-size : 15px;
+				cursor : pointer;
+			}
+			.button_reg{ 
+				align : center;
+				background-color : #160a31;
+				margin : 10px auto;
+				border : 1.5px solid black;
+				width: 150px; height: 40px;
+				color:white;
+				font-size : 18px;
+				font-weight : bold;
+				cursor : pointer;	
 			}
 			.button2{
 				background-color : #fffdab;
@@ -99,14 +122,18 @@
 			}
 			.image_box{
 				float: left;
-				margin-top:10px;
 				margin-left: 20px;
 
 			}
 			.select_box{
 				float: right;
-				margin-top:10px;
 				margin-right: 20px;
+			}
+			.register_box{
+				width : 250px;
+				float: right;
+				margin-right: 80px;
+				font-size : 30px;
 			}
 		
 			.top_box{
@@ -134,12 +161,12 @@
 		
 			//필터를 통한 검색 스크립트
 			function filter_search(f){
-				f.action = "a_listfilter.com"
+				f.action = "a_listfilter.do"
 				f.submit();
 			}
 			//맨 처음 실행되는 메서드. 시/도 리스트를 불러옴
 			window.onload=function(){	
-				sendRequest("a_city_search.com", null, resultFn_filter, "post");		
+				sendRequest("a_city_search.do", null, resultFn_filter, "post");		
 			};
 			//시/도 리스트의 콜백메서드. 시/도 폼을 채워넣고 현재 파라미터값, 없다면 디폴트값으로 설정
  			function resultFn_filter(){
@@ -177,7 +204,7 @@
  			//구/군 리스트를 불러오는 메서드. 시/도 폼의 변화를 감지하거나 불러왔을 때 호출됨
  			function city_select(){
  				var cf = document.getElementById("city_filter").value;
- 				var url = "a_region_search.com";
+ 				var url = "a_region_search.do";
  				var param = "addr_city=" + cf;
  				sendRequest(url, param, resultFn_region, "post");
  			}
@@ -224,39 +251,23 @@
 			} 
 			//상세 페이지 보기 메서드
 			function send_detail_page(f){
-				f.action = "a_list_detail.com";
+				f.action = "a_list_detail.do";
 				f.submit();
 			}
 			
 			//학원 등록하기 메서드
 			function reg_academy(){
-				location.href="a_move_form.com";
+				location.href="a_move_form.do";
 			}	
 			
 		</script>
 	</head>
 	<body>
 	<main>
-		<!-- ============================상단부 배너================================ -->
-		<div id="my_banner">
-			<h3 align="center" style="color:'#A21CFF'">ACADEMY</h3>
-			<div class="vector">
-			<img src="${pageContext.request.contextPath}/resources/img/mypage_academy.png" width="70px" height="70px">
-			</div>
-			<div class="content">
-			<p>&bull; 지역,카테고리,키워드에 따라 본인에게 알맞는 학원을 찾는 공간입니다.<br>
-			&bull; 학원을 즐겨찾기에 등록할 수 있고 점주의 경우는 학원을 등록,수정,삭제할 수 있습니다.
-			</p>
-			</div>
-		</div>
-		<!-- ============================상단부 배너================================ -->
-		<br>
-		<hr>
 		<form>
 			<div class="top_box">
-			
 			<div class="filter_box">
-				<div class="title_box"><p align="center">검색하기</p></div>
+				<div class="title_box"><p>찾아보기</p></div>
 				<div class="image_box">
 				<label type="label" class="label">
 				<img src="${pageContext.request.contextPath}/resources/img/magnifying_glass.png" width="100px" height="100px"></label>
@@ -280,6 +291,7 @@
 					<option value="편입">편입 </option>	
 					<option value="공무원">공무원 </option>	
 					<option value="전문직">전문직 </option>	
+					<option value="IT,컴퓨터">IT,컴퓨터</option>
 					<option value="미술">미술 </option>	
 					<option value="음악">음악</option>	
 					<option value="체육">체육 </option>	
@@ -295,20 +307,31 @@
 				</select><br>
 				<label>키워드 검색</label>					
 				<input value="" name="f_keyword" id="keyword_filter"><hr>			
-				<button type="button" class="button_search" onclick="filter_search(this.form);" value=>
-					확인
+				<button type="button" class="button_search" onclick="filter_search(this.form);">
+					검색하기
 				</button> 
 				</div>
 			</div>	
-			
-		
 			<div class="reg_box">
-				<div class="title_box"><p align="center">등록하기</p></div>
-				<img class="reg_img" src="${pageContext.request.contextPath}/resources/img/register_academy.png" width="200px" height="150px" onclick="reg_academy();" align="center">
+				<div class="title_box"><p align="center">학원 등록하기</p></div>
+				<div class="image_box">
+				<img src="${pageContext.request.contextPath}/resources/img/mypage_academy.png" width="100px" height="100px"></label>
+				</div>
+				<div class="register_box">
+					<div style="font-size:16px;">
+						게시물을 올려 우리 학원을 홍보해 보세요!
+						점주 회원님께서는 해당 게시판에 학원 정보를 등록할 수 있습니다.
+					</div>
+					<hr> 
+					<button type="button" class="button_reg" onclick="reg_academy();">
+					등록 바로가기
+					</button> 
+				</div>
 			</div>
 		</div>
-		
 		</form>	
+		
+		
 		
 		
 		<div class="list_box">
@@ -322,12 +345,13 @@
 						<div style="color:gray; font-size:15px; font-weight:bold;">${vo.a_keyword}<br></div>
 						<div style="color:black; font-size:12px;">${vo.a_addr}<br></div>
 						<img src="${pageContext.request.contextPath }/resources/upload/${vo.a_image_s}" width="140" height="130" /><br>
-						<button type="button" class="button" onclick="send_detail_page(this.form);">
-						<img src="${pageContext.request.contextPath}/resources/img/detail.png" width="30px" height="30px" style="cursor:pointer;"></button>
+						<button class="button_detail" onclick="send_detail_page(this.form);">
+						상세보기
+						</button>
 					</form>
 					</div>					
 				</c:forEach><br>
-				<div style="position:absolute; left : 500px; bottom : 20px;">${pageMenu}</div>
+				<div style="margin-top:30px; margin-left:470px; font-size:20px;">${pageMenu}</div>
 		</div>
 		<c:forEach var="vo" items="${addr_list}">
 			${vo.addr_city}

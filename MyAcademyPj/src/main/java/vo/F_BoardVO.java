@@ -14,7 +14,7 @@ public class F_BoardVO {
 	private int f_ref;	//루트 게시글
 	private int f_step;	//순서
 	private int f_depth;	//깊이
-	private int del_info; //댓글 삭제 여부
+	private int del_info; //삭제 여부
 	
 	
 	public int getDel_info() {

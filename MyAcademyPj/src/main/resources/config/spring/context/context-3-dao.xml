@@ -2,37 +2,37 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
-	<bean id="member_daoBean" class="dao.MemberDAO">
+	<bean id="member_daoBean" class="com.five.myacademy.dao.MemberDAOImpl">
 		<property name="sqlSession" ref="sqlSessionBean"/>
 	</bean>
-	<bean id="academy_daoBean" class="dao.AcademyDAO">
+	<bean id="academy_daoBean" class="com.five.myacademy.dao.AcademyDAOImpl">
 		<property name="sqlSession" ref="sqlSessionBean"/>
 	</bean>
-	<bean id="address_daoBean" class="dao.AddressDAO">
+	<bean id="address_daoBean" class="com.five.myacademy.dao.AddressDAOImpl">
 		<property name="sqlSession" ref="sqlSessionBean"/>
 	</bean>
-	<bean id="bookmark_daoBean" class="dao.BookMarkDAO">
+	<bean id="bookmark_daoBean" class="com.five.myacademy.dao.BookMarkDAOImpl">
 		<property name="sqlSession" ref="sqlSessionBean"/>
 	</bean>
-	<bean id="good_daoBean" class="dao.GoodDAO">
+	<bean id="good_daoBean" class="com.five.myacademy.dao.GoodDAOImpl">
 		<property name="sqlSession" ref="sqlSessionBean"/>
 	</bean>
-	<bean id="n_board_daoBean" class="dao.N_BoardDAO">
+	<bean id="n_board_daoBean" class="com.five.myacademy.dao.N_BoardDAOImpl">
 		<property name="sqlsession" ref="sqlSessionBean"/>
 	</bean>
-	<bean id="f_board_daoBean" class="dao.F_BoardDAO">
+	<bean id="f_board_daoBean" class="com.five.myacademy.dao.F_BoardDAOImpl">
 		<property name="sqlsession" ref="sqlSessionBean"/>
 	</bean>
-	<bean id="reply_daoBean" class="dao.ReplyDAO">
+	<bean id="reply_daoBean" class="com.five.myacademy.dao.ReplyDAOImpl">
 		<property name="sqlsession" ref="sqlSessionBean"/>
 	</bean>
-	<bean id="member_log_daoBean" class="dao.Member_LogDAO">
+	<bean id="member_log_daoBean" class="com.five.myacademy.dao.Member_LogDAOImpl">
 		<property name="sqlsession" ref="sqlSessionBean"/>
 	</bean>
-	<bean id="academynotice_daoBean" class="dao.AcademyNoticeDAO">
+	<bean id="academynotice_daoBean" class="com.five.myacademy.dao.AcademyNoticeDAOImpl">
 		<property name="sqlSession" ref="sqlSessionBean"/>
 	</bean>
-	<bean id="meeting_daoBean" class="dao.MeetingDAO"> 
+	<bean id="meeting_daoBean" class="com.five.myacademy.dao.MeetingDAOImpl"> 
 		<property name="sqlSession" ref="sqlSessionBean"/>
 	</bean>
 </beans>

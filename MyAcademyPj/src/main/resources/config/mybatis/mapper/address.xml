@@ -5,11 +5,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="addr_mapper">
 
 	<!-- 전체게시물 조회 -->
-	<select id="city_list" resultType="vo.AddressVO">
+	<select id="city_list" resultType="addressVO">
 		select addr_city from city_view
 	</select>
 
-	<select id="region_list" resultType="vo.AddressVO" parameterType="java.lang.String">
+	<select id="region_list" resultType="addressVO" parameterType="java.lang.String">
 		select * from city_address where addr_city = #{city}
 	</select>
 

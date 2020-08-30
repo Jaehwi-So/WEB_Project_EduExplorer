@@ -9,12 +9,18 @@
 	</settings>
 	
 	<typeAliases>
-		<typeAlias type="vo.MemberVO" alias="member"/>
-		<typeAlias type="vo.GoodVO" alias="good"/>
-		<typeAlias type="vo.N_BoardVO" alias="n_board"/>
-		<typeAlias type="vo.F_BoardVO" alias="f_board"/>
-		<typeAlias type="vo.ReplyVO" alias="reply"/>
-		<typeAlias type="vo.Member_LogVO" alias="log"/>
+		<typeAlias type="com.five.myacademy.vo.MemberVO" alias="member"/>
+		<typeAlias type="com.five.myacademy.vo.GoodVO" alias="good"/>
+		<typeAlias type="com.five.myacademy.vo.N_BoardVO" alias="n_board"/>
+		<typeAlias type="com.five.myacademy.vo.F_BoardVO" alias="f_board"/>
+		<typeAlias type="com.five.myacademy.vo.ReplyVO" alias="reply"/>
+		<typeAlias type="com.five.myacademy.vo.AcademyVO" alias="academyVO"/>
+		<typeAlias type="com.five.myacademy.vo.AcademyNoticeVO" alias="academyNoticeVO"/>
+		<typeAlias type="com.five.myacademy.vo.AddressVO" alias="addressVO"/>
+		<typeAlias type="com.five.myacademy.vo.FilterVO" alias="filterVO"/>
+		<typeAlias type="com.five.myacademy.vo.BookMarkVO" alias="bookmarkVO"/>
+		<typeAlias type="com.five.myacademy.vo.Member_LogVO" alias="log"/>
+		<typeAlias type="com.five.myacademy.vo.MeetingVO" alias="meetingVO"/>
 	</typeAliases> 
 	
 	<mappers>

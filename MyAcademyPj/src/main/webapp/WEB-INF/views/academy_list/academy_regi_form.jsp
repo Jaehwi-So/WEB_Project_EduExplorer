@@ -5,14 +5,14 @@
 <c:if test="${sessionScope.user.m_type == '학생'}">
 	<script>
 	alert("학생회원은 등록할 수 없습니다.");
-	location.href="a_list.com";
+	location.href="a_list.do";
 	</script>
 </c:if>  
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>학원 등록</title>
+		<title>세상의 모든 학원 : SpringSchool</title>
 		
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 		
@@ -23,10 +23,11 @@
 				font-size:15px;
 				height:30px;
 				font-weight:bold;
+				cursor : pointer;
 			}
-			#table{
+			#reg_table{
 				margin-top:20px;
-				margin-left: 350px;
+				margin-left: 250px;
 			}
 			
 			table tr{
@@ -34,17 +35,17 @@
 				width:70px;
 				font-weight:bold;
 			}
-			table td{
-				
-			}
-			#index {
+			.index {
 				background-color: #f5f2c4;
+				position: relative;
 			}
 			.button2{
-				background-color : #fff; 
-				width:70px;
-				border: 0;
+				background-color : #f5f2c4; 
+				width:90px;
+				font-size:15px;
+				height:30px;
 				font-weight:bold;
+				cursor : pointer;
 				margin-top: 20px;
 				margin-left: 600px;
 				cursor: pointer;
@@ -57,6 +58,34 @@
 				list-style-type: none;
 				display: inline;
 			}
+			.input_font{
+				font-size : 15px;
+			}
+			.index .tooltip-content {
+				visibility: hidden;
+				width: 300px;
+				background-color: #fcdb23;
+				padding: 15px;
+				color: black;
+				text-align: center;
+				position: absolute;
+				z-index: 1;
+				border : solid black;
+				bottom: 100%;
+				left: 20%;
+				margin-left: -110px;
+			}
+			.index .tooltip-content::after {
+			content: " ";
+			position: absolute;
+			top: 100%;
+			left: 50%;
+			margin-left: -10px;
+			border-width: 10px;
+			border-style: solid;
+			border-color: #fcdb23 transparent transparent transparent;
+			}
+			.index:hover .tooltip-content { visibility: visible; }
 						
 		</style>
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage.css">
@@ -78,6 +107,7 @@
 				if(f.a_keyword.value == ''){
 					f.a_keyword.value = "#전체";
 				}
+				var a_keyword = f.a_keyword.value;
 				var j = 0;
 				for(var i = 0; i < f.a_area.length; i++){
 					if( f.a_area[i].checked == true){
@@ -126,12 +156,29 @@
 					alert("메인사진을 입력해주세요");
 					return;
 				}
-				f.action = "a_academy_regi.com";
+				var tel_exp = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
+				if(!tel_exp.test(a_tel)){
+					alert("전화번호 형식이 올바르지 않습니다.");
+					return;
+				}
+				if(a_name.length > 15){
+					alert("학원명은 15자 이내로 입력해주세요.");
+					return;
+				}
+				if(a_content.length > 1000){
+					alert("학원 소개글은 1000자 이내로 입력해주세요.");
+					return;
+				}
+				if(a_keyword > 100){
+					alert("키워드는 100자 이내로 입력해주세요");
+					return;
+				}
+				f.action = "a_academy_regi.do";
 				f.submit();	
 			}
 			
 			function addr_found(){
-			    window.open("a_addr_form.com", "팝업창", "width=800, height=800, left=300, top=50, scrollbars=yes");
+			    window.open("a_addr_form.do", "팝업창", "width=700, height=500, left=300, top=50, scrollbars=yes");
 			}
 		</script>
 	</head>
@@ -152,30 +199,42 @@
 		<!-- ============================상단부 배너================================ -->
 		<hr>
 		<form method="post" enctype="multipart/form-data">
-			<div id="table">
+			<div id="reg_table">
 				<table>
 					<tr>
-						<th id="index">학원명</th>
-						<td><input name="a_name" style="width: 435px;"></td>
+						<th class="index" width="150px">학원명
+							<div class="tooltip-content">15자 이내의 학원의 이름을 입력해주세요.</div> 
+						</th>
+						<td width="700px"><input class="input_font" name="a_name" style="width: 600px;"></td>
 					</tr>
 					<tr>
-						<th id="index">점주명</th>
-						<td><input name="a_owner" style="width: 435px;"></td>
+						<th class="index">점주명
+							<div class="tooltip-content">학원 책임 점주 이름을 입력해주세요.</div> 
+						</th>
+						<td><input class="input_font" name="a_owner" style="width: 600px;"></td>
 					</tr>
 					<tr>
-						<th id="index">학원 전화번호</th>
-						<td><input name="a_tel" style="width: 435px;"></td>
+						<th class="index">학원 전화번호
+							<div class="tooltip-content">전화번호 형식에 맞추어 입력해주세요.</div> 
+						</th>
+						<td><input class="input_font" name="a_tel" style="width: 600px;"></td>
 					</tr>
 					<tr>
-						<th id="index">소개글</th>
-						<td><textarea name="a_content" rows="10" cols="60"></textarea></td>
+						<th class="index">소개글
+							<div class="tooltip-content">교습 과목, 분아, 시설 등 학원에 대한 간단한 소개글을 입력해주세요. 1000자 이내</div> 
+						</th>
+						<td><textarea class="input_font" name="a_content" rows="15" cols="76"></textarea></td>
 					</tr>
 					<tr>
-						<th id="index">사이트주소</th>
-						<td><input name="a_site" style="width: 435px;"></td>
+						<th class="index">사이트 주소
+						<div class="tooltip-content">학원 홈페이지가 있는 경우 사이트 주소를 입력해주세요.</div> 
+						</th>
+						<td><input class="input_font" name="a_site" style="width: 600px;"></td>
 					</tr>
 					<tr>
-						<th id="index">카테고리</th>
+						<th class="index">카테고리
+						<div class="tooltip-content">학원의 카테고리를 선택해주세요. 검색 시 해당 카테고리 기반으로 검색됩니다. 중복체크도 가능합니다.</div> 
+						</th>
 						<td>
 						<div id="category_form">
 							<ul>
@@ -217,17 +276,19 @@
 									<p>자격증</p>
 								</li>
 								<li><input type="checkbox" name="a_area" value="운전"
+									onclick="">&nbsp; <label for="IT,컴퓨터">IT,컴퓨터</label></li>
+								<li><input type="checkbox" name="a_area" value="운전"
 									onclick="">&nbsp; <label for="운전">운전</label></li>
 								<li><input type="checkbox" name="a_area" value="기타 자격증"
 									onclick="">&nbsp; <label for="기타 자격증">기타 자격증</label></li>
 								<li><input type="checkbox" name="a_area" value="기타 입시"
-									onclick="">&nbsp; <label for="기타 입시">기타 입시</label></li>
+									onclick="">&nbsp; <label for="기타 입시">기타 입시</label><br></li>
 								<li><input type="checkbox" name="a_area" value="기타 취업"
 									onclick="">&nbsp; <label for="기타 취업">기타 취업</label></li>
 								<li><input type="checkbox" name="a_area" value="기타 예체능"
 									onclick="">&nbsp; <label for="기타 예체능">기타 예체능</label></li>
 								<li><input type="checkbox" name="a_area" value="기타 어학원"
-									onclick="">&nbsp; <label for="기타 어학원">기타 어학원</label></li>
+									onclick="">&nbsp; <label for="기타 어학원">기타 어학원</label><br></li>
 								<li><input type="checkbox" name="a_area" value="기타"
 									onclick="">&nbsp; <label for="기타">기타</label></li>
 							</ul>
@@ -235,41 +296,51 @@
 						</td>
 					</tr>
 					<tr>
-						<th id="index">주소</th>
+						<th class="index">주소
+						<div class="tooltip-content">학원 주소를 입력해주세요.</div> 
+						</th>
 						<td>
-							<input name="a_addr" id="a_addr" name="a_addr" style="width: 340px;" readonly>
+							<input class="input_font" name="a_addr" id="a_addr" name="a_addr" style="width: 500px;" readonly>
 							<input type="button" class="button" value="주소 찾기" onclick="addr_found();">
 						</td>
 					</tr>
 					<tr>
-						<th id="index">우편번호</th>
+						<th class="index">우편번호</th>
 						<td>
-							<input name="a_post" id="a_post" style="width: 435px;" readonly>							
+							<input class="input_font" name="a_post" id="a_post" style="width: 600px;" readonly>							
 						</td>
 					</tr>
 					<tr>
-						<th id="index">세부 주소</th>
-						<td><input name="a_addr_detail" id="a_addr_detail" style="width: 435px;" readonly></td>
+						<th class="index">세부 주소
+							<div class="tooltip-content">세부 주소는 반드시 입력해야 합니다.</div> 
+						</th>
+						<td><input class="input_font" name="a_addr_detail" id="a_addr_detail" style="width: 600px;" readonly></td>
 					</tr>
 					<tr>
-						<th id="index">썸네일사진</th>
-						<td><input type="file" name="s_photo"></td>
+						<th class="index">썸네일사진
+							<div class="tooltip-content">목록에 노출될 썸네일 사진을 등록해주세요. 256x256px 권장</div> 
+						</th>
+						<td><input class="input_font" type="file" name="s_photo"></td>
 					</tr>
 					<tr>
-						<th id="index">메인사진</th>
-						<td><input  type="file" name="l_photo"></td>
+						<th class="index">메인사진
+							<div class="tooltip-content">학원 소개와 함께 게시될 사진을 등록해주세요. 512x512px 권장</div> 
+						</th>
+						
+						<td><input class="input_font" type="file" name="l_photo"></td>
 					</tr>
 					<tr>
-						<th id="index">검색 키워드</th>
-						<td><input name="a_keyword" style="width: 435px;" value="#(해시태그)를 사용해주세요"></td>
+						<th class="index">검색 키워드
+							<div class="tooltip-content">해시태그(#)을 이용하여 검색될 키워드를 설정해주세요. 키워드는 #을 통해 구분합니다. 100자 이내</div> 
+						</th>
+						<td><input class="input_font" name="a_keyword" style="width: 600px;" placeholder="#(해시태그 사용) ex)#자바 #Spring"></td>
 					</tr>
 	
 				</table>
 			</div>
 			
 			<div id="regi_button">
-				<button type="button" class="button2" onclick="regi_send(this.form);">
-				<img src="${pageContext.request.contextPath}/resources/img/register.png" width="40px" height="40px"></button>
+				<input type="button" class="button2"  value="등록하기" onclick="regi_send(this.form);">
 			</div>
 		</form>
 		

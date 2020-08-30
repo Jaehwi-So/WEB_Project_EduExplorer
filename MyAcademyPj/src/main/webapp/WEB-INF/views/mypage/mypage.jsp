@@ -5,14 +5,14 @@
  <c:if test="${ empty sessionScope.user }">
 <script>
 alert("로그인 후 이용하세요");
-location.href="main.com";
+location.href="main.do";
 </script>
 </c:if>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Insert title here</title>
+		<title>세상의 모든 학원 : SpringSchool</title>
 		
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/httpRequest.js"></script>
 		<script>
@@ -33,7 +33,7 @@ location.href="main.com";
 					  return;
 			 	 }
 			 	else{
-					var url = "log_update.com?url=" + url + "&log_idx=" + idx;
+					var url = "log_update.do?url=" + url + "&log_idx=" + idx;
 					sendRequest(url, null, go_resultFn, "POST");	//방문표시 하러 컨트롤러로 이동
 			  	}
 		  	}
@@ -193,31 +193,31 @@ location.href="main.com";
 			<div id="my_navi">			
 				<ul>
 					<li>
-					<a onclick="location.href='log_view.com?m_idx=${sessionScope.user.m_idx}'">
+					<a onclick="location.href='log_view.do?m_idx=${sessionScope.user.m_idx}'">
 					<img src="${pageContext.request.contextPath}/resources/img/mypage_notice.png" style="display:inline;" width="25px" height="25px">
 					새 알림
 					</a>
 					</li>
 					<li>
-					<a onclick="location.href='f_list_my.com?m_idx=${sessionScope.user.m_idx}'">
+					<a onclick="location.href='f_list_my.do?m_idx=${sessionScope.user.m_idx}'">
 					<img src="${pageContext.request.contextPath}/resources/img/mypage_log.png" style="display:inline;" width="25px" height="25px">
 					나의 게시물
 					</a>
 					</li>
 					<li>
-					<a onclick="location.href='f_list_myreply.com?m_idx=${sessionScope.user.m_idx}'">
+					<a onclick="location.href='f_list_myreply.do?m_idx=${sessionScope.user.m_idx}'">
 					<img src="${pageContext.request.contextPath}/resources/img/mypage_comment.png" style="display:inline;" width="25px" height="25px">
 					내가 댓글단 게시물
 					</a>
 					</li>
 					<li>
-					<a onclick="location.href='bookmark.com?m_idx=${user.m_idx}'">
+					<a onclick="location.href='bookmark.do?m_idx=${user.m_idx}'">
 					<img src="${pageContext.request.contextPath}/resources/img/mypage_bookmark.png" style="display:inline;" width="25px" height="25px">
 					학원 즐겨찾기
 					</a> 
 					</li>
 					<li>
-					<a onclick="location.href='get_myacademy.com?m_idx=${user.m_idx}'">
+					<a onclick="location.href='get_myacademy.do?m_idx=${user.m_idx}'">
 					<img src="${pageContext.request.contextPath}/resources/img/mypage_academy.png" style="display:inline;" width="25px" height="25px">
 					내가 등록한 학원
 					</a>

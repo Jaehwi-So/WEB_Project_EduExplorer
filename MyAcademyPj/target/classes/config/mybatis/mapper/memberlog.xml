@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<!-- 게시물에 댓글이 달렸을 시 로그 가져옴 -->
-	<select id="log_select_reply" resultType="vo.Member_LogVO"
+	<select id="log_select_reply" resultType="log"
 		parameterType="int">
 		select * from member_log where m_idx= #{m_idx}
 		order by log_regdate desc

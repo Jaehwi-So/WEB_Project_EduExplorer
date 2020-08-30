@@ -14,28 +14,33 @@
 		<link href='https://fonts.googleapis.com/css?family=Do+Hyeon' rel='stylesheet' type='text/css'>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/httpRequest.js"></script>
 		<script>
+			if("${param.notice}" == "true"){
+				location.href = "#inner";
+			}
 			//수정버튼 클릭
-			function modify_academy(f) {
+			function modify_academy() {
+				var f = document.f; 
 				var m_idx = "${sessionScope.user.m_idx}";
 				var m_type = "${sessionScope.user.m_type}";
-				if (m_idx != f.m_idx.value && m_type != '운영자') {
+				if (m_idx != f.m_idx.value && m_type != '관리자') {
 					alert("권한이 없는 접근입니다");
 					return;
 				}
-				f.action = "a_modify_form.com";
+				f.action = "a_modify_form.do";
 				f.submit();
 			}
 			//삭제버튼 클릭
-			function delete_academy(f) {
+			function delete_academy() {
+				var f = document.f; 
 				var m_idx = "${sessionScope.user.m_idx}";
 				var m_type = "${sessionScope.user.m_type}";
-				if (m_idx != f.m_idx.value && m_type != '운영자') {
+				if (m_idx != f.m_idx.value && m_type != '관리자') {
 					alert("권한이 없는 접근입니다");
 					return;
 				}
 				var a_idx = f.a_idx.value;
 				if (confirm("정말로 삭제하시겠습니까?")) {
-					var url = "a_del.com"; 
+					var url = "a_del.do"; 
 					var param = "a_idx=" + a_idx;
 					sendRequest(url, param, del_resultFn, "post");
 				}
@@ -47,7 +52,7 @@
 					var json = eval(data);
 					if (json[0].result == 'yes') {
 						alert("글을 삭제했습니다");
-						location.href = "a_list.com";
+						location.href = "a_list.do";
 					} else {
 						alert("삭제에 실패했습니다. 관리자에게 문의하세요");
 						return;
@@ -56,7 +61,7 @@
 			}
 			//좋아요 ajax처리
 			function good_send(a_idx) {
-				var url = "good_insert.com";
+				var url = "good_insert.do";
 				var param = "m_id=${user.m_id}&a_idx=" + a_idx; /*회원의 세션 id와 학원상품의 인덱스를 넘긴다 */
 		
 				sendRequest(url, param, gs_resultFn, "POST");
@@ -71,22 +76,25 @@
 					if (json[0].param == 'yes') {
 						alert("좋아요 하였습니다!");
 						var indiv = document.getElementById("good_cnt");
-		
 						indiv.innerHTML = json[0].good_num;
+						document.getElementById("good_img").innerHTML = 
+					'<img src="${pageContext.request.contextPath}/resources/img/good_yes.png"width="40px" height="40px">';
+
 		
 					} else if (json[0].param == 'no') {
-						if(confirm("좋아요를 취소하시겠습니까?")){
-							alert("좋아요를 취소하였습니다");
-							var indiv = document.getElementById("good_cnt");
-							indiv.innerHTML = json[0].good_num;
-						}
+						alert("좋아요를 취소하였습니다");
+						var indiv = document.getElementById("good_cnt");
+						indiv.innerHTML = json[0].good_num;
+						document.getElementById("good_img").innerHTML = 
+					'<img src="${pageContext.request.contextPath}/resources/img/good.png"width="40px" height="40px">';
+						
 					}
 				}
 			}
 		
 			//즐겨찾기 추가
 			function insert(a_idx) {
-				var url = "bookmark_insert.com";
+				var url = "bookmark_insert.do";
 				var param = "m_idx=${user.m_idx}&a_idx=" + a_idx;
 				sendRequest(url, param, insert_resultFn, "POST");
 			}
@@ -97,10 +105,12 @@
 					var data = xhr.responseText;
 					var json = eval(data);
 					if (json[0].param == 'yes') {
-						alert("즐겨찾기 등록하였습니다!");
+						alert("즐겨찾기에 등록하였습니다!");
+						document.getElementById("bookmark_img").innerHTML = 
+							'<img src="${pageContext.request.contextPath}/resources/img/bookmark_yes.png"width="40px" height="40px">';
 						if (confirm("즐겨찾기 화면으로 이동하시겠습니까?")) {
 							send_m_idx();
-						}
+						}	
 						return;
 					} else {
 						if (confirm("이미 즐겨찾기에 등록된 학원입니다. 즐겨찾기 화면으로 이동하시겠습니까?")) {
@@ -113,7 +123,7 @@
 		
 			//즐겨찾기 목록으로 이동
 			function send_m_idx() {
-				location.href = "bookmark.com?m_idx=${user.m_idx}";
+				location.href = "bookmark.do?m_idx=${user.m_idx}";
 			}
 		
 			//학원소식 글쓰기
@@ -124,13 +134,17 @@
 					alert("권한이 없는 접근입니다");
 					return;
 				}
-				f.action = "a_notice_insert_form.com";
+				f.action = "a_notice_insert_form.do";
 				f.submit();
 			}
 		
 			//1:1문의게시판 이동
 			function send_meet(a_idx) {
-				location.href = "meeting.com?m_idx=${user.m_idx}&a_idx=" + a_idx;
+				if("${user.m_idx}" == null){
+					alert("로그인 세션이 만료되었습니다.");
+					return;
+				}
+				location.href = "meeting.do?m_idx=${user.m_idx}&a_idx=" + a_idx;
 			}
 		</script>
 		
@@ -138,9 +152,14 @@
 
 		
 		#academy_table {
-			margin-top: 50px;
+			width : 850px;
+			padding : 40px;
+			padding-left : 100px;
+			padding-right : 55px;
 			margin-bottom: 50px;
-			margin-left: 250px;
+			margin : auto;
+			margin-top: 50px;
+			border : 2px solid black;
 		}
 		
 		#academy_info {
@@ -150,7 +169,7 @@
 		
 		.academy_name {
 			font-weight: bold;
-			font-size: 40px;
+			font-size: 45px;
 			font-family: 'Do Hyeon';
 		}
 		
@@ -159,23 +178,33 @@
 		}
 		
 		#academy_main {
-			border: solid black 3px;
-			background: radial-gradient(farthest-corner at 10%, #ffee0023, white);
+			background: white;
 			margin-top: 20px;
 		}
 		
 		#academy_photo {
 			margin: 20px;
+			width : 630px;
+			height : 512px;
+			padding : 30px;
+			background-color : #ffee0023;
+			border : solid black;
 		}
 		
 		#academy_content {
+			width : 630px;
 			margin-left: 20px;
 			margin-bottom: 20px;
 			margin-right: 20px;
-			border: solid black 1px;
-			overflow-y: scroll;
-			height: 200px;	
-			background-color: #fff; 
+			border: solid black;
+			padding : 30px;
+			background-color : #ffee0023;
+			font-family : "돋움체";
+		}
+		#academy_content .textdata{
+			backgrount-color : white;
+			font-size : 15px;
+			overflow : auto;
 		}
 		
 		#academy_addr {
@@ -202,6 +231,7 @@
 		#academy_inner{
 			width : 700px;
 			margin : 40px auto;
+			margin-botton : 15px;
 			margin-top: 40px;
 		}	
 		.inner_title{
@@ -213,7 +243,12 @@
 		}
 		.academy_bottom {
 			margin-top: 10px;
-			margin-left: 250px;
+			margin-left: 280px; 
+			margin-bottom: 10px;
+		}
+		.bookmark_bottom {
+			margin-top: 10px;
+			margin-left: 25px;
 			margin-bottom: 10px;
 		}
 		
@@ -254,18 +289,17 @@
 		}
 		.button3 {
 			background-color: #000;
-			width: 90px;
-			height: 40px;
-			font-size: 20px;
+			width: 110px;
+			height: 43px;
+			font-size: 22px;
 			color: #E5D700;
 			border: 2px solid black;
 			font-family: 'Do Hyeon', sans-serif;
 			cursor: pointer;
 		}
 		.button4 {
-			margin-left: 910px;
-			margin-bottom: 10px;
-			margin-top: 15px;
+			margin-left: 600px; 
+			display : inline;
 			background-color: #000;
 			width: 90px;
 			height: 40px;
@@ -280,32 +314,20 @@
 			font : 20px bold;
 			font-family : Do Hyeon, "돋움체";
 			background-color: #f5f2c4; 
+			cursor:pointer;
+		}
+		.s_photo{
+			border : solid black;
+			padding : 2px;
 		}
 		</style>
 	</head>
 	<body>
 		<main>
-			<!-- ============================상단부 배너================================ -->
-			<div id="my_banner">
-				<h3 align="center" style="color: '#A21CFF'">ACADEMY</h3>
-				<div class="vector">
-					<img
-						src="${pageContext.request.contextPath}/resources/img/mypage_academy.png"
-						width="70px" height="70px">
-				</div>
-				<div class="content">
-					<p>
-						&bull; 지역,카테고리,키워드에 따라 본인에게 알맞는 학원을 찾는 공간입니다.<br> &bull; 학원을
-						즐겨찾기에 등록할 수 있고 점주의 경우는 학원을 등록,수정,삭제할 수 있습니다.
-					</p>
-				</div>
-			</div>
-			<!-- ============================상단부 배너================================ -->
-	
-			<form method="post">
+			<form name="f" method="post">
 				<hr>
-				<input type="hidden" name="a_idx" value="${vo.a_idx}"> <input
-					type="hidden" name="m_idx" value="${vo.m_idx}">
+				<input type="hidden" name="a_idx" value="${vo.a_idx}">
+				<input type="hidden" name="m_idx" value="${vo.m_idx}">
 				<div id="academy_table">
 					<table width="800" align="center" id="academy_table_a">
 						<tr>
@@ -315,7 +337,7 @@
 										<td rowspan="2" width="200">
 											<img
 												src="${pageContext.request.contextPath }/resources/upload/${vo.a_image_s}"
-												width="200" height="200" />
+												width="200" height="200" class='s_photo' />
 										</td>
 										<td colspan="3">
 											<div id="academy_info">
@@ -333,20 +355,40 @@
 											<div id="academy_button">
 											<button type="button" class="button"
 													onclick="good_send('${vo.a_idx}')">
-													<img src="${pageContext.request.contextPath}/resources/img/good.png"
-														 width="30px" height="30px">
+													<div id="good_img">
+													<c:if test="${good_ck eq 1}">
+														<img src="${pageContext.request.contextPath}/resources/img/good_yes.png"
+														 width="40px" height="40px"> 
+													</c:if> 
+													<c:if test="${good_ck eq 0}">
+														<img src="${pageContext.request.contextPath}/resources/img/good.png"
+														 width="40px" height="40px">
+													</c:if>
+													</div>
+													
 											</button>
+				
 											좋아요: 
 											<div style='display: inline' id="good_cnt">${good_num}</div>
 											</div>
 										</td>
-										<td width="100">
+										<td width="150">
+											<div id="bookmark_button">
 											<button type="button" class="button"
 													onclick="insert('${vo.a_idx}');">
-													<img
-														src="${pageContext.request.contextPath}/resources/img/bookmark.png"
-														width="30px" height="30px">즐겨찾기
+													<div id="bookmark_img">
+														<c:if test="${bookmark_ck eq 1}">		
+														<img src="${pageContext.request.contextPath}/resources/img/bookmark_yes.png"
+															 width="40px" height="40px"> 
+														</c:if> 
+														<c:if test="${bookmark_ck eq 0}">
+															<img src="${pageContext.request.contextPath}/resources/img/bookmark.png"
+															 width="40px" height="40px">
+														</c:if>
+													</div>
 											</button>
+											즐겨찾기
+											</div>
 										</td>
 										<td>
 											<div id="one_and_one">
@@ -369,15 +411,15 @@
 											<td align="center">
 												<div id="academy_photo">
 												<img
-													src="${pageContext.request.contextPath }/resources/upload/${vo.a_image_s}"
-													height="200" />
+													src="${pageContext.request.contextPath }/resources/upload/${vo.a_image_l}"
+													width = "512px" height="512px" />
 												</div>
 											</td>
 										</tr>
 										<tr>
 											<td align="center">
 												<div id="academy_content">
-													<p>${vo.a_content}</p>
+												<textarea class="textdata" rows="15" cols="76" readonly>${vo.a_content}</textarea>
 												</div>
 											</td>
 										</tr>
@@ -434,32 +476,21 @@
 							</td>
 						</tr>
 					</table>
-				</div>
-				
-				<div class="academy_bottom">
-				<table class="t1">
-					<tr>
-						<td>
-						<input type="button" class="m_button"
-								onclick="modify_academy(this.form);" value="수정">
-						</td>
-						<td>
-						<input type="button" class="m_button"
-								onclick="delete_academy(this.form);" value="삭제">
-						</td>
-					</tr>
-				</table>
-				</div>
-				
-				<hr>
-				
-				
-			</form>
-	
-	
+				</form>
 			<!-- 학원내 게시판 테이블 -->
 			<div id="academy_inner">
-				<div class="inner_title">학원 소식</div><br>
+				<div class="inner_title"><a name="inner">학원 소식</a></div>	
+				<div id="test" style="display: inline;">		
+				<form>
+					<input type="hidden" name="a_idx" value="${vo.a_idx}"> 
+					<input type="hidden" name="a_owner" value="${vo.a_owner}"> 
+					<input type="hidden" name="m_idx" value="${vo.m_idx}">
+					<input type="hidden" name="page" value="${ empty param.page ? 1 : param.page}">
+					<input type="button" value="글쓰기" class="button4"
+							onclick="a_notice_form(this.form);">
+				</form>
+				</div>
+				<br>
 				<table class="t2" border="1" width="700" align="center" id="table_inner">
 					<tr>
 						<th class="t_a" width="350" >제목</th>
@@ -470,7 +501,7 @@
 						<input type="hidden" value="${vo.a_notice_idx }">
 		
 						<tr>
-							<td><a href="view.com?a_notice_idx=${vo.a_notice_idx }">
+							<td><a href="notice_view.do?a_notice_idx=${vo.a_notice_idx}&page=${ empty param.page ? 1 : param.page}">
 									${vo.a_notice_subject } </a></td>
 							<td>${vo.a_owner }</td>
 							<td>${vo.a_notice_regdate }</td>
@@ -484,55 +515,57 @@
 						</tr>
 					</c:if>
 				</table>
-				<div style="margin:20px auto;">${pageMenu}</div>
+				<div align="center" style="font-size:20px;">${pageMenu}</div>
 			</div>
 			
-			<form>
-				<input type="hidden" name="a_idx" value="${vo.a_idx}"> <input
-					type="hidden" name="a_owner" value="${vo.a_owner}"> <input
-					type="hidden" name="m_idx" value="${vo.m_idx}">
-				<div id="test" style="display: inline;">
-					<input type="button" value="글쓰기" class="button4"
-						onclick="a_notice_form(this.form);">
-				</div>
-			</form>
-	
-	
-			<!-- ===================카카오맵 API관련========================= -->
-			<script type="text/javascript"
-				src="//dapi.kakao.com/v2/maps/sdk.js?appkey=57bd357082d358d251a6461a6aace40b&libraries=services"></script>
-			<script>
-				var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-				mapOption = {
-					center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-					level : 3
-				};
-				var map = new kakao.maps.Map(mapContainer, mapOption);
-				var geocoder = new kakao.maps.services.Geocoder();
-				var address_input = "${vo.a_addr}";
+			<div class="academy_bottom">
+				<table class="t1">
+					<tr>
+						<td>
+						<input type="button" class="m_button"
+								onclick="modify_academy();" value="수정">
+						</td>
+						<td>
+						<input type="button" class="m_button"
+								onclick="delete_academy();" value="삭제">
+						</td>
+						<td>
+					</tr>
+				</table> 
+			</div>
+			<hr>	
 
-				geocoder.addressSearch(
-					address_input, function(result, status) {
-									// 정상적으로 검색이 완료됐으면 
-									if (status === kakao.maps.services.Status.OK) {
+		<!-- ===================카카오맵 API관련========================= -->
+		<script type="text/javascript"
+			src="//dapi.kakao.com/v2/maps/sdk.js?appkey=57bd357082d358d251a6461a6aace40b&libraries=services"></script>
+		<script>
+			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+			mapOption = {
+				center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+				level : 3
+			};
+			var map = new kakao.maps.Map(mapContainer, mapOption);
+			var geocoder = new kakao.maps.services.Geocoder();
+			var address_input = "${vo.a_addr}";
 
-										var coords = new kakao.maps.LatLng(
-												result[0].y, result[0].x);
-
-										var marker = new kakao.maps.Marker({
-											map : map,
-											position : coords
-										});
-
-										var infowindow = new kakao.maps.InfoWindow(
-												{
-													content : '<div style="width:150px;text-align:center;padding:6px 0;">${vo.a_name}</div>'
-												});
-										infowindow.open(map, marker);
-
-										map.setCenter(coords);
-									}
-								});
+			geocoder.addressSearch(
+				address_input, function(result, status) {
+								// 정상적으로 검색이 완료됐으면 
+								if (status === kakao.maps.services.Status.OK) {
+									var coords = new kakao.maps.LatLng(
+											result[0].y, result[0].x);
+									var marker = new kakao.maps.Marker({
+										map : map,
+										position : coords
+									});
+									var infowindow = new kakao.maps.InfoWindow(
+											{
+												content : '<div style="width:150px;text-align:center;padding:6px 0;">${vo.a_name}</div>'
+											});
+									infowindow.open(map, marker);
+									map.setCenter(coords);
+								}
+							});
 			</script>
 			<!-- ===================카카오맵 API관련========================= -->
 		</main>

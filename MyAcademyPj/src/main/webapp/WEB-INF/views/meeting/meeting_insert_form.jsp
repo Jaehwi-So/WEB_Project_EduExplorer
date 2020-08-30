@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>세상의 모든 학원 : SpringSchool</title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 	<link href='https://fonts.googleapis.com/css?family=Do+Hyeon' rel='stylesheet' type='text/css'>
 	<script type="text/javascript">
@@ -20,12 +20,9 @@
 			
 			if( f.meeting_content.value.trim() == '' ){
 				alert("내용은 한글자 이상 입력해야 합니다");
-				return;
+				return; 
 			}
-			
-			alert(f.a_idx.value);
-			f.submit();
-			
+			f.submit();		
 		}
 	</script>
 	<style>
@@ -54,6 +51,7 @@
 			font : 20px bold;
 			font-family : Do Hyeon, "돋움체";
 			background-color: #f5f2c4; 
+			cursor:pointer;
 		}
 	</style>
 </head>
@@ -63,35 +61,31 @@
 	<br>
 	<hr>
 	<br>
-	<form name="f" method="post" action="meeting_insert.com" enctype="multipart/form-data">
+	<form name="f" method="post" action="meeting_insert.do" enctype="multipart/form-data">
 		<input type="hidden" value="${user.m_idx }" name="m_idx">
 		<input type="hidden" value="${param.a_idx}" name="a_idx">
 		<input type="hidden" value="${user.m_id }" name="meeting_writer">
 		<input type="hidden" name="meeting_alam" value="대기">
-		<table width="800" style="border-collapse: collapse; text-align:center;">
-			
+		<table frame="void" style="border-collapse: collapse; font-size:25px;">
 			<tr>
-				<td width="180" height="30">제목 입력</td>
-				<td colspan="">
-					<input name="meeting_subject" style="width:660px; height:30px;">
+				<th width="150px">제목</th>
+				<td width="650px"><input name="meeting_subject" style="width:1080px; height: 30px; font-size:20px;" ></td>
+			</tr>
+	
+			<tr>
+				<th>내용</th>
+				<td>
+				<textarea name="meeting_content" rows="20" cols="100" style="font-size:20px;"></textarea>
 				</td>
 			</tr>
-			
 			<tr>
-				<td width="180" height="50">내용 입력</td>
-				<td colspan="">
-					<textarea name="meeting_content" rows="15" cols="91"></textarea>
-				</td>
-			</tr>
-			
-			<tr>
-				<td width="180" height="25">이미지 첨부</td>
-				<td colspan="">
+				<th>이미지 첨부</th>
+				<td>
 					<input type="file" name="m_photo" rows="10" cols="84">
 				</td>
-			</tr>				
+			</tr>	
 		</table>
-		
+				
 		<table width="750">
 			<tr>
 				<td height="10"></td>
@@ -101,11 +95,11 @@
 				<td align="center">
 				<div class="m_button_div" >
 
-					<input class="m_button" type="button" value="등록하기"
+					<input class="m_button" type="button" value="질문 등록"
 						 onclick="send_check();">
 						 
 					<input class="m_button" type="button" value="취소하기"
-						 onclick="location.href='meeting.com?m_idx=${user.m_idx}&a_idx=${param.a_idx}'">	
+						 onclick="location.href='meeting.do?m_idx=${user.m_idx}&a_idx=${param.a_idx}'">	
 				</div> 
 				</td>
 			</tr>

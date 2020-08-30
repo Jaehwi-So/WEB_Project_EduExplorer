@@ -15,7 +15,7 @@
 	
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
-		<url-pattern>*.com</url-pattern>
+		<url-pattern>*.do</url-pattern>
 	</filter-mapping>
 	<!--utf-8인코딩 설정  -->
 	

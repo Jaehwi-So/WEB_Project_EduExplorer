@@ -15,8 +15,9 @@
 		src="${pageContext.request.contextPath}/resources/js/httpRequest.js"></script>
 	
 	<script type="text/javascript">
+		
 		function meeting_modify(f) {
-			f.action = "meeting_modify_form.com";
+			f.action = "meeting_modify_form.do";
 			f.submit();
 		}
 	
@@ -52,7 +53,7 @@
 	        }		       
 			 #f_title {
 				margin-left: 120px;
-				font-size: 30px;
+				font-size: 35px;
 				font-weight : bold;
 			}		
 			#f_info {
@@ -71,17 +72,25 @@
 				font-size: 15px;
 			}
 			
-			#f_content {
-				padding : 20px;
-				margin-right : 110px;
-				border : black 1.5px solid;
-				background: radial-gradient(farthest-corner at 10%, #ffee0023, white);
-				margin-left: 120px;
-				margin-bottom : 20px;
-				height : 600px;
+			#m_content_box{
+			padding : 25px;
+			margin: 0px auto;
+			width : 1050px;
+			background-color:rgb(244, 245, 250);
+			border : black 1.5px solid; 
+			}
+			#m_content {
+				margin : 0px auto;
+				margin-left : 8px;
+				margin-top : 20px;
+				padding : 22px;
+				border : black 1.5px solid; 
+				background: white;
+				height : 400px;
 				overflow : auto;
-				font-size : 20px;
-			}	
+				font-size : 19px;
+				font-family : "돋움체";
+			}
 			.m_button_div{
 
 			width : 140px; float : right;
@@ -93,9 +102,24 @@
 			font-family : Do Hyeon, "돋움체";
 			background-color: #f5f2c4; 
 			}
+			.back_button {
+			width : 140px; height : 50px; padding : 10px; 
+			margin-left : 560px;
+			margin-top : 45px;
+			font : 20px bold;
+			font-family : Do Hyeon, "돋움체";
+			background-color: #f5f2c4; 
+			cursor : pointer;
+			}
 			.m_button:hover{
 			cursor:pointer;
 			} 
+			.content_font{
+				font-size : 35px;
+				font-weight : bold;
+				margin : 10px;
+				font-family : "Do Hyeon";
+			}
 	</style>
 	
 	</head>
@@ -125,14 +149,19 @@
 			</div>
 			<br>
 			<hr style="margin:0px auto; width:1100px;" ><br>
-			<div id="f_content">
-				<pre>${vo.meeting_content }</pre>
-				<img src="${pageContext.request.contextPath }/resources/upload/${vo.meeting_photo}"
-						width="300" height="300" />
+			<div id="m_content_box"> 
+				<c:if test='${vo.meeting_photo ne "no_file"}'>
+					<img src="${pageContext.request.contextPath}/resources/upload/${vo.meeting_photo}" width = "512px" height="512px" style="display:block; margin: 0px auto;">
+				</c:if>
+				<div class="content_font">&bull; 문의 내용</div><br><hr>
+				<textarea id="m_content" rows= 10; cols="100" readonly>${vo.meeting_content}</textarea>
+				<c:if test='${meeting_answer ne "&NotHaveAnswer"}'> 
+				<div class="content_font">&bull; 문의 답변</div><br><hr>
+					<textarea id="m_content" rows= 10; cols="100" readonly>${meeting_answer}</textarea>
+				</c:if>
 			</div>
-			
 
-
+		<input class="back_button" type="button" value="뒤로가기" onclick="location.href='meeting.do?m_idx=${user.m_idx}&a_idx=${vo.a_idx }'">
 	
 		</form>
 	</main>

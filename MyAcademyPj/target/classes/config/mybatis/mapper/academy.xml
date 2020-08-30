@@ -5,18 +5,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="a_mapper">
 
 	<!-- 전체게시물 조회 -->
-	<select id="academy_list" resultType="vo.AcademyVO">
+	<select id="academy_list" resultType="academyVO">
 		select * from academy order by a_regdate desc
 	</select>
 
 
-	<select id="academy_one" resultType="vo.AcademyVO"
+	<select id="academy_one" resultType="academyVO"
 		parameterType="int">
 		select * from academy where a_idx= #{a_idx}
 	</select>
 
 	<!-- 학원 등록하기 -->
-	<insert id="academy_insert" parameterType="vo.AcademyVO">
+	<insert id="academy_insert" parameterType="academyVO">
 		insert into academy values(
 				seq_a_idx.nextVal,
 				#{a_name},
@@ -41,7 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from academy where a_idx=#{a_idx}
 	</delete>
 	<!-- 학원 수정하기 -->
-	<update id="academy_modify" parameterType="vo.AcademyVO">
+	<update id="academy_modify" parameterType="academyVO">
 		update academy
 		set a_name = #{a_name},
 			a_owner = #{a_owner},
@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<!-- 페이지에 따른 게시물 조회 -->
-   <select id="academy_list_paging" parameterType="java.util.Map" resultType="vo.AcademyVO">
+   <select id="academy_list_paging" parameterType="java.util.Map" resultType="academyVO">
       select * from
          (select rank() over( order by a_regdate desc) no, a_mapper.*
          from( select * from academy ) a_mapper)
@@ -72,7 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    </select>
    
    	<!-- 페이지에 따른 게시물 조회(필터) -->
-   <select id="academy_list_filter" parameterType="vo.FilterVO" resultType="vo.AcademyVO">
+   <select id="academy_list_filter" parameterType="filterVO" resultType="academyVO">
       select * from
          (select rank() over( order by a_regdate desc) no, a_mapper.*
          from( select * from academy where a_addr like #{f_addr} and a_area like #{f_area} and a_keyword like #{f_keyword}) a_mapper)
@@ -80,12 +80,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    </select>
    
       <!-- 전체 게시물 수 조회(필터) -->
-   <select id="academy_count_filter" parameterType="vo.FilterVO" resultType="int">
+   <select id="academy_count_filter" parameterType="filterVO" resultType="int">
       select count(*) from academy
       where a_addr like #{f_addr} and a_area like #{f_area} and a_keyword like #{f_keyword}
    </select>
    
-    <select id="academy_mylist" parameterType="int" resultType="vo.AcademyVO">
+    <select id="academy_mylist" parameterType="int" resultType="academyVO">
       select * from academy where m_idx = #{m_idx}
    </select>
 
@@ -97,7 +97,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select a_idx from academy 
 	</select>
 	
-	<select id="a_idx_list_one" resultType="vo.AcademyVO" parameterType="int">
+	<select id="a_idx_list_one" resultType="academyVO" parameterType="int">
 		select * from academy where a_idx = #{random_a_idx}
 	</select>
 </mapper>

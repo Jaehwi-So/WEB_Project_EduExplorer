@@ -5,14 +5,14 @@
 <c:if test="${ empty sessionScope.user }">
 	<script>
 	alert("로그인 후 이용하세요");
-	location.href="main.com";
+	location.href="main.do";
 	</script>
 </c:if>    
 <!DOCTYPE html>
 	<html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Insert title here</title>
+		<title>세상의 모든 학원 : SpringSchool</title>
 		
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/httpRequest.js"></script>
 		<script>
@@ -33,7 +33,7 @@
 					  return;
 			 	 }
 			 	else{
-					var url = "log_update.com?url=" + url + "&log_idx=" + idx;
+					var url = "log_update.do?url=" + url + "&log_idx=" + idx;
 					sendRequest(url, null, go_resultFn, "POST");	//방문표시 하러 컨트롤러로 이동
 			  	}
 		  	}

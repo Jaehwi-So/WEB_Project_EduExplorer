@@ -5,7 +5,7 @@
 <html>
 	<head>
 	<meta charset="UTF-8">
-	<title>Insert title here</title>
+	<title>세상의 모든 학원 : SpringSchool</title>
 	
 	<link href='https://fonts.googleapis.com/css?family=BlackHanSans'
 	rel='stylesheet' type='text/css'>
@@ -33,12 +33,30 @@
 		}	
 		
 		.button2{border: 0;}
+		.util_btn{
+			width : 70px; height : 35px;
+			cursor : pointer;
+		}
 
 	</style>
 	
 		<script type="text/javascript">
-			function send_modify(f) {
-				f.action = "a_notice_modify.com";
+			function send_modify() {
+				var f = document.f;
+				if( f.a_notice_subject.value.trim() == '' ){
+					alert("제목은 반드시 입력해야 합니다");
+					return;
+				}
+				
+				if( f.a_notice_content.value.trim() == '' ){
+					alert("내용은 한글자 이상 입력해야 합니다");
+					return;
+				}
+				if( f.a_notice_content.value > 1000 ){
+					alert("내용은 1000자 이내로 입력해주세요");
+					return;
+				}
+				f.action = "a_notice_modify.do";
 				f.submit();
 			}
 		
@@ -58,34 +76,32 @@
 		<hr>
 		<br>
 		
-		<form name="f" method="post" action="a_notice_insert.com" enctype="multipart/form-data">
+		<form name="f" method="post" action="a_notice_modify.do" enctype="multipart/form-data">
 			<input type="hidden" value="${vo.a_notice_idx}" name="a_notice_idx">
 			<input type="hidden" value="${vo.a_idx }" name="a_idx">
-			<table frame="void" width="1000" border="1" style="border-collapse: collapse;">				
+			<input type="hidden" value="${param.page}" name="page">
+			
+			<table frame="void" style="border-collapse: collapse; font-size:25px;">
 				<tr>
-					<td width="120" height="25">제목</td>
-					<td colspan="3">
-						<input name="a_notice_subject" value ="${vo.a_notice_subject }" style="width:715px;">
+					<th width="100px">제목</th>
+					<td width="700px"><input name="a_notice_subject" value ="${vo.a_notice_subject }" style="width:1080px; height: 30px; font-size:20px;" ></td>
+				</tr>
+				<tr>
+					<th>작성자</th>
+					<td><input value ="${vo.a_owner }" name="a_owner" style="width:1080px; height: 30px; font-size:20px;" readonly></td>
+				</tr>
+				<tr>
+					<th>내용</th>
+					<td>
+					<textarea name="a_notice_content" rows="20" cols="100" style="font-size:20px;">${vo.a_notice_content }</textarea>
 					</td>
 				</tr>
 				<tr>
-					<td width="120" height="25">작성자</td>
-					<td colspan="3">
-						<input name="a_owner" value ="${vo.a_owner }" style="width:715px;">
-					</td>
+					<th>사진</th>
+					<td><input type="file" name="a_photo" style="font-size:20px;"></td>
 				</tr>
-				
-				<tr>
-					<td width="120" height="25">내용</td>
-					<td colspan="3">
-						<textarea name="a_notice_content" rows="20" cols="100">${vo.a_notice_content }</textarea>
-					</td>
-				</tr>
-				<tr>
-					<td>사진</td>
-					<td><input type="file" name="a_photo"></td>
-				</tr>
-				
+			</table>
+						
 			</table>
 			
 			<table width="750">
@@ -95,13 +111,10 @@
 				
 				<tr>
 					<td align="center">
-						<!-- a태그가 아니면 send_check(this.form);사용 못함-->
-						
-						<button type="button" class="button2" onclick="send_modify(this.form);">
-						<img src="${pageContext.request.contextPath}/resources/img/btn_reg.gif"></button>
-										 
+						<img src="${pageContext.request.contextPath}/resources/img/btn_reg.gif"
+						onclick="send_modify();" class="util_btn">
 						<img src="${pageContext.request.contextPath}/resources/img/btn_back.gif"
-							 onclick="location.href='a_list_detail.com?a_idx=${vo.a_idx}'">	 
+						onclick="location.href='notice_view.do?a_notice_idx=${vo.a_notice_idx}&page=${param.page}'" class="util_btn">
 					</td>
 				</tr>
 			</table>

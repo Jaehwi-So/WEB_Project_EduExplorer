@@ -4,18 +4,25 @@
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<c:if test="${vo.del_info eq -1}">
+	<script>
+		alert("이미 삭제되거나 없는 게시물입니다.");
+		location.href = "main.do";
+	</script>
+</c:if>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>페이지 상세보기</title>
+		<title>세상의 모든 학원 : SpringSchool</title>
 		<link rel="stylesheet"
 			href="${pageContext.request.contextPath}/resources/css/main.css">
 		<script type="text/javascript"
 			src="${pageContext.request.contextPath}/resources/js/httpRequest.js"></script>
 		<script type="text/javascript">
+			//답글 작성 폼
 			function reply() {
-				location.href = "f_reply_form.com?idx=${vo.f_idx}&page=${param.page}";
+				location.href = "f_reply_form.do?idx=${vo.f_idx}&page=${param.page}&keyword=${param.keyword}";
 			}
 			//수정버튼 클릭
 			function modify() {
@@ -26,7 +33,7 @@
 					alert("권한이 없는 접근입니다.");
 					return;
 				}
-				location.href = "f_modify_form.com?f_idx=${vo.f_idx}&page=${ empty param.page ? 1 : param.page}";
+				location.href = "f_modify_form.do?f_idx=${vo.f_idx}&page=${param.page}&keyword=${param.keyword}";
 			}
 		
 			function del() {
@@ -38,7 +45,7 @@
 				}
 				if (confirm("정말로 삭제하시겠습니까?")) {
 					var f_pwd = document.getElementById("c_pwd").value;
-					var url = "f_del.com?f_idx=${vo.f_idx}&f_pwd=" + f_pwd;
+					var url = "f_del.do?f_idx=${vo.f_idx}&f_pwd=" + f_pwd;
 					sendRequest(url, null, resultFn, "POST");
 				}
 			}
@@ -48,7 +55,7 @@
 					var json = eval(data);
 					if (json[0].result == 'yes') {
 						alert("글을 삭제했습니다.");
-						location.href = "f_list.com?page=${empty param.page ? 1 : param.page}";
+						location.href = "f_list.do?&page=${param.page}&keyword=${param.keyword}";
 					} else {
 						alert("삭제실패!");
 						return;
@@ -63,7 +70,7 @@
 				var r_content = document.getElementsByName("r_content")[0].value;
 				var m_idx = document.getElementsByName("m_idx")[0].value;
 				var r_board = "${vo.f_idx}";
-				var url = "reply_insert.com?r_name=" + r_name + "&r_pwd=" + r_pwd
+				var url = "reply_insert.do?r_name=" + r_name + "&r_pwd=" + r_pwd
 						+ "&r_content=" + r_content + "&r_board=" + r_board + "&m_idx="
 						+ m_idx;
 				sendRequest(url, null, resultFn_write, "POST");
@@ -75,7 +82,7 @@
 					var json = eval(data);
 					if (json[0].result == 'yes') {
 						alert("댓글이 등록되었습니다.");
-						location.href = "f_view.com?f_idx=${vo.f_idx}&page=${empty param.page ? 1 : param.page}";
+						location.href = "f_view.do?f_idx=${vo.f_idx}&page=${param.page}&keyword=${param.keyword}";
 					} else {
 						alert("등록실패!");
 						return;
@@ -91,7 +98,7 @@
 					return;
 				}
 				if (confirm("삭제하시겠습니까?")) {
-					var url = "reply_del.com";
+					var url = "reply_del.do";
 					var param = "r_idx=" + r_idx + "&r_pwd=" + r_pwd;
 					sendRequest(url, param, resultFn_del, "POST");
 				}
@@ -103,7 +110,7 @@
 					var json = eval(data);
 					if (json[0].result == 'yes') {
 						alert("댓글이 삭제되었습니다.");
-						location.href = "f_view.com?f_idx=${vo.f_idx}&page=${empty param.page ? 1 : param.page}";
+						location.href = "f_view.do?f_idx=${vo.f_idx}&page=${param.page}&keyword=${param.keyword}";
 					} else {
 						alert("삭제실패!");
 						return;
@@ -127,7 +134,7 @@
 			}
 			
 			.f_title {
-				font : 35px bold;
+				font : 40px bold;
 			}
 			
 			#f_info {
@@ -147,12 +154,13 @@
 				padding : 20px;
 				margin-right : 110px;
 				border : black 1.5px solid;
-				background: radial-gradient(farthest-corner at 10%, #ffee0023, white);
+				background: rgb(244, 245, 250);
 				margin-left: 120px;
 				height : 600px;
 				overflow : auto;
-				font-family : "돋움체";
 				font-size : 20px;
+				font-family : "돋움체";
+
 			}
 			
 			#f_replyWrite {
@@ -169,7 +177,8 @@
 			
 			.reply_notice {
 				margin-left: 205px;
-				font-size: 13px;
+				font-size: 20px;
+				font-weight : bold;
 			}
 			
 			#r_date {
@@ -179,6 +188,13 @@
 			
 			#f_menu {
 				margin-left: 120px;
+			}
+			#r_content{
+				font-size : 16px;
+			}
+			.util_btn{
+			width : 70px; height : 35px;
+			cursor : pointer;
 			}
 		</style>	
 	</head>
@@ -195,18 +211,19 @@
 						<p class="f_writer">${ vo.f_name }</p>
 						<p class="f_date">${ vo.f_regdate }</p>
 					</div>
-					<input type="hidden" id="m_idx" value="${vo.m_idx}"> <input
-						type="hidden" id="c_pwd" value="${vo.f_pwd}">
-					<div id="f_content">${ vo.f_content }</div>
+					<input type="hidden" id="m_idx" value="${vo.m_idx}"> 
+					<input type="hidden" id="c_pwd" value="${vo.f_pwd}">
+					<br>
+					<textarea id="f_content" rows= 20; cols="100" readonly>${ vo.f_content }</textarea>
 				</form>
 	
 				<br> <br> <br>
 				<hr id="info_hr" width="1100px">
 				<br> <br>
 	
-				<p class="reply_notice">댓글작성</p>
+				<p class="reply_notice">댓글 작성</p>
 				<!-- 댓글작성 -->
-				<form name="f2" method="post" action="reply_insert.com"> 
+				<form name="f2" method="post" action="reply_insert.do"> 
 					<input type="hidden" name="m_idx" value="${sessionScope.user.m_idx}">
 					<input type="hidden" name="r_name"
 						value="${sessionScope.user.m_nick}"> <input type="hidden"
@@ -214,7 +231,7 @@
 					<table id=f_replyWrite frame="void" width="500" border="1"
 						style="border-collapse: collapse;">
 						<tr>
-							<td><textarea name="r_content" rows="5" cols="110"></textarea></td>
+							<td><textarea name="r_content" rows="5" cols="100" id="r_content"></textarea></td>
 							<td width="80"><img
 								src="${pageContext.request.contextPath}/resources/img/writing.png"
 								width="40px" height="40px" onclick="write_reply();"
@@ -237,15 +254,14 @@
 								<br>
 								<li>
 									<p>
-										${rvo.r_name } <img
-											src="${pageContext.request.contextPath}/resources/img/delete.png"
-											width="20px" height="20px"
+										${rvo.r_name } 
+										<img src="${pageContext.request.contextPath}/resources/img/delete.png"
+											width="15px" height="15px"
 											onclick="del_reply('${rvo.r_idx}', '${rvo.r_pwd }', '${rvo.m_idx }');"
-											style="cursor: pointer;"> &emsp; <br> <input
-											id="c_pwdck" name="c_pwd" type="hidden" value="${rvo.r_pwd}">
+											style="cursor: pointer;"> &emsp; 
+											<br> 
+											<input id="c_pwdck" name="c_pwd" type="hidden" value="${rvo.r_pwd}">
 									<p id="r_date">${rvo.r_date}</p>
-									</p>
-	
 									<p id="r_content">${rvo.r_content}</p> <br>
 								</li>
 	
@@ -265,16 +281,16 @@
 					</tr>
 					<tr>
 						<td height="10">
-							<!-- 목록보기 버튼 --> <img
-							src="${pageContext.request.contextPath}/resources/img/btn_list.gif"
-							onclick="location.href='f_list.com?page=${param.page}'"> <!-- 댓글달기 -->
-							<img
-							src="${pageContext.request.contextPath}/resources/img/btn_reply.gif"
-							onclick="reply();"> <!-- 수정하기 --> <img
-							src="${pageContext.request.contextPath}/resources/img/btn_modify.gif"
-							onclick="modify();"> <!-- 삭제하기 --> <img
-							src="${pageContext.request.contextPath}/resources/img/btn_delete.gif"
-							onclick="del();">
+							<!-- 목록보기 버튼 --> 
+							<img src="${pageContext.request.contextPath}/resources/img/btn_list.gif"
+							onclick="location.href='f_list.do?page=${param.page}&keyword=${param.keyword}'"
+							class="util_btn"> 
+							<!-- 댓글달기 -->
+							<img src="${pageContext.request.contextPath}/resources/img/btn_reply.gif" class="util_btn" onclick="reply();"> 
+							<!-- 수정하기 --> 
+							<img src="${pageContext.request.contextPath}/resources/img/btn_modify.gif" class="util_btn" onclick="modify();"> 
+							<!-- 삭제하기 --> 
+							<img src="${pageContext.request.contextPath}/resources/img/btn_delete.gif" class="util_btn" onclick="del();">
 						</td>
 					</tr>
 				</table>

@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 import java.util.List;
@@ -56,42 +58,54 @@ public class F_BoardController {
 
 
 	@RequestMapping("f_list.com")
-	public String list(Model model, Integer page) {
+	public String list(Model model, Integer page, String keyword) {
 		int list_cnt = academy_dao.selectList_cnt();
 		if(list_cnt >= 5) {
 			List<AcademyVO> list = academy_dao.selectList_random();
 			model.addAttribute("rec_list", list);
 		}
-
-		int nowPage = 1;
+		
+		int nowPage = 1;// 기본페이지
 
 		if (page != null) {
 			nowPage = page;
 		}
-
+		List<F_BoardVO> f_list = null;
+		String pageMenu;
 		int start = (nowPage - 1) * PageUtil.Board.BLOCKLIST + 1;
 		int end = start + PageUtil.Board.BLOCKLIST - 1;
-
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		map.put("start", start);
-		map.put("end", end);
-
-		List<F_BoardVO> f_list = null;
-		f_list = f_BoardDAO.selectList(map);
-
-		// 전체게시물 수 구하기
-		int row_total = f_BoardDAO.getRowTotal();
-
-		// 하단 페이지메뉴 생성하기
-		String pageMenu = Paging.getPaging("f_list.com", nowPage, row_total, PageUtil.Board.BLOCKLIST,
-				PageUtil.Board.BLOCKPAGE);
+		if(keyword != null) {
+			String key = "%" + keyword + "%";
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("start", start);
+			map.put("end", end);
+			map.put("keyword", key);
+	
+			int row_total = f_BoardDAO.getRowTotal_keyword(key);
+			f_list = f_BoardDAO.selectList_keyword(map);
+	
+			pageMenu = Paging.getPaging_fBoard_keyword("f_list.com", nowPage, row_total, PageUtil.Board.BLOCKLIST,
+					PageUtil.Board.BLOCKPAGE, keyword);
+		}
+		else {
+			Map<String, Integer> map = new HashMap<String, Integer>();
+			map.put("start", start);
+			map.put("end", end);
+			f_list = f_BoardDAO.selectList(map);
+	
+			// 전체게시물 수 구하기
+			int row_total = f_BoardDAO.getRowTotal();
+	
+			// 하단 페이지메뉴 생성하기
+			pageMenu = Paging.getPaging("f_list.com", nowPage, row_total, PageUtil.Board.BLOCKLIST,
+					PageUtil.Board.BLOCKPAGE);
+		}
 		model.addAttribute("f_list", f_list);
 		model.addAttribute("pagemenu_f", pageMenu);
-
-		// 세션에 기록되어 있던 show정보를 지운다
 		request.getSession().removeAttribute("show");
 
 		return PageUtil.Board.F_VIEW_PATH + "f_board_list.jsp";
+		
 	}
 
 	@RequestMapping("/f_view.com")
@@ -174,7 +188,7 @@ public class F_BoardController {
 
 	// 답글 등록
 	@RequestMapping("/f_reply.com")
-	public String reply(F_BoardVO vo, int page) {
+	public String reply(F_BoardVO vo, int page, String keyword) {
 		String ip = request.getRemoteAddr();
 
 		F_BoardVO baseVO = f_BoardDAO.selectOne(vo.getF_idx());
@@ -187,10 +201,15 @@ public class F_BoardController {
 		vo.setF_ref(baseVO.getF_ref());
 		vo.setF_step(baseVO.getF_step() + 1);
 		vo.setF_depth(baseVO.getF_depth() + 1);
-
+		String keywordEncode = "";
+		try {
+			keywordEncode = URLEncoder.encode(keyword, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		f_BoardDAO.reply(vo);
 
-		return "redirect:f_list.com?page=" + page;
+		return "redirect:f_list.com?page=" + page + "&keyword=" + keywordEncode;
 	}
 
 	//댓글 등록
@@ -245,12 +264,18 @@ public class F_BoardController {
 
 	//게시글 수정하기
 	@RequestMapping("/f_modify.com")
-	public String academy_modify(F_BoardVO vo, Model model, int page) {
+	public String academy_modify(F_BoardVO vo, Model model, int page, String keyword) {
 		String content = vo.getF_content().replaceAll("\n", "<br>");
 		vo.setF_content(content);
 		int f_idx = vo.getF_idx();
 		int res = f_BoardDAO.modify(vo);
-		return "redirect:f_view.com?f_idx=" + f_idx + "&page=" + page;
+		String keywordEncode = "";
+		try {
+			keywordEncode = URLEncoder.encode(keyword, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return "redirect:f_view.com?f_idx=" + f_idx + "&page=" + page + "&keyword=" + keywordEncode;
 	}
 
 
@@ -329,36 +354,5 @@ public class F_BoardController {
 		return VIEW_PATH_MY + "mypage_fboard.jsp";
 	}
 
-
-	//키워드를 통한 게시물 검색하기
-	@RequestMapping("f_list_keyword.com")
-	public String list_keyword(Model model, Integer page, String keyword) {
-
-		int nowPage = 1;// 기본페이지
-
-		if (page != null) {
-			nowPage = page;
-		}
-		int start = (nowPage - 1) * PageUtil.Board.BLOCKLIST + 1;
-		int end = start + PageUtil.Board.BLOCKLIST - 1;
-		String key = "%" + keyword + "%";
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("start", start);
-		map.put("end", end);
-		map.put("keyword", key);
-
-		int row_total = f_BoardDAO.getRowTotal_keyword(key);
-
-		List<F_BoardVO> f_list = null;
-		f_list = f_BoardDAO.selectList_keyword(map);
-
-		String pageMenu = Paging.getPaging_fBoard_keyword("f_list_keyword.com", nowPage, row_total, PageUtil.Board.BLOCKLIST,
-				PageUtil.Board.BLOCKPAGE, keyword);
-		model.addAttribute("f_list", f_list);
-		model.addAttribute("pagemenu_f", pageMenu);
-		request.getSession().removeAttribute("show");
-
-		return PageUtil.Board.F_VIEW_PATH + "f_board_list.jsp";
-	}
 }
 
