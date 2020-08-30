@@ -1,0 +1,19 @@
+create sequence seq_g_idx;
+
+create table good(
+	g_idx NUMBER(4) primary key,
+	a_idx NUMBER(4) not null,   -- 학원상품 인덱스
+	m_id VARCHAR2(100) not null unique -- 회원 id
+);
+
+alter table good
+add constraint fk_gd_ag_idx foreign key(a_idx)
+references academy(a_idx) ON DELETE CASCADE;    --good테이블의 ag_idx 와 academy테이블의 a_idx 외래키 참조
+
+
+alter table good
+add constraint fk_gd_mg_id foreign key(m_id)
+references member(m_id) ON DELETE CASCADE;     -- good테이블의 mg_id 와 member테이블의 m_id의 외래키 참조 
+
+
+

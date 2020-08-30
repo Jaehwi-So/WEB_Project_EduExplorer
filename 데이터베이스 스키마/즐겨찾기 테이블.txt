@@ -1,0 +1,33 @@
+--즐겨찾기의 일련번호
+
+create sequence seq_bm_idx;
+
+
+--즐겨찾기 테이블
+create table bookmark(
+	b_idx NUMBER(3) primary key,
+	a1_idx NUMBER(3), --학원번호
+	m1_idx NUMBER(3) not null --회원번호	
+);
+
+
+alter table bookmark
+add constraint fk_bm_a_idx foreign key(a1_idx)
+references academy(a_idx) ON DELETE CASCADE; 
+commit;
+
+
+create or replace view bookmark_view AS
+select a1_idx a_idx,
+         b_idx,
+         a_name,
+         a_owner,
+         a_tel,
+         a_content,
+         a_site,
+         a_addr,
+         a_image_s,
+         m1_idx m_idx
+from academy a INNER JOIN bookmark bm ON a.a_idx = bm.a1_idx;         
+
+

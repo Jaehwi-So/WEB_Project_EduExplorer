@@ -1,0 +1,19 @@
+create sequence seq_n_idx; -- 공지사항 시퀀스
+
+
+
+create table n_board(
+	n_idx NUMBER(4) primary key,
+	n_name VARCHAR2(100), -- 작성자
+	n_subject VARCHAR2(200) not null, --게시판제목
+	n_content CLOB not null, -- 게시판 내용
+	n_pwd VARCHAR2(50) not null, --게시판 비밀번호
+	n_ip VARCHAR2(100) not null, --ip
+	n_regdate DATE not null, --등록일
+	n_readhit NUMBER(6) default 0, --조회수 default 0 null이면 0값
+	del_info number(2),
+	m_idx NUMBER(2) not null	--멤버인덱스
+);
+
+
+

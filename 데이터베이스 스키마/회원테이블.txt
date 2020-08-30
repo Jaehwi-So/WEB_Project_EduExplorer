@@ -1,0 +1,13 @@
+create sequence seq_m_idx;  --회원 시퀀스 <----이거 주석 허용안되요!
+
+create table member(
+	m_idx NUMBER(4) primary key,
+	m_id VARCHAR2(50) not null unique, --회원아이디
+	m_pwd VARCHAR2(50) not null, --회원비밀번호
+	m_name VARCHAR2(50) not null, --회원이름
+	m_age DATE not null, --생년월일
+	m_type VARCHAR2(50) not null, -- 회원타입
+	m_tel VARCHAR2(50) not null, --회원전화번호
+	m_nick VARCHAR2(100) not null  --닉네임	
+);
+

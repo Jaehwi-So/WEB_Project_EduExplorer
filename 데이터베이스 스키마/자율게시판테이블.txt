@@ -1,0 +1,22 @@
+create sequence seq_f_idx;  --자율게시판 시퀀스
+
+create table f_board(
+	f_idx NUMBER(4) primary key,
+	f_name VARCHAR2(100), --작성자
+	f_subject VARCHAR2(100) not null,  --제목
+	f_content CLOB not null, -- 게시판 내용
+	f_pwd VARCHAR2(50) not null, --게시판 비밀번호
+	f_ip VARCHAR2(100) not null, --ip
+	f_regdate	 DATE not null, --등록일
+	f_readhit NUMBER(6) default 0, --조회수 default 0 null이면 0값
+	f_ref NUMBER(4), -- 기준글 번호(댓글을 달기위한 메인글) 
+	f_step NUMBER(3), -- 댓글 순서(수직적)
+	f_depth NUMBER(3), -- 댓글깊이(수평적)  
+	m_idx number(4) not null,
+	del_info NUMBER(2) --삭제
+);
+
+
+--계층형 게시판의 정렬구조 쿼리
+
+select * from board order by ref desc, step;

@@ -1,0 +1,20 @@
+create sequence seq_a_idx;  -- 학원 시퀀스
+
+create table ACADEMY(
+	a_idx NUMBER(4) primary key, 
+	a_name VARCHAR2(50) not null, --학원명
+	m_idx NUMBER(4) not null, -- 회원idx
+	a_owner VARCHAR2(50) not null, -- 학원점주
+	a_tel VARCHAR2(50) not null, --학원전화번호
+	a_content CLOB not null, --내용
+	a_site VARCHAR2(1000), --학원사이트url
+	a_post VARCHAR2(100) not null, --우편번호
+	a_addr VARCHAR2(300) not null, --도로명주소
+	a_addr_detail VARCHAR2(500) not null, --상세주소
+	a_image_s VARCHAR2(255) not null, --썸네일사진
+	a_image_l VARCHAR2(255) not null, -- 메인사진
+	a_regdate DATE,
+	a_area VARCHAR2(300) not null,
+	a_keyword VARCHAR2(1000)
+);
+

@@ -1,0 +1,10 @@
+create sequence seq_log_idx;
+
+create table member_log(
+	log_idx number(6) primary key,		--알림 idx
+	m_idx number(5),	--알림 대상 m_idx
+	log_type number(2),		--알림 유형(f_board에 댓글 , academy의 답글)
+	log_url varchar(500),		--게시물 혹은 학원 url
+	log_ck number(2),	--확인 여부
+	log_regdate date	--날짜
+);

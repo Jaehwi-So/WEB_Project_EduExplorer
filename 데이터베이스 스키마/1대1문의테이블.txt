@@ -1,0 +1,13 @@
+create sequence seq_meeting_idx; --문의 시퀀스
+
+create table meeting(
+	meeting_idx NUMBER(4) primary key,
+	m_idx NUMBER(4) not null, --회원 인덱스
+	meeting_subject VARCHAR2(100) not null, --제목
+	meeting_content CLOB not null, --글 내용
+	meeting_regdate DATE not null, --등록일
+	meeting_alam VARCHAR2(100) not null, --상태확인
+	meeting_photo VARCHAR2(1000), --사진
+	meeting_writer VARCHAR2(100), --작성자
+	a_idx NUMBER(4)
+);

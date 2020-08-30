@@ -1,0 +1,24 @@
+create sequence seq_r_idx; --댓글 시퀀스
+
+
+create table reply(
+	r_idx NUMBER(4) primary key,
+	r_board NUMBER(9), --게시글 번호
+	r_name VARCHAR2(100) not null, --댓글 작성자
+	r_pwd VARCHAR2(50) not null,  --댓글 비밀번호
+	r_date DATE not null, --댓글 작성일
+	r_content CLOB not null, --댓글 내용	
+	m_idx NUMBER(4)
+);
+
+--샘플데이터
+insert into reply values(
+	seq_r_idx.nextVal,
+	1,
+	'aaa',
+	'1111',
+	sysdate,
+	'댓글달기1'
+);
+				
+	

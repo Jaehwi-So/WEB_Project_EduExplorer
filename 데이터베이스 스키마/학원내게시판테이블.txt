@@ -1,0 +1,24 @@
+create sequence seq_a_notice_idx;  --학원내 시퀀스
+
+create table a_notice(
+	a_notice_idx NUMBER(4) primary key,
+	a_idx NUMBER(4) not null, --학원 게시물 인덱스
+	a_notice_subject VARCHAR2(100) not null,  --제목
+	a_owner VARCHAR2(100) not null, --작성자
+	a_notice_content CLOB not null, -- 게시판 내용
+	a_notice_ip VARCHAR2(100) not null, --ip
+	a_notice_regdate DATE not null, --등록일
+	a_notice_photo VARCHAR(255),	--사진
+	a_type number(2) not null, --학원소식일때 1
+	m_idx number(4) --회원 인덱스
+);
+
+
+-- a_idx 가 학원 게시물 인덱스
+-- 올릴때(insert)할 때 a_idx를 넘겨줘서 연관성 설정
+--학원 게시판을 select할 때 a_idx == 
+
+
+--계층형 게시판의 정렬구조 쿼리
+
+select * from board order by ref desc, step;
